@@ -1,0 +1,17 @@
+# Secrets — never commit real values
+.env
+
+# Virtual environments
+.venv/
+venv/
+
+# Python artifacts
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Data files are not committed (generated locally)
+data/*.csv
+
+# Runtime trace database
+*.sqlite3
