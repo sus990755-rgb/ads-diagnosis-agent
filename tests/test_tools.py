@@ -222,3 +222,54 @@ def test_data_gap_reported() -> None:
     assert len(hits) == 1
     assert hits[0]["entity_key"] == "C004"
     assert hits[0]["evidence"]["missing_date"] == "2026-06-22"
+
+
+# ---- Tool 3: get_tracking_status ----
+
+from src.tools.get_tracking_status import get_tracking_status
+
+
+def _campaign(res: dict, cid: str) -> dict:
+    return next(c for c in res["campaigns"] if c["campaign_id"] == cid)
+
+
+def test_tracking_flags_c002_streak() -> None:
+    """C002's 2-day zero-conversion streak marks it suspected_broken."""
+    res = get_tracking_status(FULL_RANGE)
+    assert res["status"] == "suspected_broken"
+    c002 = _campaign(res, "C002")
+    assert c002["status"] == "suspected_broken"
+    streak = c002["zero_conversion_streaks"][0]
+    assert streak["start_date"] == "2026-06-20" and streak["end_date"] == "2026-06-21"
+    assert streak["days"] == 2 and streak["clicks"] > 0
+    assert any("conversions=0" in r for r in c002["reasons"])
+
+
+def test_tracking_healthy_on_clean_window() -> None:
+    """No campaign is flagged in the clean window 06-01..06-17."""
+    res = get_tracking_status(CLEAN_WINDOW)
+    assert res["status"] == "healthy"
+    assert all(c["status"] == "healthy" for c in res["campaigns"])
+
+
+def test_tracking_cold_start_not_broken() -> None:
+    """Cold-start C003 gets an 'insufficient volume' note, not a broken flag."""
+    res = get_tracking_status(["2026-06-26", "2026-06-30"])
+    c003 = _campaign(res, "C003")
+    assert c003["status"] == "healthy"
+    assert any("insufficient click volume" in r for r in c003["reasons"])
+
+
+def test_tracking_ratio_mutation(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Synthetic clicks-per-conversion doubling (+150%) is flagged."""
+    import src.tools.get_tracking_status as mod
+
+    df = _synthetic_df([10] * 10 + [4] * 10)
+    monkeypatch.setattr(mod, "load_data", lambda: df)
+    res = mod.get_tracking_status(["2026-06-11", "2026-06-20"])
+    assert res["status"] == "suspected_broken"
+    cx = _campaign(res, "CX")
+    cpr = cx["clicks_per_conversion"]
+    assert cpr["current"] == 25.0 and cpr["previous"] == 10.0
+    assert cpr["change_pct"] == 150.0
+    assert any("clicks-per-conversion" in r for r in cx["reasons"])
