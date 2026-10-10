@@ -67,6 +67,17 @@ def start_run(anchor_date: str, model: str) -> str:
     return run_id
 
 
+def latest_run() -> dict | None:
+    """Return the most recent finished run row as a dict, or None."""
+    with _conn() as conn:
+        conn.row_factory = sqlite3.Row
+        row = conn.execute(
+            "SELECT * FROM runs WHERE status != 'running'"
+            " ORDER BY started_at DESC LIMIT 1"
+        ).fetchone()
+    return dict(row) if row else None
+
+
 def _next_seq(conn: sqlite3.Connection, run_id: str) -> int:
     row = conn.execute(
         "SELECT COALESCE(MAX(seq), 0) + 1 FROM tool_calls WHERE run_id = ?",

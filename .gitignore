@@ -15,3 +15,6 @@ data/*.csv
 
 # Runtime trace database
 *.sqlite3
+
+# Local fallback reports (runtime artifacts)
+reports/

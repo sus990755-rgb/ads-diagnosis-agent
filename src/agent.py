@@ -232,7 +232,21 @@ def main() -> None:
     args = parser.parse_args()
     date = args.date or str(load_data()["date"].max().date())
     result = asyncio.run(run_diagnosis(date))
-    print(result.model_dump_json(indent=2))
+    print(result.model_dump_json(indent=2, ensure_ascii=False))
+
+    # render Markdown and push to Feishu (local fallback inside notify)
+    from src import notify, report
+
+    run = trace.latest_run() or {}
+    markdown = report.build_report(
+        result,
+        anchor_date=date,
+        duration_ms=run.get("duration_ms"),
+        cost_cny=run.get("cost_cny"),
+        input_tokens=run.get("input_tokens"),
+        output_tokens=run.get("output_tokens"),
+    )
+    notify.push_feishu(markdown)
 
 
 if __name__ == "__main__":
