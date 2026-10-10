@@ -24,6 +24,11 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
 OPENAI_BASE_URL = os.getenv("OPENAI_BASE_URL", "https://api.moonshot.cn/v1")
 MODEL_NAME = os.getenv("MODEL_NAME", "moonshot-v1-8k")
 
+# Token pricing (CNY per 1M tokens) for run cost accounting.
+# glm-4.5-flash is a free tier -> 0.0; override via .env when switching models.
+PRICE_INPUT_CNY_PER_MTOK = float(os.getenv("PRICE_INPUT_CNY_PER_MTOK", "0"))
+PRICE_OUTPUT_CNY_PER_MTOK = float(os.getenv("PRICE_OUTPUT_CNY_PER_MTOK", "0"))
+
 # Feishu push
 FEISHU_WEBHOOK_URL = os.getenv("FEISHU_WEBHOOK_URL", "")
 FEISHU_WEBHOOK_SECRET = os.getenv("FEISHU_WEBHOOK_SECRET", "")

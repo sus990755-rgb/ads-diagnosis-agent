@@ -13,9 +13,11 @@ from __future__ import annotations
 
 import argparse
 import asyncio
+import functools
 import json
 import re
 import sys
+import time
 from datetime import date as date_cls, timedelta
 from typing import Literal
 
@@ -24,7 +26,7 @@ from agents.models.openai_chatcompletions import OpenAIChatCompletionsModel
 from openai import AsyncOpenAI
 from pydantic import BaseModel
 
-from src import config
+from src import config, trace
 from src.data_loader import load_data
 from src.tools.detect_anomalies import detect_anomalies
 from src.tools.get_performance import get_performance
@@ -79,7 +81,38 @@ def _parse_result(text: str) -> DiagnosisResult:
     return DiagnosisResult.model_validate(json.loads(t[i : j + 1]))
 
 
-def _build_agent() -> Agent:
+def _traced_tools(run_id: str) -> list:
+    """Wrap each tool function so every call is recorded to the trace DB.
+
+    functools.wraps preserves the signature and docstring, so the generated
+    tool schema/description are identical to the unwrapped function.
+    """
+    raw_tools = (detect_anomalies, get_performance, get_tracking_status)
+
+    def wrap(fn):
+        @functools.wraps(fn)
+        def inner(*args, **kwargs):
+            t0 = time.perf_counter()
+            try:
+                result = fn(*args, **kwargs)
+            except Exception as exc:
+                trace.record_tool_call(
+                    run_id, fn.__name__, {"args": args, "kwargs": kwargs},
+                    None, (time.perf_counter() - t0) * 1000, error=str(exc),
+                )
+                raise
+            trace.record_tool_call(
+                run_id, fn.__name__, {"args": args, "kwargs": kwargs},
+                result, (time.perf_counter() - t0) * 1000,
+            )
+            return result
+
+        return inner
+
+    return [function_tool(wrap(fn)) for fn in raw_tools]
+
+
+def _build_agent(run_id: str) -> Agent:
     client = AsyncOpenAI(
         api_key=config.OPENAI_API_KEY, base_url=config.OPENAI_BASE_URL
     )
@@ -89,10 +122,7 @@ def _build_agent() -> Agent:
         name="ads-diagnosis-agent",
         instructions=instructions,
         model=model,
-        tools=[
-            function_tool(t)
-            for t in (detect_anomalies, get_performance, get_tracking_status)
-        ],
+        tools=_traced_tools(run_id),
     )
 
 
@@ -109,15 +139,51 @@ def _task_prompt(date: str) -> str:
     )
 
 
+def _usage(result) -> tuple[int, int]:
+    """Sum (input_tokens, output_tokens) over all raw model responses."""
+    inp = out = 0
+    for r in result.raw_responses:
+        if r.usage:
+            inp += r.usage.input_tokens or 0
+            out += r.usage.output_tokens or 0
+    return inp, out
+
+
+def _degraded_result(exc: Exception) -> DiagnosisResult:
+    return DiagnosisResult(
+        summary=f"诊断运行失败，输出降级报告。原因：{type(exc).__name__}: {exc}",
+        findings=[
+            Finding(
+                type="none",
+                entity="account",
+                evidence="本次运行未能完成工具调用或模型输出校验。",
+                confidence="low",
+                recommendation="建议人工检查运行环境（API 配置/网络/数据文件）后重跑。",
+                risk_note="本报告为降级输出，未基于完整数据分析。",
+                data_gap=f"运行失败，无可用诊断数据：{exc}",
+            )
+        ],
+        overall_priority=[],
+    )
+
+
 async def run_diagnosis(date: str) -> DiagnosisResult:
     """Run one diagnosis for the 7-day window ending at ``date``."""
+    run_id = trace.start_run(date, config.MODEL_NAME)
+    t0 = time.perf_counter()
+    inp = out = 0
+    model_io: list | None = None
+    status, error = "ok", None
     try:
-        agent = _build_agent()
+        agent = _build_agent(run_id)
         result = await Runner.run(
             agent, input=_task_prompt(date) + "\n\n" + _SCHEMA_HINT, max_turns=12
         )
+        i1, o1 = _usage(result)
+        inp, out = inp + i1, out + o1
+        model_io = result.to_input_list()
         try:
-            return _parse_result(result.final_output)
+            output = _parse_result(result.final_output)
         except (ValueError, json.JSONDecodeError):
             repair = await Runner.run(
                 agent,
@@ -131,23 +197,28 @@ async def run_diagnosis(date: str) -> DiagnosisResult:
                 ],
                 max_turns=4,
             )
-            return _parse_result(repair.final_output)
+            i2, o2 = _usage(repair)
+            inp, out = inp + i2, out + o2
+            model_io = repair.to_input_list()
+            output = _parse_result(repair.final_output)
     except Exception as exc:  # degraded report, never silent (spec section 7)
-        return DiagnosisResult(
-            summary=f"诊断运行失败，输出降级报告。原因：{type(exc).__name__}: {exc}",
-            findings=[
-                Finding(
-                    type="none",
-                    entity="account",
-                    evidence="本次运行未能完成工具调用或模型输出校验。",
-                    confidence="low",
-                    recommendation="建议人工检查运行环境（API 配置/网络/数据文件）后重跑。",
-                    risk_note="本报告为降级输出，未基于完整数据分析。",
-                    data_gap=f"运行失败，无可用诊断数据：{exc}",
-                )
-            ],
-            overall_priority=[],
-        )
+        status, error = "degraded", f"{type(exc).__name__}: {exc}"
+        output = _degraded_result(exc)
+    trace.finish_run(
+        run_id,
+        status=status,
+        started_monotonic=t0,
+        input_tokens=inp,
+        output_tokens=out,
+        output_json=output.model_dump_json(ensure_ascii=False),
+        model_io_json=(
+            json.dumps(model_io, ensure_ascii=False, default=str)
+            if model_io is not None
+            else None
+        ),
+        error=error,
+    )
+    return output
 
 
 def main() -> None:
