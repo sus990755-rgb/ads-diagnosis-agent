@@ -124,7 +124,10 @@ def get_tracking_status(date_range: list[str]) -> dict:
 
         cur_clicks = float(active["clicks"].sum())
         cur_conv = float(active["conversions"].sum())
-        prev = g[(g["date"] >= prev_start) & (g["date"] <= prev_end)]
+        # The ratio rule needs a FULL previous window; a clipped one (e.g. at
+        # the data boundary) makes the comparison meaningless.
+        prev_window_complete = prev_start >= g["date"].min()
+        prev = g[(g["date"] >= prev_start) & (g["date"] <= prev_end)] if prev_window_complete else g.iloc[0:0]
         prev_clicks = float(prev["clicks"].sum())
         prev_conv = float(prev["conversions"].sum())
 
@@ -137,6 +140,7 @@ def get_tracking_status(date_range: list[str]) -> dict:
         )
         if (
             cur_clicks >= MIN_WINDOW_CLICKS
+            and prev_clicks >= MIN_WINDOW_CLICKS
             and prev_cpr
             and (cur_cpr is None or cur_cpr / prev_cpr - 1 > RATIO_SPIKE_THRESHOLD)
         ):
