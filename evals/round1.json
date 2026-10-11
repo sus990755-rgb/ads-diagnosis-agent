@@ -1,0 +1,4321 @@
+{
+  "evalId": "eval-KKz-2026-10-10T14:24:07",
+  "results": {
+    "version": 3,
+    "timestamp": "2026-10-10T14:24:07.438Z",
+    "prompts": [
+      {
+        "id": "bf7c6addc55911c950e731efefb0630e1e920891eff806739637279314b56103",
+        "raw": "诊断 {{date}} 的 Google Ads 投放数据",
+        "label": "诊断 {{date}} 的 Google Ads 投放数据",
+        "provider": "agent",
+        "metrics": {
+          "score": 22.333333333333336,
+          "testPassCount": 18,
+          "testFailCount": 7,
+          "testErrorCount": 0,
+          "assertPassCount": 87,
+          "assertFailCount": 10,
+          "totalLatencyMs": 2602156,
+          "tokenUsage": {
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "total": 0,
+            "numRequests": 25,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            },
+            "assertions": {
+              "total": 0,
+              "prompt": 0,
+              "completion": 0,
+              "cached": 0,
+              "numRequests": 0,
+              "completionDetails": {
+                "reasoning": 0,
+                "acceptedPrediction": 0,
+                "rejectedPrediction": 0,
+                "cacheReadInputTokens": 0,
+                "cacheCreationInputTokens": 0
+              }
+            }
+          },
+          "namedScores": {},
+          "namedScoresCount": {},
+          "namedScoreWeights": {},
+          "cost": 0
+        }
+      }
+    ],
+    "results": [
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 1,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "JSON.stringify(JSON.parse(output)).includes('C001')"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "/消耗|成本|cost/i.test(JSON.stringify(JSON.parse(output)))"
+              }
+            }
+          ]
+        },
+        "id": "84862f5c-c559-4a1e-b23f-c5033d6f784f",
+        "latencyMs": 88904,
+        "namedScores": {},
+        "prompt": {
+          "raw": "诊断 2026-06-15 的 Google Ads 投放数据",
+          "label": "诊断 {{date}} 的 Google Ads 投放数据",
+          "config": {}
+        },
+        "promptId": "bf7c6addc55911c950e731efefb0630e1e920891eff806739637279314b56103",
+        "promptIdx": 0,
+        "provider": {
+          "id": "file://provider.py",
+          "label": "agent"
+        },
+        "response": {
+          "output": "{\"summary\":\"账户在2026-06-09至2026-06-15期间出现多个异常现象，主要包括Brand_Search系列成本突增伴随转化下降、Competitor_Search系列转化骤降、以及部分广告组持续零转化等问题。追踪系统健康，异常主要源于投放表现波动。\",\"findings\":[{\"type\":\"anomaly\",\"entity\":\"C001 (Brand_Search)\",\"evidence\":\"2026-06-15成本突增113.4%（$123.17 vs $57.72），同时转化下降83.3%（1 vs 6）；2026-06-13转化下降60%（2 vs 5）。点击量从48增至94，但转化从6降至1。\",\"confidence\":\"high\",\"recommendation\":\"建议人工检查Brand_Search系列6月15日的投放设置，分析点击量激增但转化下降的原因，可能需要调整出价或优化广告素材。\",\"risk_note\":\"成本效率急剧恶化，CPA从$9.62升至$123.17，ROI显著下降。\",\"data_gap\":null},{\"type\":\"anomaly\",\"entity\":\"C004 (Competitor_Search)\",\"evidence\":\"2026-06-15转化下降75%（1 vs 4），而点击量维持稳定（85 vs 83）。6月15日单日转化量仅为1，远低于前几天的平均水平。\",\"confidence\":\"high\",\"recommendation\":\"建议人工检查Competitor_Search系列6月15日的转化表现，分析是否因竞争环境变化或受众定向调整导致转化下降。\",\"risk_note\":\"转化效率持续下降，需要警惕系列整体表现恶化。\",\"data_gap\":null},{\"type\":\"tracking\",\"entity\":\"AG05 (Brand_Search - AdGroup 5)\",\"evidence\":\"整个2026-06-09至2026-06-15期间零转化，累计点击64次，成本$78.19。追踪系统健康，排除技术故障。\",\"confidence\":\"medium\",\"recommendation\":\"建议人工检查AG05的广告素材、关键词定向和落地页质量，分析长期零转化的根本原因。\",\"risk_note\":\"持续消耗预算无转化，存在资源浪费风险。\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"free coffee maker download\",\"evidence\":\"2026-06-01至2026-06-30期间累计点击58次，成本$150.80，转化0次。CPC高达$2.60，明显偏离正常产品词表现。\",\"confidence\":\"high\",\"recommendation\":\"建议人工将搜索词\\\"free coffee maker download\\\"添加为否定关键词，避免继续浪费预算在非购买意图的用户身上。\",\"risk_note\":\"高点击无转化，持续消耗预算且拉高整体系列CPC。\",\"data_gap\":null}],\"overall_priority\":[\"C001 (Brand_Search)成本突增+转化下降\",\"C004 (Competitor_Search)转化骤降\",\"AG05 (Brand_Search - AdGroup 5)零转化\",\"free coffee maker download否词机会\"]}",
+          "cached": false
+        },
+        "score": 1,
+        "success": true,
+        "testCase": {
+          "vars": {
+            "case_id": "case-01",
+            "date": "2026-06-15",
+            "category": "cost_spike",
+            "expected_finding": "C001 在 2026-06-15 消耗环比突增 >50% 且转化下降"
+          },
+          "assert": [
+            {
+              "type": "javascript",
+              "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+            },
+            {
+              "type": "javascript",
+              "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+            },
+            {
+              "type": "javascript",
+              "value": "JSON.stringify(JSON.parse(output)).includes('C001')"
+            },
+            {
+              "type": "javascript",
+              "value": "/消耗|成本|cost/i.test(JSON.stringify(JSON.parse(output)))"
+            }
+          ],
+          "description": "Row #1",
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 0,
+        "tokenUsage": {
+          "prompt": 0,
+          "completion": 0,
+          "cached": 0,
+          "total": 0,
+          "numRequests": 1,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "case_id": "case-01",
+          "date": "2026-06-15",
+          "category": "cost_spike",
+          "expected_finding": "C001 在 2026-06-15 消耗环比突增 >50% 且转化下降"
+        },
+        "metadata": {
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      },
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 1,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "JSON.stringify(JSON.parse(output)).includes('C001')"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "/消耗|成本|cost/i.test(JSON.stringify(JSON.parse(output)))"
+              }
+            }
+          ]
+        },
+        "id": "49af88a9-ea8e-49c3-ae41-a471656aa1d9",
+        "latencyMs": 42389,
+        "namedScores": {},
+        "prompt": {
+          "raw": "诊断 2026-06-16 的 Google Ads 投放数据",
+          "label": "诊断 {{date}} 的 Google Ads 投放数据",
+          "config": {}
+        },
+        "promptId": "bf7c6addc55911c950e731efefb0630e1e920891eff806739637279314b56103",
+        "promptIdx": 0,
+        "provider": {
+          "id": "file://provider.py",
+          "label": "agent"
+        },
+        "response": {
+          "output": "{\"summary\":\"本账户最近7天（2026-06-10至2026-06-16）存在两个主要异常：Brand_Search（C001）在6月15日出现成本突增113.4%伴随转化骤降83.3%，Competitor_Search（C004）在6月15日转化下降75%。追踪状态健康，无数据缺口。\",\"findings\":[{\"type\":\"anomaly\",\"entity\":\"Brand_Search (C001)\",\"evidence\":\"2026-06-15成本突增113.4%（从$57.72升至$123.17），同时转化骤降83.3%（从6个降至1个）；点击数从48突增至94，但转化效率显著下降\",\"confidence\":\"medium\",\"recommendation\":\"建议人工检查6月15日点击来源，排查是否存在无效点击或质量问题；建议暂停高成本时段投放，优化出价策略\",\"risk_note\":\"成本突增伴随转化骤降，ROAS从2.28降至0.42，投资回报率严重下滑\",\"data_gap\":null},{\"type\":\"anomaly\",\"entity\":\"Competitor_Search (C004)\",\"evidence\":\"2026-06-15转化下降75%（从4个降至1个），但成本和点击量保持稳定；6月13日也曾出现转化下降60%（从5个降至2个）\",\"confidence\":\"medium\",\"recommendation\":\"建议人工分析6月15日转化下降的具体原因，检查广告创意和落地页质量；建议观察是否为短期波动\",\"risk_note\":\"转化波动较大，CPA从27.81升至105.83，单日转化成本显著上升\",\"data_gap\":null}],\"overall_priority\":[\"Brand_Search成本突增与转化骤降\",\"Competitor_Search转化波动\"]}",
+          "cached": false
+        },
+        "score": 1,
+        "success": true,
+        "testCase": {
+          "vars": {
+            "case_id": "case-02",
+            "date": "2026-06-16",
+            "category": "cost_spike",
+            "expected_finding": "C001 在 2026-06-15 消耗环比突增 >50% 且转化下降"
+          },
+          "assert": [
+            {
+              "type": "javascript",
+              "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+            },
+            {
+              "type": "javascript",
+              "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+            },
+            {
+              "type": "javascript",
+              "value": "JSON.stringify(JSON.parse(output)).includes('C001')"
+            },
+            {
+              "type": "javascript",
+              "value": "/消耗|成本|cost/i.test(JSON.stringify(JSON.parse(output)))"
+            }
+          ],
+          "description": "Row #2",
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 1,
+        "tokenUsage": {
+          "prompt": 0,
+          "completion": 0,
+          "cached": 0,
+          "total": 0,
+          "numRequests": 1,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "case_id": "case-02",
+          "date": "2026-06-16",
+          "category": "cost_spike",
+          "expected_finding": "C001 在 2026-06-15 消耗环比突增 >50% 且转化下降"
+        },
+        "metadata": {
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      },
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 1,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "JSON.stringify(JSON.parse(output)).includes('C001')"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "/消耗|成本|cost/i.test(JSON.stringify(JSON.parse(output)))"
+              }
+            }
+          ]
+        },
+        "id": "ddef30ec-c9d5-40c2-a125-4e64634e2b0e",
+        "latencyMs": 85979,
+        "namedScores": {},
+        "prompt": {
+          "raw": "诊断 2026-06-17 的 Google Ads 投放数据",
+          "label": "诊断 {{date}} 的 Google Ads 投放数据",
+          "config": {}
+        },
+        "promptId": "bf7c6addc55911c950e731efefb0630e1e920891eff806739637279314b56103",
+        "promptIdx": 0,
+        "provider": {
+          "id": "file://provider.py",
+          "label": "agent"
+        },
+        "response": {
+          "output": "{\"summary\":\"最近7天（2026-06-11至2026-06-17）Google Ads投放数据显示，账户整体表现稳定，但存在两个主要异常：C001（Brand_Search）在6月15日出现成本突增113.4%和转化下降83.3%的异常情况；C004（Competitor_Search）在6月15日出现转化下降75%的情况。所有campaign的追踪状态均为健康，未发现否词机会。\",\"findings\":[{\"type\":\"anomaly\",\"entity\":\"C001 (Brand_Search)\",\"evidence\":\"2026-06-15成本突增113.4%（从$57.72增至$123.17），同时转化下降83.3%（从6降至1）；6月13日转化下降60%（从5降至2）。追踪状态健康，无数据缺口。\",\"confidence\":\"high\",\"recommendation\":\"建议人工检查C001在6月15日的投放活动，分析成本突增的具体原因（如竞价过高、新广告组上线等），并评估当前转化质量是否值得维持当前投放水平。\",\"risk_note\":\"成本突增伴随转化大幅下降，可能导致CPA急剧恶化，影响整体投放效率。\",\"data_gap\":null},{\"type\":\"anomaly\",\"entity\":\"C004 (Competitor_Search)\",\"evidence\":\"2026-06-15转化下降75%（从4降至1）。追踪状态健康，无数据缺口。\",\"confidence\":\"high\",\"recommendation\":\"建议人工检查C004在6月15日的转化表现，分析是否为短期波动或存在系统性问题，可考虑查看具体搜索词表现以定位问题。\",\"risk_note\":\"转化骤降可能影响该系列的投放效果和预算利用效率。\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"free coffee maker download\",\"evidence\":\"累计点击58次，转化0次，累计成本$150.80，符合否词机会标准（clicks>=20, conversions=0, cost>$50）。\",\"confidence\":\"medium\",\"recommendation\":\"建议人工评估该搜索词的匹配度和相关性，如确认与产品无关，建议添加为否定关键词以避免无效点击。\",\"risk_note\":\"持续消耗预算但无转化，影响整体投放效率。\",\"data_gap\":null}],\"overall_priority\":[\"处理C001成本突增和转化下降问题\",\"关注C004转化表现\",\"评估否词机会\"]}",
+          "cached": false
+        },
+        "score": 1,
+        "success": true,
+        "testCase": {
+          "vars": {
+            "case_id": "case-03",
+            "date": "2026-06-17",
+            "category": "cost_spike",
+            "expected_finding": "C001 在 2026-06-15 消耗环比突增 >50% 且转化下降"
+          },
+          "assert": [
+            {
+              "type": "javascript",
+              "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+            },
+            {
+              "type": "javascript",
+              "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+            },
+            {
+              "type": "javascript",
+              "value": "JSON.stringify(JSON.parse(output)).includes('C001')"
+            },
+            {
+              "type": "javascript",
+              "value": "/消耗|成本|cost/i.test(JSON.stringify(JSON.parse(output)))"
+            }
+          ],
+          "description": "Row #3",
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 2,
+        "tokenUsage": {
+          "prompt": 0,
+          "completion": 0,
+          "cached": 0,
+          "total": 0,
+          "numRequests": 1,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "case_id": "case-03",
+          "date": "2026-06-17",
+          "category": "cost_spike",
+          "expected_finding": "C001 在 2026-06-15 消耗环比突增 >50% 且转化下降"
+        },
+        "metadata": {
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      },
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 1,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "JSON.stringify(JSON.parse(output)).includes('C001')"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "/消耗|成本|cost/i.test(JSON.stringify(JSON.parse(output)))"
+              }
+            }
+          ]
+        },
+        "id": "936b8b20-cf8c-49dc-a354-4e36a09633cc",
+        "latencyMs": 129920,
+        "namedScores": {},
+        "prompt": {
+          "raw": "诊断 2026-06-18 的 Google Ads 投放数据",
+          "label": "诊断 {{date}} 的 Google Ads 投放数据",
+          "config": {}
+        },
+        "promptId": "bf7c6addc55911c950e731efefb0630e1e920891eff806739637279314b56103",
+        "promptIdx": 0,
+        "provider": {
+          "id": "file://provider.py",
+          "label": "agent"
+        },
+        "response": {
+          "output": "{\"summary\":\"账户在2026-06-12至2026-06-18期间存在多个异常现象，包括Brand_Search系列(C001)的转化下降和成本突增、Competitor_Search系列(C004)的转化下降、Shopping_Plants系列(C005)的转化下降和展示下降。同时发现多个搜索词转化率为0但累积成本较高，存在否词机会。整体追踪状态健康，无追踪故障。\",\"findings\":[{\"type\":\"anomaly\",\"entity\":\"Brand_Search (C001)\",\"evidence\":\"6月13日转化从5降到2(-60%)，6月15日转化从6降到1(-83.3%)，同时6月15日成本从57.72突增到123.17(+113.4%)。7天总转化25个，CPA 19.48，ROAS 2.69。\",\"confidence\":\"high\",\"recommendation\":\"建议人工检查Brand_Search系列6月15日的投放变化，分析成本突增和转化下降的关联性，审查关键词出价、匹配方式和广告素材质量。\",\"risk_note\":\"成本突增伴随转化下降可能导致ROI恶化，需要及时干预避免持续浪费预算。\",\"data_gap\":null},{\"type\":\"anomaly\",\"entity\":\"Competitor_Search (C004)\",\"evidence\":\"6月15日转化从4降到1(-75%)。7天总转化26个，CPA 27.68，ROAS 1.9。追踪状态健康。\",\"confidence\":\"high\",\"recommendation\":\"建议人工检查Competitor_Search系列6月15日的转化下降原因，分析竞争环境变化、关键词质量得分和落地页体验。\",\"risk_note\":\"转化下降可能影响系列整体表现，需要监控后续转化趋势。\",\"data_gap\":null},{\"type\":\"anomaly\",\"entity\":\"Shopping_Plants (C005)\",\"evidence\":\"6月18日转化从7降到0(-100%)，同时展示从2088降到617(-70.5%)。7天总转化40个，CPA 20.57，ROAS 2.53。\",\"confidence\":\"medium\",\"recommendation\":\"建议人工检查Shopping_Plants系列6月18日的展示量骤降原因，可能涉及预算调整、投放时间或商品Feed问题。\",\"risk_note\":\"展示量骤降直接影响转化机会，需要快速排查投放设置。\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"free coffee maker download\",\"evidence\":\"全月累积成本150.8美元，转化0次，点击58次。6月12-18日期间成本36.4美元，转化0次，点击14次。\",\"confidence\":\"medium\",\"recommendation\":\"建议人工将'free coffee maker download'添加为否定关键词，避免无效点击浪费预算。该搜索词意图明显不匹配购买转化目标。\",\"risk_note\":\"持续投放该词将导致预算浪费且无转化贡献。\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"premium wireless earbuds for sale\",\"evidence\":\"全月累积成本166.2美元，转化3次；但6月12-18日期间成本42.78美元，转化0次，点击32次。近期无转化表现。\",\"confidence\":\"medium\",\"recommendation\":\"建议人工监控'premium wireless earbuds for sale'的近期表现，如果持续无转化可考虑添加为否定关键词。\",\"risk_note\":\"近期无转化但仍在产生点击成本，存在优化空间。\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"eco friendly coffee maker buy online\",\"evidence\":\"全月累积成本155.52美元，转化5次；但6月12-18日期间成本39.65美元，转化0次，点击32次。近期无转化表现。\",\"confidence\":\"medium\",\"recommendation\":\"建议人工监控'eco friendly coffee maker buy online'的近期表现，分析无转化原因，考虑优化广告或添加为否定关键词。\",\"risk_note\":\"近期无转化但成本较高，影响系列整体效率。\",\"data_gap\":null}],\"overall_priority\":[\"Brand_Search (C001)成本突增和转化下降\",\"Shopping_Plants (C005)展示量骤降\",\"Competitor_Search (C004)转化下降\",\"否词机会：free coffee maker download\",\"否词机会：premium wireless earbuds for sale\",\"否词机会：eco friendly coffee maker buy online\"]}",
+          "cached": false
+        },
+        "score": 1,
+        "success": true,
+        "testCase": {
+          "vars": {
+            "case_id": "case-04",
+            "date": "2026-06-18",
+            "category": "cost_spike",
+            "expected_finding": "C001 在 2026-06-15 消耗环比突增 >50% 且转化下降"
+          },
+          "assert": [
+            {
+              "type": "javascript",
+              "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+            },
+            {
+              "type": "javascript",
+              "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+            },
+            {
+              "type": "javascript",
+              "value": "JSON.stringify(JSON.parse(output)).includes('C001')"
+            },
+            {
+              "type": "javascript",
+              "value": "/消耗|成本|cost/i.test(JSON.stringify(JSON.parse(output)))"
+            }
+          ],
+          "description": "Row #4",
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 3,
+        "tokenUsage": {
+          "prompt": 0,
+          "completion": 0,
+          "cached": 0,
+          "total": 0,
+          "numRequests": 1,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "case_id": "case-04",
+          "date": "2026-06-18",
+          "category": "cost_spike",
+          "expected_finding": "C001 在 2026-06-15 消耗环比突增 >50% 且转化下降"
+        },
+        "metadata": {
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      },
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 1,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "JSON.stringify(JSON.parse(output)).includes('C005')"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "/消耗|成本|cost/i.test(JSON.stringify(JSON.parse(output)))"
+              }
+            }
+          ]
+        },
+        "id": "61455312-900b-42c3-98c4-6eaa42ea7cfb",
+        "latencyMs": 88477,
+        "namedScores": {},
+        "prompt": {
+          "raw": "诊断 2026-06-19 的 Google Ads 投放数据",
+          "label": "诊断 {{date}} 的 Google Ads 投放数据",
+          "config": {}
+        },
+        "promptId": "bf7c6addc55911c950e731efefb0630e1e920891eff806739637279314b56103",
+        "promptIdx": 0,
+        "provider": {
+          "id": "file://provider.py",
+          "label": "agent"
+        },
+        "response": {
+          "output": "{\"summary\":\"最近7天（2026-06-13至2026-06-19）Google Ads投放数据显示多个异常现象，主要集中在Brand_Search和Shopping_Plants两个活动。主要问题包括：Brand_Search活动在6月15日出现消耗突增113.4%同时转化下降83.3%；Competitor_Search活动在6月19日转化降为0；Shopping_Plants活动在6月18日转化降为0且展示量下降70.5%，同时在6月19日消耗突增248.7%。追踪状态健康，否词机会分析发现多个高消耗零转化搜索词。\",\"findings\":[{\"type\":\"anomaly\",\"entity\":\"Brand_Search (C001)\",\"evidence\":\"2026-06-15消耗从$57.72飙升至$123.17（+113.4%），同时转化从6个骤降至1个（-83.3%）；2026-06-13转化从5个降至2个（-60%）\",\"confidence\":\"high\",\"recommendation\":\"建议人工检查Brand_Search活动6月15日的投放设置变化，包括出价调整、关键词添加或受众定向修改，分析消耗突增的具体原因\",\"risk_note\":\"消耗突增伴随转化下降，可能导致ROI显著恶化\",\"data_gap\":null},{\"type\":\"anomaly\",\"entity\":\"Competitor_Search (C004)\",\"evidence\":\"2026-06-19转化从3个降至0个（-100%），且6月15日转化从4个降至1个（-75%）\",\"confidence\":\"high\",\"recommendation\":\"建议人工检查Competitor_Search活动6月19日的转化漏斗，确认是否为临时性波动或系统性问题\",\"risk_note\":\"连续转化下降可能影响竞争关键词的投放效果\",\"data_gap\":null},{\"type\":\"anomaly\",\"entity\":\"Shopping_Plants (C005)\",\"evidence\":\"2026-06-18转化从7个降至0个（-100%），展示量从2088降至617（-70.5%）；2026-06-19消耗从$35.49飙升至$123.77（+248.7%）\",\"confidence\":\"high\",\"recommendation\":\"建议人工检查Shopping_Plants活动6月18-19日的账户设置，包括预算调整、投放时段或广告状态变更\",\"risk_note\":\"展示量大幅下降后消耗突增，可能存在投放效率问题\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"free coffee maker download\",\"evidence\":\"全量数据区间累计消耗$150.8，点击58次，转化0次，ROAS为0\",\"confidence\":\"high\",\"recommendation\":\"建议人工将该搜索词添加为否定关键词，避免继续浪费预算\",\"risk_note\":\"高消耗零转化，持续影响账户整体ROI\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"portable yoga mat for sale\",\"evidence\":\"全量数据区间累计消耗$46.26，点击40次，转化0次，ROAS为0\",\"confidence\":\"high\",\"recommendation\":\"建议人工将该搜索词添加为否定关键词，避免继续浪费预算\",\"risk_note\":\"中等消耗零转化，影响相关品类的投放效率\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"best coffee maker buy online\",\"evidence\":\"全量数据区间累计消耗$40.01，点击33次，转化0次，ROAS为0\",\"confidence\":\"high\",\"recommendation\":\"建议人工将该搜索词添加为否定关键词，避免继续浪费预算\",\"risk_note\":\"中等消耗零转化，影响咖啡 maker 品类的投放效果\",\"data_gap\":null}],\"overall_priority\":[\"Brand_Search (C001)消耗突增与转化下降\",\"Shopping_Plants (C005)展示量下降与消耗突增\",\"Competitor_Search (C004)转化降为0\",\"否词机会：free coffee maker download\",\"否词机会：portable yoga mat for sale\",\"否词机会：best coffee maker buy online\"]}",
+          "cached": false
+        },
+        "score": 1,
+        "success": true,
+        "testCase": {
+          "vars": {
+            "case_id": "case-05",
+            "date": "2026-06-19",
+            "category": "cost_spike",
+            "expected_finding": "C005 在 2026-06-19 消耗环比突增（06-18 缩量后的反弹）"
+          },
+          "assert": [
+            {
+              "type": "javascript",
+              "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+            },
+            {
+              "type": "javascript",
+              "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+            },
+            {
+              "type": "javascript",
+              "value": "JSON.stringify(JSON.parse(output)).includes('C005')"
+            },
+            {
+              "type": "javascript",
+              "value": "/消耗|成本|cost/i.test(JSON.stringify(JSON.parse(output)))"
+            }
+          ],
+          "description": "Row #5",
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 4,
+        "tokenUsage": {
+          "prompt": 0,
+          "completion": 0,
+          "cached": 0,
+          "total": 0,
+          "numRequests": 1,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "case_id": "case-05",
+          "date": "2026-06-19",
+          "category": "cost_spike",
+          "expected_finding": "C005 在 2026-06-19 消耗环比突增（06-18 缩量后的反弹）"
+        },
+        "metadata": {
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      },
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 1,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "JSON.stringify(JSON.parse(output)).includes('free coffee maker download')"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "JSON.parse(output).findings.some(f => f.type === 'negative_keyword')"
+              }
+            }
+          ]
+        },
+        "id": "00c62190-02c3-44c4-8486-16006dac3e54",
+        "latencyMs": 143487,
+        "namedScores": {},
+        "prompt": {
+          "raw": "诊断 2026-06-24 的 Google Ads 投放数据",
+          "label": "诊断 {{date}} 的 Google Ads 投放数据",
+          "config": {}
+        },
+        "promptId": "bf7c6addc55911c950e731efefb0630e1e920891eff806739637279314b56103",
+        "promptIdx": 0,
+        "provider": {
+          "id": "file://provider.py",
+          "label": "agent"
+        },
+        "response": {
+          "output": "{\"summary\":\"近期投放数据存在追踪异常、成本突增和数据缺失等问题，需要重点关注Generic_Search系列的追踪配置和Shopping_Plants系列的成本控制。同时发现一个长期无转化的搜索词建议否词。\",\"findings\":[{\"type\":\"tracking\",\"entity\":\"Generic_Search\",\"evidence\":\"2026-06-20至21连续2天零转化，期间有372次点击；追踪状态为suspected_broken\",\"confidence\":\"high\",\"recommendation\":\"建议人工检查该系列的转化追踪代码配置，确认是否需要修复\",\"risk_note\":\"如果追踪问题持续，可能导致预算浪费和效果评估失真\",\"data_gap\":null},{\"type\":\"anomaly\",\"entity\":\"Shopping_Plants\",\"evidence\":\"2026-06-19成本从$35.49突增至$123.77，涨幅248.7%；同期展示量从617增至2180\",\"confidence\":\"high\",\"recommendation\":\"建议人工检查该系列的出价策略和预算设置，评估成本突增的合理性\",\"risk_note\":\"成本突增可能影响整体投放ROI，需要及时控制\",\"data_gap\":null},{\"type\":\"anomaly\",\"entity\":\"Competitor_Search\",\"evidence\":\"2026-06-22数据缺失；6月19日和21日出现转化骤降\",\"confidence\":\"medium\",\"recommendation\":\"建议人工检查数据同步情况，确认6月22日数据缺失原因\",\"risk_note\":\"数据缺口可能导致效果评估不完整\",\"data_gap\":\"2026-06-22数据缺失，影响对该系列当日效果的准确评估\"},{\"type\":\"negative_keyword\",\"entity\":\"free coffee maker download\",\"evidence\":\"累计58点击，0转化，$150.8成本，符合否词条件(clicks>=20, conversions=0, cost>$50)\",\"confidence\":\"high\",\"recommendation\":\"建议人工将该搜索词添加为否定关键词，避免无效消耗\",\"risk_note\":\"该词长期无转化，持续消耗预算\",\"data_gap\":null},{\"type\":\"anomaly\",\"entity\":\"Brand_Search\",\"evidence\":\"6月20日转化从7降至3，降幅57.1%，但整体表现稳定(ROAS 4.17)\",\"confidence\":\"medium\",\"recommendation\":\"建议继续观察，当前整体表现良好无需立即调整\",\"risk_note\":\"单日转化波动需关注是否为趋势性变化\",\"data_gap\":null}],\"overall_priority\":[\"Generic_Search追踪异常\",\"Shopping_Plants成本突增\",\"Competitor_Search数据缺失\",\"搜索词否词机会\",\"Brand_Search转化波动\"]}",
+          "cached": false
+        },
+        "score": 1,
+        "success": true,
+        "testCase": {
+          "vars": {
+            "case_id": "case-06",
+            "date": "2026-06-24",
+            "category": "negative_keyword",
+            "expected_finding": "搜索词 free coffee maker download 累计 0 转化高消耗，建议加否定词"
+          },
+          "assert": [
+            {
+              "type": "javascript",
+              "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+            },
+            {
+              "type": "javascript",
+              "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+            },
+            {
+              "type": "javascript",
+              "value": "JSON.stringify(JSON.parse(output)).includes('free coffee maker download')"
+            },
+            {
+              "type": "javascript",
+              "value": "JSON.parse(output).findings.some(f => f.type === 'negative_keyword')"
+            }
+          ],
+          "description": "Row #6",
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 5,
+        "tokenUsage": {
+          "prompt": 0,
+          "completion": 0,
+          "cached": 0,
+          "total": 0,
+          "numRequests": 1,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "case_id": "case-06",
+          "date": "2026-06-24",
+          "category": "negative_keyword",
+          "expected_finding": "搜索词 free coffee maker download 累计 0 转化高消耗，建议加否定词"
+        },
+        "metadata": {
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      },
+      {
+        "cost": 0,
+        "error": "Custom function returned false\nJSON.parse(output).findings.some(f => f.type === 'negative_keyword')",
+        "gradingResult": {
+          "pass": false,
+          "score": 0.5,
+          "reason": "Custom function returned false\nJSON.parse(output).findings.some(f => f.type === 'negative_keyword')",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+              }
+            },
+            {
+              "pass": false,
+              "score": 0,
+              "reason": "Custom function returned false\nJSON.stringify(JSON.parse(output)).includes('free coffee maker download')",
+              "assertion": {
+                "type": "javascript",
+                "value": "JSON.stringify(JSON.parse(output)).includes('free coffee maker download')"
+              }
+            },
+            {
+              "pass": false,
+              "score": 0,
+              "reason": "Custom function returned false\nJSON.parse(output).findings.some(f => f.type === 'negative_keyword')",
+              "assertion": {
+                "type": "javascript",
+                "value": "JSON.parse(output).findings.some(f => f.type === 'negative_keyword')"
+              }
+            }
+          ]
+        },
+        "id": "a6303e6b-0a3f-4959-8002-6b832bc1f32f",
+        "latencyMs": 101131,
+        "namedScores": {},
+        "prompt": {
+          "raw": "诊断 2026-06-25 的 Google Ads 投放数据",
+          "label": "诊断 {{date}} 的 Google Ads 投放数据",
+          "config": {}
+        },
+        "promptId": "bf7c6addc55911c950e731efefb0630e1e920891eff806739637279314b56103",
+        "promptIdx": 0,
+        "provider": {
+          "id": "file://provider.py",
+          "label": "agent"
+        },
+        "response": {
+          "output": "{\"summary\":\"账户在2026-06-19至2026-06-25期间存在多个异常现象，包括转化骤降、成本突增、数据缺口和追踪问题。Generic_Search（C002）存在追踪异常，Competitor_Search（C004）存在数据缺口，整体账户表现波动较大。\",\"findings\":[{\"type\":\"tracking\",\"entity\":\"Generic_Search (C002)\",\"evidence\":\"6月20-21日连续2天转化=0，期间点击372次；点击/转化率从18.7升至26.7（+42.6%）；追踪状态为suspected_broken\",\"confidence\":\"high\",\"recommendation\":\"建议人工检查转化追踪代码配置，确认转化事件是否正常记录；检查6月20-21日期间是否有网站技术问题影响转化\",\"risk_note\":\"若追踪问题持续，将导致广告投放效果评估失真，可能造成预算浪费\",\"data_gap\":null},{\"type\":\"anomaly\",\"entity\":\"Competitor_Search (C004)\",\"evidence\":\"6月19日转化=0（前日3个，-100%）；6月21日转化=2（前日6个，-66.7%）；6月25日转化=4（前日11个，-63.6%）；6月22日数据完全缺失\",\"confidence\":\"medium\",\"recommendation\":\"建议人工检查6月22日数据缺失原因；分析转化下降是否与特定关键词或时段相关；考虑暂停表现异常的关键词\",\"risk_note\":\"数据缺口影响完整评估，转化下降可能反映投放策略问题\",\"data_gap\":\"2026-06-22无数据，影响完整性能评估\"},{\"type\":\"anomaly\",\"entity\":\"Shopping_Plants (C005)\",\"evidence\":\"6月19日成本$123.77（前日$35.49，+248.7%）；但整体CPA 23.92，ROAS 2.21表现良好\",\"confidence\":\"high\",\"recommendation\":\"建议人工分析6月19日成本突增的具体原因（是否为竞价调整、流量激增或无效点击）；监控后续成本趋势\",\"risk_note\":\"成本突增若持续将影响整体ROI，但当前转化表现正常\",\"data_gap\":null},{\"type\":\"anomaly\",\"entity\":\"Brand_Search (C001)\",\"evidence\":\"6月20日转化=3（前日7个，-57.1%）；但整体CPA 12.66，ROAS 3.94表现优秀\",\"confidence\":\"medium\",\"recommendation\":\"建议观察1-2天转化是否恢复正常；分析转化下降是否为短期波动\",\"risk_note\":\"单日转化下降但整体表现优异，可能为正常波动\",\"data_gap\":null}],\"overall_priority\":[\"修复Generic_Search追踪问题\",\"解决Competitor_Search数据缺口\",\"监控Shopping_Plants成本趋势\",\"观察Brand_Search转化恢复情况\"]}",
+          "cached": false
+        },
+        "score": 0.5,
+        "success": false,
+        "testCase": {
+          "vars": {
+            "case_id": "case-07",
+            "date": "2026-06-25",
+            "category": "negative_keyword",
+            "expected_finding": "搜索词 free coffee maker download 累计 0 转化高消耗，建议加否定词"
+          },
+          "assert": [
+            {
+              "type": "javascript",
+              "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+            },
+            {
+              "type": "javascript",
+              "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+            },
+            {
+              "type": "javascript",
+              "value": "JSON.stringify(JSON.parse(output)).includes('free coffee maker download')"
+            },
+            {
+              "type": "javascript",
+              "value": "JSON.parse(output).findings.some(f => f.type === 'negative_keyword')"
+            }
+          ],
+          "description": "Row #7",
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 6,
+        "tokenUsage": {
+          "prompt": 0,
+          "completion": 0,
+          "cached": 0,
+          "total": 0,
+          "numRequests": 1,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "case_id": "case-07",
+          "date": "2026-06-25",
+          "category": "negative_keyword",
+          "expected_finding": "搜索词 free coffee maker download 累计 0 转化高消耗，建议加否定词"
+        },
+        "metadata": {
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 1
+      },
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 1,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "JSON.stringify(JSON.parse(output)).includes('free coffee maker download')"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "JSON.parse(output).findings.some(f => f.type === 'negative_keyword')"
+              }
+            }
+          ]
+        },
+        "id": "987bbe8a-abd4-4b9d-9ced-804d4d3e9c92",
+        "latencyMs": 123926,
+        "namedScores": {},
+        "prompt": {
+          "raw": "诊断 2026-06-26 的 Google Ads 投放数据",
+          "label": "诊断 {{date}} 的 Google Ads 投放数据",
+          "config": {}
+        },
+        "promptId": "bf7c6addc55911c950e731efefb0630e1e920891eff806739637279314b56103",
+        "promptIdx": 0,
+        "provider": {
+          "id": "file://provider.py",
+          "label": "agent"
+        },
+        "response": {
+          "output": "{\"summary\":\"账户近期存在多个转化异常和追踪问题，需重点关注Generic_Search活动的追踪异常和Competitor_Search的数据缺失问题。搜索词分析发现多个否词机会。\",\"findings\":[{\"type\":\"tracking\",\"entity\":\"C002 - Generic_Search\",\"evidence\":\"2026-06-20至21连续2天零转化（372次点击），追踪状态为'suspected_broken'，点击转化率从19.1升至24.4（+28%）\",\"confidence\":\"high\",\"recommendation\":\"建议立即检查Generic_Search活动的转化追踪代码配置，验证转化事件设置是否正确，考虑重新安装追踪像素\",\"risk_note\":\"若为真实追踪故障，可能导致广告投放效果评估失准，影响预算分配决策\",\"data_gap\":null},{\"type\":\"anomaly\",\"entity\":\"C004 - Competitor_Search\",\"evidence\":\"2026-06-22数据缺失，6月21日转化从6降至2（-66.7%），6月25日转化从11降至4（-63.6%）\",\"confidence\":\"medium\",\"recommendation\":\"建议检查Competitor_Search活动6月22日数据采集情况，验证该日广告投放是否正常执行\",\"risk_note\":\"数据缺失可能导致该活动表现评估不准确，影响后续优化决策\",\"data_gap\":\"2026-06-22数据缺失，无法评估该日真实表现\"},{\"type\":\"negative_keyword\",\"entity\":\"free coffee maker download\",\"evidence\":\"全月累计58次点击，$150.80成本，0转化，ROAS为0，属于典型的否词机会\",\"confidence\":\"high\",\"recommendation\":\"建议将'free coffee maker download'添加为否定关键词，避免继续浪费预算\",\"risk_note\":\"该搜索词意图明显不符购买需求，持续投放将造成预算浪费\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"portable yoga mat for sale\",\"evidence\":\"全月累计40次点击，$46.26成本，0转化，ROAS为0，属于典型的否词机会\",\"confidence\":\"high\",\"recommendation\":\"建议将'portable yoga mat for sale'添加为否定关键词，避免继续浪费预算\",\"risk_note\":\"该搜索词无转化记录，可能不符合目标用户需求\",\"data_gap\":null},{\"type\":\"anomaly\",\"entity\":\"C001 - Brand_Search\",\"evidence\":\"2026-06-20转化从7降至3（-57.1%），但追踪状态健康，点击转化率从14.8降至10.8（-27.3%）\",\"confidence\":\"medium\",\"recommendation\":\"建议观察Brand_Search活动后续转化表现，若持续低迷可考虑调整出价或优化广告创意\",\"risk_note\":\"转化下降可能受季节性因素或竞争环境影响，需持续监控\",\"data_gap\":null},{\"type\":\"none\",\"entity\":\"C003 - New_Product_Test\",\"evidence\":\"全月仅4次点击，$4.40成本，0转化，属于冷启动阶段\",\"confidence\":\"low\",\"recommendation\":\"建议继续观察积累更多数据（建议至少30次点击），暂不建议做出重大调整\",\"risk_note\":\"数据量不足无法得出确定性结论，过早优化可能错失潜在机会\",\"data_gap\":\"累计点击仅4次，远低于30次冷启动阈值\"}],\"overall_priority\":[\"C002 - Generic_Search (追踪异常)\",\"C004 - Competitor_Search (数据缺失)\",\"否词机会优化\",\"C001 - Brand_Search (转化下降)\",\"C003 - New_Product_Test (观察积累)\"]}",
+          "cached": false
+        },
+        "score": 1,
+        "success": true,
+        "testCase": {
+          "vars": {
+            "case_id": "case-08",
+            "date": "2026-06-26",
+            "category": "negative_keyword",
+            "expected_finding": "搜索词 free coffee maker download 累计 0 转化高消耗，建议加否定词"
+          },
+          "assert": [
+            {
+              "type": "javascript",
+              "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+            },
+            {
+              "type": "javascript",
+              "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+            },
+            {
+              "type": "javascript",
+              "value": "JSON.stringify(JSON.parse(output)).includes('free coffee maker download')"
+            },
+            {
+              "type": "javascript",
+              "value": "JSON.parse(output).findings.some(f => f.type === 'negative_keyword')"
+            }
+          ],
+          "description": "Row #8",
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 7,
+        "tokenUsage": {
+          "prompt": 0,
+          "completion": 0,
+          "cached": 0,
+          "total": 0,
+          "numRequests": 1,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "case_id": "case-08",
+          "date": "2026-06-26",
+          "category": "negative_keyword",
+          "expected_finding": "搜索词 free coffee maker download 累计 0 转化高消耗，建议加否定词"
+        },
+        "metadata": {
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      },
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 1,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "JSON.stringify(JSON.parse(output)).includes('free coffee maker download')"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "JSON.parse(output).findings.some(f => f.type === 'negative_keyword')"
+              }
+            }
+          ]
+        },
+        "id": "ce35801a-76c2-4add-ac6e-1199130ab818",
+        "latencyMs": 93315,
+        "namedScores": {},
+        "prompt": {
+          "raw": "诊断 2026-06-28 的 Google Ads 投放数据",
+          "label": "诊断 {{date}} 的 Google Ads 投放数据",
+          "config": {}
+        },
+        "promptId": "bf7c6addc55911c950e731efefb0630e1e920891eff806739637279314b56103",
+        "promptIdx": 0,
+        "provider": {
+          "id": "file://provider.py",
+          "label": "agent"
+        },
+        "response": {
+          "output": "{\"summary\":\"本账户最近7天（2026-06-22至2026-06-28）存在多个异常现象，包括两个高置信度的转化骤降事件、一个新测试系列的成本突增，以及数据缺失问题。追踪系统整体健康，否词机会分析发现多个高成本无转化搜索词。\",\"findings\":[{\"type\":\"anomaly\",\"entity\":\"Brand_Search (C001)\",\"evidence\":\"2026-06-28转化从5个骤降至1个（-80%），6月28日点击47次，追踪健康，数据完整\",\"confidence\":\"high\",\"recommendation\":\"建议人工检查Brand_Search系列6月28日的广告素材、出价策略和着陆页质量，观察是否为短期波动或需要调整\",\"risk_note\":\"转化骤降可能影响系列整体ROI，但追踪健康表明技术层面无问题\",\"data_gap\":null},{\"type\":\"anomaly\",\"entity\":\"Competitor_Search (C004)\",\"evidence\":\"2026-06-25转化从11个骤降至4个（-63.6%），6月25日点击91次，追踪健康，数据完整\",\"confidence\":\"high\",\"recommendation\":\"建议人工检查Competitor_Search系列6月25日的竞争环境变化、关键词质量得分和转化路径\",\"risk_note\":\"转化下降幅度较大，可能反映竞争格局或用户行为变化\",\"data_gap\":null},{\"type\":\"anomaly\",\"entity\":\"New_Product_Test (C003)\",\"evidence\":\"2026-06-27成本从4.4美元涨至7.7美元（+75%），但转化持续为0，累计点击仅18次\",\"confidence\":\"medium\",\"recommendation\":\"建议人工评估该测试系列的投放策略，考虑暂停或调整预算，因无转化且成本上升\",\"risk_note\":\"新系列数据量不足，判断存在不确定性，但连续无转化且成本上升值得关注\",\"data_gap\":\"累计点击仅18次，未达到冷启动评估标准（30次点击）\"},{\"type\":\"tracking\",\"entity\":\"Competitor_Search (C004)\",\"evidence\":\"2026-06-22数据缺失（data_gap），影响该系列当天的完整性能评估\",\"confidence\":\"low\",\"recommendation\":\"建议人工检查Competitor_Search系列6月22日的数据采集完整性，确认是否存在技术问题\",\"risk_note\":\"数据缺失可能导致对系列整体性能的误判\",\"data_gap\":\"2026-06-22数据缺失，影响该系列当天的完整性能评估\"},{\"type\":\"negative_keyword\",\"entity\":\"free coffee maker download\",\"evidence\":\"全月累计成本150.8美元，点击58次，转化0次，ROAS为0，CTR异常高（8%）\",\"confidence\":\"high\",\"recommendation\":\"建议人工添加为否定关键词，该搜索词明显不产生转化且消耗预算\",\"risk_note\":\"持续投放将浪费预算，且CTR异常高表明可能吸引非目标用户\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"portable yoga mat for sale\",\"evidence\":\"全月累计成本46.26美元，点击40次，转化0次，ROAS为0\",\"confidence\":\"high\",\"recommendation\":\"建议人工添加为否定关键词，该搜索词无转化表现\",\"risk_note\":\"持续投放将浪费预算，建议优先处理\",\"data_gap\":null}],\"overall_priority\":[\"Brand_Search转化骤降（高优先级）\",\"Competitor_Search转化骤降（高优先级）\",\"New_Product_Test成本突增（中优先级）\",\"否词机会处理（中优先级）\",\"数据缺失问题（低优先级）\"]}",
+          "cached": false
+        },
+        "score": 1,
+        "success": true,
+        "testCase": {
+          "vars": {
+            "case_id": "case-09",
+            "date": "2026-06-28",
+            "category": "negative_keyword",
+            "expected_finding": "搜索词 free coffee maker download 累计 0 转化高消耗，建议加否定词"
+          },
+          "assert": [
+            {
+              "type": "javascript",
+              "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+            },
+            {
+              "type": "javascript",
+              "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+            },
+            {
+              "type": "javascript",
+              "value": "JSON.stringify(JSON.parse(output)).includes('free coffee maker download')"
+            },
+            {
+              "type": "javascript",
+              "value": "JSON.parse(output).findings.some(f => f.type === 'negative_keyword')"
+            }
+          ],
+          "description": "Row #9",
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 8,
+        "tokenUsage": {
+          "prompt": 0,
+          "completion": 0,
+          "cached": 0,
+          "total": 0,
+          "numRequests": 1,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "case_id": "case-09",
+          "date": "2026-06-28",
+          "category": "negative_keyword",
+          "expected_finding": "搜索词 free coffee maker download 累计 0 转化高消耗，建议加否定词"
+        },
+        "metadata": {
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      },
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 1,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "JSON.stringify(JSON.parse(output)).includes('free coffee maker download')"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "JSON.parse(output).findings.some(f => f.type === 'negative_keyword')"
+              }
+            }
+          ]
+        },
+        "id": "b41c98f2-b173-4178-825b-be13b8efbd2b",
+        "latencyMs": 103515,
+        "namedScores": {},
+        "prompt": {
+          "raw": "诊断 2026-06-30 的 Google Ads 投放数据",
+          "label": "诊断 {{date}} 的 Google Ads 投放数据",
+          "config": {}
+        },
+        "promptId": "bf7c6addc55911c950e731efefb0630e1e920891eff806739637279314b56103",
+        "promptIdx": 0,
+        "provider": {
+          "id": "file://provider.py",
+          "label": "agent"
+        },
+        "response": {
+          "output": "{\"summary\":\"账户最近7天（2026-06-24至2026-06-30）存在4个主要异常：2个转化下降异常（C001和C004）、1个消耗突增异常（C003），以及多个否词机会。追踪状态整体健康，但部分搜索词存在高消耗零转化问题。\",\"findings\":[{\"type\":\"anomaly\",\"entity\":\"C001 (Brand_Search)\",\"evidence\":\"2026-06-28转化骤降80%（1个转化 vs 6月27日5个转化），但6月29-30日恢复至正常水平（5个转化）。\",\"confidence\":\"medium\",\"recommendation\":\"建议人工检查6月28日转化下降的具体原因，可能是临时性波动或当日特定因素影响。\",\"risk_note\":\"转化下降幅度较大，但后续已恢复，风险相对可控。\",\"data_gap\":null},{\"type\":\"anomaly\",\"entity\":\"C004 (Competitor_Search)\",\"evidence\":\"6月25日转化下降63.6%（4个转化 vs 6月24日11个转化），6月30日再次下降66.7%（2个转化 vs 6月29日6个转化）。\",\"confidence\":\"medium\",\"recommendation\":\"建议人工分析6月25日和30日的竞争环境变化，检查是否有新的竞争者或策略调整。\",\"risk_note\":\"连续出现转化下降，可能反映竞争策略需要调整。\",\"data_gap\":null},{\"type\":\"anomaly\",\"entity\":\"C003 (New_Product_Test)\",\"evidence\":\"6月27日消耗突增75%（$7.7 vs $4.4），但5天内0转化，累计消耗$26.4。\",\"confidence\":\"high\",\"recommendation\":\"建议人工评估该新产品测试系列的投放效果，考虑暂停或优化策略。\",\"risk_note\":\"持续消耗无转化，存在资源浪费风险。\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"free coffee maker download\",\"evidence\":\"全月58个点击，$150.8消耗，0转化，CPA无限高，ROAS为0。\",\"confidence\":\"high\",\"recommendation\":\"建议人工将该搜索词加入否定关键词列表，避免无效消耗。\",\"risk_note\":\"高消耗零转化，持续浪费预算。\",\"data_gap\":null},{\"type\":\"none\",\"entity\":\"整体账户健康度\",\"evidence\":\"除个别异常外，主要系列（C001、C002、C004、C005）追踪状态健康，转化表现相对稳定。\",\"confidence\":\"high\",\"recommendation\":\"建议继续监控异常系列的表现，维持当前投放策略。\",\"risk_note\":\"整体投放健康，但需关注新系列表现。\",\"data_gap\":null}],\"overall_priority\":[\"C003 (New_Product_Test)\",\"free coffee maker download\",\"C004 (Competitor_Search)\",\"C001 (Brand_Search)\"]}",
+          "cached": false
+        },
+        "score": 1,
+        "success": true,
+        "testCase": {
+          "vars": {
+            "case_id": "case-10",
+            "date": "2026-06-30",
+            "category": "negative_keyword",
+            "expected_finding": "搜索词 free coffee maker download 累计 0 转化高消耗，建议加否定词"
+          },
+          "assert": [
+            {
+              "type": "javascript",
+              "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+            },
+            {
+              "type": "javascript",
+              "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+            },
+            {
+              "type": "javascript",
+              "value": "JSON.stringify(JSON.parse(output)).includes('free coffee maker download')"
+            },
+            {
+              "type": "javascript",
+              "value": "JSON.parse(output).findings.some(f => f.type === 'negative_keyword')"
+            }
+          ],
+          "description": "Row #10",
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 9,
+        "tokenUsage": {
+          "prompt": 0,
+          "completion": 0,
+          "cached": 0,
+          "total": 0,
+          "numRequests": 1,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "case_id": "case-10",
+          "date": "2026-06-30",
+          "category": "negative_keyword",
+          "expected_finding": "搜索词 free coffee maker download 累计 0 转化高消耗，建议加否定词"
+        },
+        "metadata": {
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      },
+      {
+        "cost": 0,
+        "error": "Custom function returned false\nJSON.parse(output).findings.some(f => f.type === 'scale_up') || JSON.stringify(JSON.parse(output)).includes('放量')",
+        "gradingResult": {
+          "pass": false,
+          "score": 0.5,
+          "reason": "Custom function returned false\nJSON.parse(output).findings.some(f => f.type === 'scale_up') || JSON.stringify(JSON.parse(output)).includes('放量')",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+              }
+            },
+            {
+              "pass": false,
+              "score": 0,
+              "reason": "Custom function returned false\nJSON.stringify(JSON.parse(output)).includes('C001')",
+              "assertion": {
+                "type": "javascript",
+                "value": "JSON.stringify(JSON.parse(output)).includes('C001')"
+              }
+            },
+            {
+              "pass": false,
+              "score": 0,
+              "reason": "Custom function returned false\nJSON.parse(output).findings.some(f => f.type === 'scale_up') || JSON.stringify(JSON.parse(output)).includes('放量')",
+              "assertion": {
+                "type": "javascript",
+                "value": "JSON.parse(output).findings.some(f => f.type === 'scale_up') || JSON.stringify(JSON.parse(output)).includes('放量')"
+              }
+            }
+          ]
+        },
+        "id": "4af07ec4-1e3a-4397-bc04-2d418ebaf303",
+        "latencyMs": 58277,
+        "namedScores": {},
+        "prompt": {
+          "raw": "诊断 2026-06-10 的 Google Ads 投放数据",
+          "label": "诊断 {{date}} 的 Google Ads 投放数据",
+          "config": {}
+        },
+        "promptId": "bf7c6addc55911c950e731efefb0630e1e920891eff806739637279314b56103",
+        "promptIdx": 0,
+        "provider": {
+          "id": "file://provider.py",
+          "label": "agent"
+        },
+        "response": {
+          "output": "{\"summary\":\"本账户在2026-06-04至2026-06-10期间出现两个高严重性转化下降异常，但追踪状态健康。同时发现一个符合条件的否词机会。整体账户表现基本稳定，但需要关注特定搜索词的优化。\",\"findings\":[{\"type\":\"anomaly\",\"entity\":\"Generic_Search (C002)\",\"evidence\":\"2026-06-06转化数从11降至5，下降54.5%；6月4-10日总转化63个，日均9个，6月6日异常降至5个；追踪状态健康，无零转化连续日；日均点击187个，数据完整\",\"confidence\":\"high\",\"recommendation\":\"建议人工分析6月6日转化下降的具体原因，检查当日是否有竞争加剧、网站技术问题或季节性因素影响；建议继续观察后续2-3天转化趋势是否恢复正常\",\"risk_note\":\"虽然追踪健康，但单日转化骤降可能影响整体账户转化目标达成，需密切关注恢复情况\",\"data_gap\":null},{\"type\":\"anomaly\",\"entity\":\"Competitor_Search (C004)\",\"evidence\":\"2026-06-05转化数从7降至1，下降85.7%；6月4-10日总转化23个，日均3.3个，6月5日异常降至1个；追踪状态健康，无零转化连续日；日均点击83个，数据完整\",\"confidence\":\"high\",\"recommendation\":\"建议人工分析6月5日转化下降的具体原因，检查是否有竞争对手活动变化、关键词质量分数下降或着陆页问题；建议监控后续转化表现\",\"risk_note\":\"转化波动较大，可能影响该系列的整体ROI表现，建议评估是否需要调整投放策略\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"free coffee maker download\",\"evidence\":\"全量数据区间：点击58次，成本$150.8，转化0，ROAS为0；CTR 8%较高但无转化；符合否词条件（点击>=20，成本>$50，转化=0）\",\"confidence\":\"medium\",\"recommendation\":\"建议人工添加此搜索词为否定关键词，避免继续消耗预算在非目标用户上；预计可节省约$150/月预算\",\"risk_note\":\"该词CTR较高(8%)，可能存在一定搜索意图，建议添加后观察是否影响相关有效搜索词的表现\",\"data_gap\":null}],\"overall_priority\":[\"优先处理Generic_Search和Competitor_Search的转化下降异常\",\"其次处理free coffee maker download的否词机会\"]}",
+          "cached": false
+        },
+        "score": 0.5,
+        "success": false,
+        "testCase": {
+          "vars": {
+            "case_id": "case-11",
+            "date": "2026-06-10",
+            "category": "scale_up",
+            "expected_finding": "C001 品牌词 ROAS≈3.5 健康，给出放量建议（scale_up）"
+          },
+          "assert": [
+            {
+              "type": "javascript",
+              "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+            },
+            {
+              "type": "javascript",
+              "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+            },
+            {
+              "type": "javascript",
+              "value": "JSON.stringify(JSON.parse(output)).includes('C001')"
+            },
+            {
+              "type": "javascript",
+              "value": "JSON.parse(output).findings.some(f => f.type === 'scale_up') || JSON.stringify(JSON.parse(output)).includes('放量')"
+            }
+          ],
+          "description": "Row #11",
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 10,
+        "tokenUsage": {
+          "prompt": 0,
+          "completion": 0,
+          "cached": 0,
+          "total": 0,
+          "numRequests": 1,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "case_id": "case-11",
+          "date": "2026-06-10",
+          "category": "scale_up",
+          "expected_finding": "C001 品牌词 ROAS≈3.5 健康，给出放量建议（scale_up）"
+        },
+        "metadata": {
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 1
+      },
+      {
+        "cost": 0,
+        "error": "Custom function returned false\nJSON.parse(output).findings.some(f => f.type === 'scale_up') || JSON.stringify(JSON.parse(output)).includes('放量')",
+        "gradingResult": {
+          "pass": false,
+          "score": 0.5,
+          "reason": "Custom function returned false\nJSON.parse(output).findings.some(f => f.type === 'scale_up') || JSON.stringify(JSON.parse(output)).includes('放量')",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+              }
+            },
+            {
+              "pass": false,
+              "score": 0,
+              "reason": "Custom function returned false\nJSON.stringify(JSON.parse(output)).includes('C001')",
+              "assertion": {
+                "type": "javascript",
+                "value": "JSON.stringify(JSON.parse(output)).includes('C001')"
+              }
+            },
+            {
+              "pass": false,
+              "score": 0,
+              "reason": "Custom function returned false\nJSON.parse(output).findings.some(f => f.type === 'scale_up') || JSON.stringify(JSON.parse(output)).includes('放量')",
+              "assertion": {
+                "type": "javascript",
+                "value": "JSON.parse(output).findings.some(f => f.type === 'scale_up') || JSON.stringify(JSON.parse(output)).includes('放量')"
+              }
+            }
+          ]
+        },
+        "id": "e7b8eb28-d434-4fe2-8a7b-f7996719edb4",
+        "latencyMs": 72572,
+        "namedScores": {},
+        "prompt": {
+          "raw": "诊断 2026-06-12 的 Google Ads 投放数据",
+          "label": "诊断 {{date}} 的 Google Ads 投放数据",
+          "config": {}
+        },
+        "promptId": "bf7c6addc55911c950e731efefb0630e1e920891eff806739637279314b56103",
+        "promptIdx": 0,
+        "provider": {
+          "id": "file://provider.py",
+          "label": "agent"
+        },
+        "response": {
+          "output": "{\"summary\":\"最近7天（2026-06-06至2026-06-12）Google Ads投放整体表现稳定，但发现一个转化异常事件。追踪系统健康，无技术故障。搜索词分析发现一个否词机会，其他表现正常。\",\"findings\":[{\"type\":\"anomaly\",\"entity\":\"C002 (Generic_Search)\",\"evidence\":\"2026-06-06转化骤降54.5%（从11降到5），但后续6天恢复正常（8/8/9/10/10/10转化），7天总转化60个，ROAS 1.88\",\"confidence\":\"high\",\"recommendation\":\"建议人工检查6月6日转化异常的具体原因，可能是短期波动，当前表现已恢复正常，无需立即调整\",\"risk_note\":\"转化波动可能影响短期业务目标达成，但整体趋势稳定\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"free coffee maker download\",\"evidence\":\"58次点击，0转化，累计成本$150.8，CTR 8%，完全无转化效果\",\"confidence\":\"high\",\"recommendation\":\"建议人工将此搜索词添加为否定关键词，避免继续浪费预算\",\"risk_note\":\"持续投放将导致预算浪费，且与实际产品无关\",\"data_gap\":null},{\"type\":\"none\",\"entity\":\"整体投放表现\",\"evidence\":\"各系列表现稳定：Shopping_Plants (ROAS 2.41)、Brand_Search (ROAS 2.57)、Competitor_Search (ROAS 1.65)，追踪健康\",\"confidence\":\"high\",\"recommendation\":\"保持当前投放策略，继续监控表现\",\"risk_note\":\"无显著风险，建议定期审查优化\",\"data_gap\":null}],\"overall_priority\":[\"转化异常监控\",\"否词优化\",\"整体表现维护\"]}",
+          "cached": false
+        },
+        "score": 0.5,
+        "success": false,
+        "testCase": {
+          "vars": {
+            "case_id": "case-12",
+            "date": "2026-06-12",
+            "category": "scale_up",
+            "expected_finding": "C001 品牌词 ROAS≈3.5 健康，给出放量建议（scale_up）"
+          },
+          "assert": [
+            {
+              "type": "javascript",
+              "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+            },
+            {
+              "type": "javascript",
+              "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+            },
+            {
+              "type": "javascript",
+              "value": "JSON.stringify(JSON.parse(output)).includes('C001')"
+            },
+            {
+              "type": "javascript",
+              "value": "JSON.parse(output).findings.some(f => f.type === 'scale_up') || JSON.stringify(JSON.parse(output)).includes('放量')"
+            }
+          ],
+          "description": "Row #12",
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 11,
+        "tokenUsage": {
+          "prompt": 0,
+          "completion": 0,
+          "cached": 0,
+          "total": 0,
+          "numRequests": 1,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "case_id": "case-12",
+          "date": "2026-06-12",
+          "category": "scale_up",
+          "expected_finding": "C001 品牌词 ROAS≈3.5 健康，给出放量建议（scale_up）"
+        },
+        "metadata": {
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 1
+      },
+      {
+        "cost": 0,
+        "error": "Custom function returned false\nJSON.parse(output).findings.some(f => f.type === 'scale_up') || JSON.stringify(JSON.parse(output)).includes('放量')",
+        "gradingResult": {
+          "pass": false,
+          "score": 0.75,
+          "reason": "Custom function returned false\nJSON.parse(output).findings.some(f => f.type === 'scale_up') || JSON.stringify(JSON.parse(output)).includes('放量')",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "JSON.stringify(JSON.parse(output)).includes('C001')"
+              }
+            },
+            {
+              "pass": false,
+              "score": 0,
+              "reason": "Custom function returned false\nJSON.parse(output).findings.some(f => f.type === 'scale_up') || JSON.stringify(JSON.parse(output)).includes('放量')",
+              "assertion": {
+                "type": "javascript",
+                "value": "JSON.parse(output).findings.some(f => f.type === 'scale_up') || JSON.stringify(JSON.parse(output)).includes('放量')"
+              }
+            }
+          ]
+        },
+        "id": "de4266c2-331e-4d1b-a7e0-13e078fc4762",
+        "latencyMs": 68332,
+        "namedScores": {},
+        "prompt": {
+          "raw": "诊断 2026-06-13 的 Google Ads 投放数据",
+          "label": "诊断 {{date}} 的 Google Ads 投放数据",
+          "config": {}
+        },
+        "promptId": "bf7c6addc55911c950e731efefb0630e1e920891eff806739637279314b56103",
+        "promptIdx": 0,
+        "provider": {
+          "id": "file://provider.py",
+          "label": "agent"
+        },
+        "response": {
+          "output": "{\"summary\":\"最近7天（2026-06-07至2026-06-13）Google Ads投放数据显示整体表现稳定，但Brand_Search系列（C001）在6月13日出现明显转化率下降。同时发现几个高成本无转化的搜索词存在否词机会。追踪状态健康，无技术故障。\",\"findings\":[{\"type\":\"anomaly\",\"entity\":\"Brand_Search (C001)\",\"evidence\":\"2026-06-13转化数2个，较前日（5个）下降60%；该系列7天总转化19个，日均2.7个，6月13日表现异常低迷\",\"confidence\":\"high\",\"recommendation\":\"建议人工检查Brand_Search系列的广告素材、出价策略和落地页质量，分析6月13日转化下降的具体原因\",\"risk_note\":\"转化率下降可能影响系列整体ROI，需及时干预避免持续恶化\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"free coffee maker download\",\"evidence\":\"全量数据期间累计点击58次，成本$150.80，转化0次，符合否词机会标准（点击≥20，转化=0，成本≥$50）\",\"confidence\":\"high\",\"recommendation\":\"建议人工将该搜索词添加为否定关键词，避免继续浪费预算在非相关流量上\",\"risk_note\":\"该词CPC高达$2.60，长期存在会持续消耗预算且无转化回报\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"portable yoga mat for sale\",\"evidence\":\"全量数据期间累计点击40次，成本$46.26，转化0次，接近否词机会标准（点击≥20，转化=0，成本接近$50）\",\"confidence\":\"medium\",\"recommendation\":\"建议人工评估该搜索词相关性，如确认不相关则添加为否定关键词\",\"risk_note\":\"该词CPC$1.16，虽成本较低但长期无转化会影响系列整体效率\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"best coffee maker buy online\",\"evidence\":\"全量数据期间累计点击33次，成本$40.01，转化0次，接近否词机会标准（点击≥20，转化=0，成本接近$50）\",\"confidence\":\"medium\",\"recommendation\":\"建议人工评估该搜索词相关性，如确认不相关则添加为否定关键词\",\"risk_note\":\"该词CPC$1.21，无转化表现值得关注\",\"data_gap\":null}],\"overall_priority\":[\"Brand_Search转化率下降异常\",\"free coffee maker download否词处理\",\"portable yoga mat for sale评估\",\"best coffee maker buy online评估\"]}",
+          "cached": false
+        },
+        "score": 0.75,
+        "success": false,
+        "testCase": {
+          "vars": {
+            "case_id": "case-13",
+            "date": "2026-06-13",
+            "category": "scale_up",
+            "expected_finding": "C001 品牌词 ROAS≈3.5 健康，给出放量建议（scale_up）"
+          },
+          "assert": [
+            {
+              "type": "javascript",
+              "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+            },
+            {
+              "type": "javascript",
+              "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+            },
+            {
+              "type": "javascript",
+              "value": "JSON.stringify(JSON.parse(output)).includes('C001')"
+            },
+            {
+              "type": "javascript",
+              "value": "JSON.parse(output).findings.some(f => f.type === 'scale_up') || JSON.stringify(JSON.parse(output)).includes('放量')"
+            }
+          ],
+          "description": "Row #13",
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 12,
+        "tokenUsage": {
+          "prompt": 0,
+          "completion": 0,
+          "cached": 0,
+          "total": 0,
+          "numRequests": 1,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "case_id": "case-13",
+          "date": "2026-06-13",
+          "category": "scale_up",
+          "expected_finding": "C001 品牌词 ROAS≈3.5 健康，给出放量建议（scale_up）"
+        },
+        "metadata": {
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 1
+      },
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 1,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "JSON.stringify(JSON.parse(output)).includes('C001')"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "JSON.parse(output).findings.some(f => f.type === 'scale_up') || JSON.stringify(JSON.parse(output)).includes('放量')"
+              }
+            }
+          ]
+        },
+        "id": "8b3cf1a8-6fe7-44b2-b6c7-477b78ae5c03",
+        "latencyMs": 45981,
+        "namedScores": {},
+        "prompt": {
+          "raw": "诊断 2026-06-14 的 Google Ads 投放数据",
+          "label": "诊断 {{date}} 的 Google Ads 投放数据",
+          "config": {}
+        },
+        "promptId": "bf7c6addc55911c950e731efefb0630e1e920891eff806739637279314b56103",
+        "promptIdx": 0,
+        "provider": {
+          "id": "file://provider.py",
+          "label": "agent"
+        },
+        "response": {
+          "output": "{\"summary\":\"过去7天（2026-06-08至2026-06-14）Google Ads投放数据显示整体表现稳定，但发现两个关键问题：Brand_Search系列在6月13日出现60%的转化下降，Generic_Search系列中存在高成本零转化的搜索词机会。追踪健康状态良好，数据完整无缺口。\",\"findings\":[{\"type\":\"anomaly\",\"entity\":\"Brand_Search (C001)\",\"evidence\":\"2026-06-13转化从5次降至2次，降幅60%（conversion_drop异常）\",\"confidence\":\"high\",\"recommendation\":\"建议人工检查Brand_Search系列在6月13日前后的投放策略变化，包括出价调整、广告创意修改或受众定向变更，同时监控后续2-3天的转化恢复情况\",\"risk_note\":\"转化持续下降可能影响系列整体ROI，当前CPA $19.8仍低于系列平均水平\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"portable wireless earbuds for sale\",\"evidence\":\"在Generic_Search - AdGroup 5中累积40次点击，0转化，成本$51.79（negative_keyword_opportunity异常）\",\"confidence\":\"medium\",\"recommendation\":\"建议人工将该搜索词添加为否定关键词，避免持续消耗预算且无转化收益\",\"risk_note\":\"该搜索词CPC $1.35高于系列平均$1.36，属于低效流量\",\"data_gap\":null},{\"type\":\"scale_up\",\"entity\":\"Generic_Search - AdGroup 1 (AG07)\",\"evidence\":\"7天49次转化，CPA仅$6.3，ROAS高达8.25，远超系列平均水平\",\"confidence\":\"high\",\"recommendation\":\"建议人工评估是否可增加AG07的预算或扩大其投放范围，以获取更多优质流量\",\"risk_note\":\"需注意避免过度依赖单一广告组，建议保持系列内各广告组的平衡发展\",\"data_gap\":null}],\"overall_priority\":[\"Brand_Search转化下降异常\",\"否词机会处理\",\"高转化广告组扩量\"]}",
+          "cached": false
+        },
+        "score": 1,
+        "success": true,
+        "testCase": {
+          "vars": {
+            "case_id": "case-14",
+            "date": "2026-06-14",
+            "category": "scale_up",
+            "expected_finding": "C001 品牌词 ROAS≈3.5 健康，给出放量建议（scale_up）"
+          },
+          "assert": [
+            {
+              "type": "javascript",
+              "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+            },
+            {
+              "type": "javascript",
+              "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+            },
+            {
+              "type": "javascript",
+              "value": "JSON.stringify(JSON.parse(output)).includes('C001')"
+            },
+            {
+              "type": "javascript",
+              "value": "JSON.parse(output).findings.some(f => f.type === 'scale_up') || JSON.stringify(JSON.parse(output)).includes('放量')"
+            }
+          ],
+          "description": "Row #14",
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 13,
+        "tokenUsage": {
+          "prompt": 0,
+          "completion": 0,
+          "cached": 0,
+          "total": 0,
+          "numRequests": 1,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "case_id": "case-14",
+          "date": "2026-06-14",
+          "category": "scale_up",
+          "expected_finding": "C001 品牌词 ROAS≈3.5 健康，给出放量建议（scale_up）"
+        },
+        "metadata": {
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      },
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 1,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "JSON.parse(output).findings.some(f => /C003|New_Product/.test(f.entity) && f.confidence === 'low')"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "JSON.parse(output).findings.every(f => !/C003|New_Product/.test(f.entity) || f.confidence === 'low')"
+              }
+            }
+          ]
+        },
+        "id": "e14d60cf-637a-431d-a131-5d1d1352d643",
+        "latencyMs": 146843,
+        "namedScores": {},
+        "prompt": {
+          "raw": "诊断 2026-06-27 的 Google Ads 投放数据",
+          "label": "诊断 {{date}} 的 Google Ads 投放数据",
+          "config": {}
+        },
+        "promptId": "bf7c6addc55911c950e731efefb0630e1e920891eff806739637279314b56103",
+        "promptIdx": 0,
+        "provider": {
+          "id": "file://provider.py",
+          "label": "agent"
+        },
+        "response": {
+          "output": "{\"summary\":\"过去7天（2026-06-21至2026-06-27）Google Ads投放数据发现多个异常：Generic_Search活动存在追踪丢失嫌疑，Competitor_Search活动数据缺失且转化骤降，New_Product_Test活动消耗突增但转化率为0。整体账户表现波动较大，需重点检查追踪配置和数据完整性。\",\"findings\":[{\"type\":\"tracking\",\"entity\":\"Generic_Search (C002)\",\"evidence\":\"2026-06-20至2026-06-21连续2天零转化，累计372次点击；追踪状态显示为'suspected_broken'；6月21日转化从6个骤降至2个（-66.7%），6月25日从11个骤降至4个（-63.6%）\",\"confidence\":\"high\",\"recommendation\":\"建议立即检查Generic_Search活动的转化追踪代码配置，验证像素是否正常工作，检查网站转化目标设置是否正确\",\"risk_note\":\"连续高点击零转化可能导致预算浪费，长期影响账户质量得分\",\"data_gap\":\"无数据缺口，追踪状态明确\"},{\"type\":\"anomaly\",\"entity\":\"Competitor_Search (C004)\",\"evidence\":\"2026-06-22数据缺失；6月21日转化从6个骤降至2个（-66.7%），6月25日从11个骤降至4个（-63.6%）；6月22日零数据记录\",\"confidence\":\"high\",\"recommendation\":\"建议检查2026-06-22数据缺失原因，验证系统是否正常记录；分析转化骤降的具体时间段和影响因素\",\"risk_note\":\"数据缺失影响分析准确性，转化骤降可能影响投放效果评估\",\"data_gap\":\"2026-06-22数据缺失，影响连续性分析\"},{\"type\":\"anomaly\",\"entity\":\"New_Product_Test (C003)\",\"evidence\":\"6月27日消耗从4.4美元突增至7.7美元（+75%）；累计11次点击，0转化；属于冷启动阶段\",\"confidence\":\"low\",\"recommendation\":\"建议继续观察积累更多数据，当前样本量不足（11次点击）无法得出确定性结论\",\"risk_note\":\"冷启动阶段数据量小，消耗突增可能只是偶然波动\",\"data_gap\":\"无数据缺口，但样本量不足影响置信度\"},{\"type\":\"negative_keyword\",\"entity\":\"全账户搜索词分析\",\"evidence\":\"需要更长窗口期分析搜索词转化表现，当前7天数据不足以准确识别否词机会\",\"confidence\":\"low\",\"recommendation\":\"建议使用完整数据区间（2026-06-01至2026-06-30）分析搜索词表现，识别转化率为0且消耗较高的搜索词作为否词候选\",\"risk_note\":\"否词决策需要充分累积数据，过早否词可能错失潜在转化机会\",\"data_gap\":\"需要更长历史数据窗口进行否词机会评估\"}],\"overall_priority\":[\"Generic_Search追踪问题\",\"Competitor_Search数据缺失\",\"New_Product_Test观察\",\"否词机会评估\"]}",
+          "cached": false
+        },
+        "score": 1,
+        "success": true,
+        "testCase": {
+          "vars": {
+            "case_id": "case-15",
+            "date": "2026-06-27",
+            "category": "cold_start",
+            "expected_finding": "C003 新上市（06-26）累计点击 <30，只给观察建议"
+          },
+          "assert": [
+            {
+              "type": "javascript",
+              "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+            },
+            {
+              "type": "javascript",
+              "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+            },
+            {
+              "type": "javascript",
+              "value": "JSON.parse(output).findings.some(f => /C003|New_Product/.test(f.entity) && f.confidence === 'low')"
+            },
+            {
+              "type": "javascript",
+              "value": "JSON.parse(output).findings.every(f => !/C003|New_Product/.test(f.entity) || f.confidence === 'low')"
+            }
+          ],
+          "description": "Row #15",
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 14,
+        "tokenUsage": {
+          "prompt": 0,
+          "completion": 0,
+          "cached": 0,
+          "total": 0,
+          "numRequests": 1,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "case_id": "case-15",
+          "date": "2026-06-27",
+          "category": "cold_start",
+          "expected_finding": "C003 新上市（06-26）累计点击 <30，只给观察建议"
+        },
+        "metadata": {
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      },
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 1,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "JSON.parse(output).findings.some(f => /C003|New_Product/.test(f.entity) && f.confidence === 'low')"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "JSON.parse(output).findings.every(f => !/C003|New_Product/.test(f.entity) || f.confidence === 'low')"
+              }
+            }
+          ]
+        },
+        "id": "1cf2dad0-67e0-470d-80c6-a59076695294",
+        "latencyMs": 155901,
+        "namedScores": {},
+        "prompt": {
+          "raw": "诊断 2026-06-29 的 Google Ads 投放数据",
+          "label": "诊断 {{date}} 的 Google Ads 投放数据",
+          "config": {}
+        },
+        "promptId": "bf7c6addc55911c950e731efefb0630e1e920891eff806739637279314b56103",
+        "promptIdx": 0,
+        "provider": {
+          "id": "file://provider.py",
+          "label": "agent"
+        },
+        "response": {
+          "output": "{\"summary\":\"最近7天（2026-06-23至2026-06-29）账户整体表现正常，但发现3个需要关注的异常现象：Brand_Search和Competitor_Search出现转化下降，New_Product_Test消耗突增且无转化。追踪系统健康，无技术故障。建议重点关注转化下降的搜索词表现，评估否词机会。\",\"findings\":[{\"type\":\"anomaly\",\"entity\":\"Brand_Search (C001)\",\"evidence\":\"2026-06-28转化1个，较前日（6月27日）5个下降80%，但追踪状态健康，无零转化连续日。\",\"confidence\":\"medium\",\"recommendation\":\"建议人工检查该活动6月28日前后的搜索词表现，分析转化下降的具体原因，可能是搜索词质量变化或竞争环境变化。\",\"risk_note\":\"转化下降影响当期ROAS表现，但整体活动ROAS仍达3.82，风险可控。\",\"data_gap\":null},{\"type\":\"anomaly\",\"entity\":\"Competitor_Search (C004)\",\"evidence\":\"2026-06-25转化4个，较前日（6月24日）11个下降63.6%，但追踪状态健康，无零转化连续日。\",\"confidence\":\"medium\",\"recommendation\":\"建议人工检查该活动6月25日前后的搜索词表现，分析转化下降的具体原因，可能是竞争策略调整或搜索词质量变化。\",\"risk_note\":\"转化下降影响当期ROAS表现，但整体活动ROAS仍达2.76，风险可控。\",\"data_gap\":null},{\"type\":\"anomaly\",\"entity\":\"New_Product_Test (C003)\",\"evidence\":\"2026-06-27消耗$7.7，较前日（6月26日）$4.4突增75%，但累计仅22次点击，0转化。追踪状态显示点击量不足，无法判断。\",\"confidence\":\"low\",\"recommendation\":\"建议人工评估该测试活动的投放策略，考虑是否需要调整出价或优化广告创意，继续观察积累足够数据后再做决策。\",\"risk_note\":\"新测试活动数据量不足，消耗突增但无转化，建议谨慎评估投放效果。\",\"data_gap\":\"该活动累计点击量<30，属于冷启动阶段，数据不完整，置信度低。\"},{\"type\":\"negative_keyword\",\"entity\":\"free coffee maker download\",\"evidence\":\"全量数据区间累计消耗$150.8，58次点击，0转化，CTR 8%但无转化效果。\",\"confidence\":\"high\",\"recommendation\":\"建议人工将该搜索词添加为否定关键词，避免无效消耗。\",\"risk_note\":\"该词消耗较高但无转化，持续投放会造成预算浪费。\",\"data_gap\":null}],\"overall_priority\":[\"Brand_Search转化下降\",\"Competitor_Search转化下降\",\"New_Product_Test消耗突增\",\"free coffee maker download否词机会\"]}",
+          "cached": false
+        },
+        "score": 1,
+        "success": true,
+        "testCase": {
+          "vars": {
+            "case_id": "case-16",
+            "date": "2026-06-29",
+            "category": "cold_start",
+            "expected_finding": "C003 新上市（06-26）累计点击 <30，只给观察建议"
+          },
+          "assert": [
+            {
+              "type": "javascript",
+              "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+            },
+            {
+              "type": "javascript",
+              "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+            },
+            {
+              "type": "javascript",
+              "value": "JSON.parse(output).findings.some(f => /C003|New_Product/.test(f.entity) && f.confidence === 'low')"
+            },
+            {
+              "type": "javascript",
+              "value": "JSON.parse(output).findings.every(f => !/C003|New_Product/.test(f.entity) || f.confidence === 'low')"
+            }
+          ],
+          "description": "Row #16",
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 15,
+        "tokenUsage": {
+          "prompt": 0,
+          "completion": 0,
+          "cached": 0,
+          "total": 0,
+          "numRequests": 1,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "case_id": "case-16",
+          "date": "2026-06-29",
+          "category": "cold_start",
+          "expected_finding": "C003 新上市（06-26）累计点击 <30，只给观察建议"
+        },
+        "metadata": {
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      },
+      {
+        "cost": 0,
+        "error": "Custom function returned false\nJSON.parse(output).findings.every(f => !/C003|New_Product/.test(f.entity) || f.confidence === 'low')",
+        "gradingResult": {
+          "pass": false,
+          "score": 0.75,
+          "reason": "Custom function returned false\nJSON.parse(output).findings.every(f => !/C003|New_Product/.test(f.entity) || f.confidence === 'low')",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "JSON.parse(output).findings.some(f => /C003|New_Product/.test(f.entity) && f.confidence === 'low')"
+              }
+            },
+            {
+              "pass": false,
+              "score": 0,
+              "reason": "Custom function returned false\nJSON.parse(output).findings.every(f => !/C003|New_Product/.test(f.entity) || f.confidence === 'low')",
+              "assertion": {
+                "type": "javascript",
+                "value": "JSON.parse(output).findings.every(f => !/C003|New_Product/.test(f.entity) || f.confidence === 'low')"
+              }
+            }
+          ]
+        },
+        "id": "ed1364e4-e945-4500-ae67-4df967141169",
+        "latencyMs": 69900,
+        "namedScores": {},
+        "prompt": {
+          "raw": "诊断 2026-06-30 的 Google Ads 投放数据",
+          "label": "诊断 {{date}} 的 Google Ads 投放数据",
+          "config": {}
+        },
+        "promptId": "bf7c6addc55911c950e731efefb0630e1e920891eff806739637279314b56103",
+        "promptIdx": 0,
+        "provider": {
+          "id": "file://provider.py",
+          "label": "agent"
+        },
+        "response": {
+          "output": "{\"summary\":\"账户在2026-06-24至2026-06-30期间存在多个异常现象，包括两个主要系列的转化下降和一个新测试系列的成本异常。追踪系统整体健康，无技术故障。Brand_Search和Competitor_Search系列出现明显的转化下降，而New_Product_Test系列虽成本上升但转化率为零且数据量不足。\",\"findings\":[{\"type\":\"anomaly\",\"entity\":\"Brand_Search (C001)\",\"evidence\":\"2026-06-28转化1个（vs 6月27日5个），转化率下降80%；整体CPA 14.05，ROAS 3.87\",\"confidence\":\"high\",\"recommendation\":\"建议人工检查Brand_Search系列6月28日前后的广告素材、出价策略和受众设置，分析转化下降的具体原因\",\"risk_note\":\"转化率大幅下降可能影响整体投放效果和ROI\",\"data_gap\":null},{\"type\":\"anomaly\",\"entity\":\"Competitor_Search (C004)\",\"evidence\":\"6月25日转化4个（vs 6月24日11个），下降63.6%；6月30日转化2个（vs 6月29日6个），下降66.7%；整体CPA 20.65，ROAS 2.58\",\"confidence\":\"high\",\"recommendation\":\"建议人工分析Competitor_Search系列在6月25日和30日的转化下降原因，检查关键词表现和竞争环境变化\",\"risk_note\":\"连续出现大幅转化下降，可能存在系统性问题或竞争环境变化\",\"data_gap\":null},{\"type\":\"anomaly\",\"entity\":\"New_Product_Test (C003)\",\"evidence\":\"6月27日成本从4.4美元升至7.7美元（+75%），但0转化；整体24个点击，26.4美元成本，转化率0%\",\"confidence\":\"medium\",\"recommendation\":\"建议人工评估该测试系列的投放策略，考虑暂停或调整预算分配，当前数据不足以判断是否值得继续\",\"risk_note\":\"新系列数据量不足，转化率为零，存在资源浪费风险\",\"data_gap\":\"该系列累计点击仅24个，属于冷启动阶段，需要更多数据来评估实际表现\"},{\"type\":\"negative_keyword\",\"entity\":\"New_Product_Test (C003)\",\"evidence\":\"系列内搜索词累计点击24次，转化0次，成本26.4美元，但数据量不足判断否词价值\",\"confidence\":\"low\",\"recommendation\":\"建议继续观察该系列，积累至少50个点击后再评估否词机会，当前数据不足以支持否词决策\",\"risk_note\":\"冷启动阶段过早否词可能错过有潜力的关键词\",\"data_gap\":\"需要更多累积数据（至少50个点击）来准确评估搜索词转化表现\"}],\"overall_priority\":[\"Brand_Search转化下降\",\"Competitor_Search转化下降\",\"New_Product_Test系列评估\"]}",
+          "cached": false
+        },
+        "score": 0.75,
+        "success": false,
+        "testCase": {
+          "vars": {
+            "case_id": "case-17",
+            "date": "2026-06-30",
+            "category": "cold_start",
+            "expected_finding": "C003 新上市（06-26）累计点击 <30，只给观察建议"
+          },
+          "assert": [
+            {
+              "type": "javascript",
+              "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+            },
+            {
+              "type": "javascript",
+              "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+            },
+            {
+              "type": "javascript",
+              "value": "JSON.parse(output).findings.some(f => /C003|New_Product/.test(f.entity) && f.confidence === 'low')"
+            },
+            {
+              "type": "javascript",
+              "value": "JSON.parse(output).findings.every(f => !/C003|New_Product/.test(f.entity) || f.confidence === 'low')"
+            }
+          ],
+          "description": "Row #17",
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 16,
+        "tokenUsage": {
+          "prompt": 0,
+          "completion": 0,
+          "cached": 0,
+          "total": 0,
+          "numRequests": 1,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "case_id": "case-17",
+          "date": "2026-06-30",
+          "category": "cold_start",
+          "expected_finding": "C003 新上市（06-26）累计点击 <30，只给观察建议"
+        },
+        "metadata": {
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 1
+      },
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 1,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "JSON.stringify(JSON.parse(output)).includes('06-22')"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "JSON.parse(output).findings.some(f => f.data_gap)"
+              }
+            }
+          ]
+        },
+        "id": "4800f948-1de2-4e8a-b8f3-5dc0c1498572",
+        "latencyMs": 124942,
+        "namedScores": {},
+        "prompt": {
+          "raw": "诊断 2026-06-23 的 Google Ads 投放数据",
+          "label": "诊断 {{date}} 的 Google Ads 投放数据",
+          "config": {}
+        },
+        "promptId": "bf7c6addc55911c950e731efefb0630e1e920891eff806739637279314b56103",
+        "promptIdx": 0,
+        "provider": {
+          "id": "file://provider.py",
+          "label": "agent"
+        },
+        "response": {
+          "output": "{\"summary\":\"最近7天（2026-06-17至2026-06-23）发现多个投放异常，包括转化骤降、成本突增、数据缺口和追踪问题。C002系列出现严重追踪异常，C004和C005系列存在数据缺口和转化问题，同时发现多个高成本无转化搜索词需要否词处理。\",\"findings\":[{\"type\":\"tracking\",\"entity\":\"C002 - Generic_Search\",\"evidence\":\"2026-06-20至2026-06-21连续2天0转化，期间372点击，追踪状态为suspected_broken\",\"confidence\":\"high\",\"recommendation\":\"建议立即检查Google Ads转化追踪代码配置，确认事件追踪是否正常工作，检查网站转化目标设置\",\"risk_note\":\"连续2天大量点击无转化，可能存在严重的追踪故障，导致无法准确衡量广告效果\",\"data_gap\":null},{\"type\":\"anomaly\",\"entity\":\"C004 - Competitor_Search\",\"evidence\":\"2026-06-19转化从3降至0（-100%），2026-06-21转化从6降至2（-66.7%），且2026-06-22数据缺失\",\"confidence\":\"medium\",\"recommendation\":\"建议检查2026-06-19和2026-06-21的广告投放策略，确认是否有竞价策略调整或创意问题，同时排查数据缺失原因\",\"risk_note\":\"连续转化下降加上数据缺口，无法确定是投放问题还是数据异常\",\"data_gap\":\"2026-06-22数据缺失，影响完整分析\"},{\"type\":\"anomaly\",\"entity\":\"C005 - Shopping_Plants\",\"evidence\":\"2026-06-18转化从7降至0（-100%），2026-06-19成本从$35.49突增至$123.77（+248.7%），同日展示量从2088降至617（-70.5%）\",\"confidence\":\"high\",\"recommendation\":\"建议检查2026-06-19的出价策略和预算设置，确认是否有意外竞价调整，同时分析展示量突降原因\",\"risk_note\":\"成本突增伴随展示量下降，可能存在竞价策略失控或竞争环境突变\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"free coffee maker download\",\"evidence\":\"58点击，0转化，累积成本$150.8，完全无转化效果\",\"confidence\":\"high\",\"recommendation\":\"建议立即添加为否定关键词，避免继续浪费预算在非意向用户搜索词上\",\"risk_note\":\"高点击量但零转化，说明搜索意图不匹配，继续投放将浪费预算\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"portable yoga mat for sale\",\"evidence\":\"40点击，0转化，累积成本$46.26，完全无转化效果\",\"confidence\":\"high\",\"recommendation\":\"建议添加为否定关键词，避免继续在无转化搜索词上浪费预算\",\"risk_note\":\"中等点击量但零转化，说明该搜索词与产品不匹配\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"best coffee maker buy online\",\"evidence\":\"33点击，0转化，累积成本$40.01，完全无转化效果\",\"confidence\":\"high\",\"recommendation\":\"建议添加为否定关键词，避免继续投放无转化搜索词\",\"risk_note\":\"点击量适中但零转化，说明该搜索词可能不产生实际转化\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"ergonomic backpack for sale\",\"evidence\":\"69点击，0转化，累积成本$81.58，完全无转化效果\",\"confidence\":\"high\",\"recommendation\":\"建议立即添加为否定关键词，避免继续浪费大量预算在无效搜索词上\",\"risk_note\":\"高点击量但零转化，是明显的否词候选，继续投放将造成显著预算浪费\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"eco friendly standing desk buy online\",\"evidence\":\"98点击，0转化，累积成本$118.03，完全无转化效果\",\"confidence\":\"high\",\"recommendation\":\"建议立即添加为否定关键词，避免继续在无效搜索词上浪费大量预算\",\"risk_note\":\"点击量很高但零转化，是最高优先级的否词候选，继续投放将造成严重预算浪费\",\"data_gap\":null}],\"overall_priority\":[\"C002 - Generic_Search (追踪问题)\",\"eco friendly standing desk buy online (否词)\",\"ergonomic backpack for sale (否词)\",\"C005 - Shopping_Plants (成本突增)\",\"C004 - Competitor_Search (数据缺口)\"]}",
+          "cached": false
+        },
+        "score": 1,
+        "success": true,
+        "testCase": {
+          "vars": {
+            "case_id": "case-18",
+            "date": "2026-06-23",
+            "category": "data_gap",
+            "expected_finding": "明确声明 C004 在 2026-06-22 存在数据缺口"
+          },
+          "assert": [
+            {
+              "type": "javascript",
+              "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+            },
+            {
+              "type": "javascript",
+              "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+            },
+            {
+              "type": "javascript",
+              "value": "JSON.stringify(JSON.parse(output)).includes('06-22')"
+            },
+            {
+              "type": "javascript",
+              "value": "JSON.parse(output).findings.some(f => f.data_gap)"
+            }
+          ],
+          "description": "Row #18",
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 17,
+        "tokenUsage": {
+          "prompt": 0,
+          "completion": 0,
+          "cached": 0,
+          "total": 0,
+          "numRequests": 1,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "case_id": "case-18",
+          "date": "2026-06-23",
+          "category": "data_gap",
+          "expected_finding": "明确声明 C004 在 2026-06-22 存在数据缺口"
+        },
+        "metadata": {
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      },
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 1,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "JSON.stringify(JSON.parse(output)).includes('06-22')"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "JSON.parse(output).findings.some(f => f.data_gap)"
+              }
+            }
+          ]
+        },
+        "id": "be612829-a8fe-48d6-b9e3-52c9a0519647",
+        "latencyMs": 116410,
+        "namedScores": {},
+        "prompt": {
+          "raw": "诊断 2026-06-24 的 Google Ads 投放数据",
+          "label": "诊断 {{date}} 的 Google Ads 投放数据",
+          "config": {}
+        },
+        "promptId": "bf7c6addc55911c950e731efefb0630e1e920891eff806739637279314b56103",
+        "promptIdx": 0,
+        "provider": {
+          "id": "file://provider.py",
+          "label": "agent"
+        },
+        "response": {
+          "output": "{\"summary\":\"账户在2026-06-18至2026-06-24期间出现多个严重异常，包括转化骤降、追踪异常、数据缺口和成本突增。Generic_Search系列(C002)存在追踪问题，Competitor_Search系列(C004)有数据缺失，Shopping_Plants系列(C005)成本异常增长。整体账户表现不稳定，需要立即处理追踪和数据问题。\",\"findings\":[{\"type\":\"tracking\",\"entity\":\"Generic_Search (C002)\",\"evidence\":\"连续2天(2026-06-20至2026-06-21)0转化，372次点击，追踪状态标记为suspected_broken\",\"confidence\":\"high\",\"recommendation\":\"建议立即检查转化追踪代码配置，验证像素是否正常工作，考虑暂停投放直到追踪问题解决\",\"risk_note\":\"持续投放可能导致预算浪费，无法准确衡量转化效果\",\"data_gap\":null},{\"type\":\"anomaly\",\"entity\":\"Competitor_Search (C004)\",\"evidence\":\"2026-06-19转化0个(前一天3个)，2026-06-21转化2个(前一天6个)，2026-06-22数据缺失\",\"confidence\":\"high\",\"recommendation\":\"建议检查2026-06-22数据缺失原因，分析转化下降的具体原因，考虑暂停投放直到数据完整\",\"risk_note\":\"数据缺失和转化下降影响账户整体表现分析\",\"data_gap\":\"2026-06-22数据缺失，影响转化趋势判断\"},{\"type\":\"anomaly\",\"entity\":\"Shopping_Plants (C005)\",\"evidence\":\"2026-06-19成本$123.77(前一天$35.49，增长248.7%)，2026-06-18展示617个(前一天2088个，下降70.5%)\",\"confidence\":\"high\",\"recommendation\":\"建议分析成本突增原因，检查是否出现无效点击或出价异常，考虑暂停投放优化\",\"risk_note\":\"成本突增可能导致预算超支，ROI显著下降\",\"data_gap\":null},{\"type\":\"anomaly\",\"entity\":\"Brand_Search (C001)\",\"evidence\":\"2026-06-20转化3个(前一天7个，下降57.1%)\",\"confidence\":\"medium\",\"recommendation\":\"建议观察后续转化趋势，如持续下降则需分析原因\",\"risk_note\":\"转化下降可能影响品牌系列整体表现\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"free coffee maker download\",\"evidence\":\"累计成本$150.8，点击58次，转化0次，ROAS为0\",\"confidence\":\"medium\",\"recommendation\":\"建议人工添加为否词，避免无效点击消耗预算\",\"risk_note\":\"持续消耗预算无转化，影响账户整体效率\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"best coffee maker buy online\",\"evidence\":\"累计成本$40.01，点击33次，转化0次，ROAS为0\",\"confidence\":\"medium\",\"recommendation\":\"建议人工添加为否词，避免无效点击消耗预算\",\"risk_note\":\"持续消耗预算无转化，影响账户整体效率\",\"data_gap\":null}],\"overall_priority\":[\"tracking\",\"anomaly\",\"anomaly\",\"anomaly\",\"negative_keyword\",\"negative_keyword\"]}",
+          "cached": false
+        },
+        "score": 1,
+        "success": true,
+        "testCase": {
+          "vars": {
+            "case_id": "case-19",
+            "date": "2026-06-24",
+            "category": "data_gap",
+            "expected_finding": "明确声明 C004 在 2026-06-22 存在数据缺口"
+          },
+          "assert": [
+            {
+              "type": "javascript",
+              "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+            },
+            {
+              "type": "javascript",
+              "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+            },
+            {
+              "type": "javascript",
+              "value": "JSON.stringify(JSON.parse(output)).includes('06-22')"
+            },
+            {
+              "type": "javascript",
+              "value": "JSON.parse(output).findings.some(f => f.data_gap)"
+            }
+          ],
+          "description": "Row #19",
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 18,
+        "tokenUsage": {
+          "prompt": 0,
+          "completion": 0,
+          "cached": 0,
+          "total": 0,
+          "numRequests": 1,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "case_id": "case-19",
+          "date": "2026-06-24",
+          "category": "data_gap",
+          "expected_finding": "明确声明 C004 在 2026-06-22 存在数据缺口"
+        },
+        "metadata": {
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      },
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 1,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "JSON.stringify(JSON.parse(output)).includes('06-22')"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "JSON.parse(output).findings.some(f => f.data_gap)"
+              }
+            }
+          ]
+        },
+        "id": "dd43c48a-c778-4ebd-9db7-208ea77a896a",
+        "latencyMs": 157453,
+        "namedScores": {},
+        "prompt": {
+          "raw": "诊断 2026-06-25 的 Google Ads 投放数据",
+          "label": "诊断 {{date}} 的 Google Ads 投放数据",
+          "config": {}
+        },
+        "promptId": "bf7c6addc55911c950e731efefb0630e1e920891eff806739637279314b56103",
+        "promptIdx": 0,
+        "provider": {
+          "id": "file://provider.py",
+          "label": "agent"
+        },
+        "response": {
+          "output": "{\"summary\":\"账户在2026-06-19至2026-06-25期间存在多个异常，包括转化下降、成本突增、数据缺失和追踪丢失问题。其中Generic_Search系列(C002)存在严重的追踪丢失嫌疑，Competitor_Search系列(C004)有数据缺失，Shopping_Plants系列(C005)出现成本突增，多个系列出现转化下降现象。\",\"findings\":[{\"type\":\"tracking\",\"entity\":\"Generic_Search (C002)\",\"evidence\":\"6月20-21日连续2天零转化，点击量372，tracking_status显示为suspected_broken，符合追踪丢失模式\",\"confidence\":\"high\",\"recommendation\":\"建议立即检查转化追踪代码配置，验证像素是否正常工作，考虑使用转化诊断工具排查追踪问题\",\"risk_note\":\"如果追踪问题持续，将导致无法准确衡量广告效果，影响投放决策\",\"data_gap\":null},{\"type\":\"anomaly\",\"entity\":\"Competitor_Search (C004)\",\"evidence\":\"6月22日数据缺失，同时存在多次转化下降(6月19日-100%、6月21日-66.7%、6月25日-63.6%)\",\"confidence\":\"low\",\"recommendation\":\"建议检查数据源完整性，确认6月22日数据是否正常记录，同时监控转化趋势\",\"risk_note\":\"数据缺口导致无法准确评估该系列表现，可能掩盖真实问题\",\"data_gap\":\"2026-06-22数据缺失，影响对该系列完整表现评估\"},{\"type\":\"anomaly\",\"entity\":\"Shopping_Plants (C005)\",\"evidence\":\"6月19日成本从35.49美元突增至123.77美元，增幅248.7%，但转化表现正常(当日6个转化)\",\"confidence\":\"medium\",\"recommendation\":\"建议分析成本突增原因，检查是否为竞价调整或新投放策略导致\",\"risk_note\":\"成本突增可能影响整体投放效率，需确认是否可持续\",\"data_gap\":null},{\"type\":\"anomaly\",\"entity\":\"Brand_Search (C001)\",\"evidence\":\"6月20日转化从7个降至3个，降幅57.1%，后续转化表现波动\",\"confidence\":\"medium\",\"recommendation\":\"建议监控品牌搜索转化趋势，检查是否有季节性因素或竞争环境变化\",\"risk_note\":\"品牌搜索转化下降可能影响整体账户表现\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"free coffee maker download\",\"evidence\":\"累计点击58，成本150.8美元，转化0，符合否词机会标准(点击≥20，转化=0，累计成本>$50)\",\"confidence\":\"high\",\"recommendation\":\"建议人工将该搜索词添加为否定关键词，避免无效消耗\",\"risk_note\":\"持续消耗无转化关键词会浪费预算\",\"data_gap\":null}],\"overall_priority\":[\"tracking\",\"data_gap\",\"negative_keyword\",\"cost_spike\",\"conversion_drop\"]}",
+          "cached": false
+        },
+        "score": 1,
+        "success": true,
+        "testCase": {
+          "vars": {
+            "case_id": "case-20",
+            "date": "2026-06-25",
+            "category": "data_gap",
+            "expected_finding": "明确声明 C004 在 2026-06-22 存在数据缺口"
+          },
+          "assert": [
+            {
+              "type": "javascript",
+              "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+            },
+            {
+              "type": "javascript",
+              "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+            },
+            {
+              "type": "javascript",
+              "value": "JSON.stringify(JSON.parse(output)).includes('06-22')"
+            },
+            {
+              "type": "javascript",
+              "value": "JSON.parse(output).findings.some(f => f.data_gap)"
+            }
+          ],
+          "description": "Row #20",
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 19,
+        "tokenUsage": {
+          "prompt": 0,
+          "completion": 0,
+          "cached": 0,
+          "total": 0,
+          "numRequests": 1,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "case_id": "case-20",
+          "date": "2026-06-25",
+          "category": "data_gap",
+          "expected_finding": "明确声明 C004 在 2026-06-22 存在数据缺口"
+        },
+        "metadata": {
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      },
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 1,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "JSON.parse(output).findings.some(f => f.type === 'tracking')"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "/C002|Generic/.test(JSON.stringify(JSON.parse(output)))"
+              }
+            }
+          ]
+        },
+        "id": "e4418c61-4bde-4a84-87cf-8d3627a81d17",
+        "latencyMs": 193255,
+        "namedScores": {},
+        "prompt": {
+          "raw": "诊断 2026-06-21 的 Google Ads 投放数据",
+          "label": "诊断 {{date}} 的 Google Ads 投放数据",
+          "config": {}
+        },
+        "promptId": "bf7c6addc55911c950e731efefb0630e1e920891eff806739637279314b56103",
+        "promptIdx": 0,
+        "provider": {
+          "id": "file://provider.py",
+          "label": "agent"
+        },
+        "response": {
+          "output": "{\"summary\":\"最近7天（2026-06-15至2026-06-21）Google Ads投放数据显示多个异常现象，包括转化骤降、成本突增、追踪异常和否词机会。主要问题集中在Generic_Search（C002）和Shopping_Plants（C005）两个系列，存在追踪故障风险。\",\"findings\":[{\"type\":\"tracking\",\"entity\":\"Generic_Search (C002)\",\"evidence\":\"2026-06-20至2026-06-21连续2天零转化，期间点击量372次；点击/转化率从19.5升至26.7（+37%）；追踪状态被标记为suspected_broken\",\"confidence\":\"high\",\"recommendation\":\"建议立即检查C002系列的转化追踪代码配置，确认像素是否正常工作。建议人工暂停投放并联系技术团队排查追踪故障。\",\"risk_note\":\"追踪故障可能导致持续的成本浪费，372次点击无转化表明存在严重问题\",\"data_gap\":null},{\"type\":\"anomaly\",\"entity\":\"Shopping_Plants (C005)\",\"evidence\":\"2026-06-19成本突增248.7%（从$35.49升至$123.77）；2026-06-18曝光量下降70.5%（从2088降至617）；近期多次转化骤降\",\"confidence\":\"medium\",\"recommendation\":\"建议人工检查C005系列的投放设置，包括出价策略、定位条件和关键词匹配方式。建议暂停高成本时段投放并分析流量来源变化。\",\"risk_note\":\"成本突增伴随曝光量下降，可能存在定位问题或竞争环境变化\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"free coffee maker download\",\"evidence\":\"全月累计58次点击，0转化，成本$150.8，CPC $2.6；属于非商业意图搜索词\",\"confidence\":\"high\",\"recommendation\":\"建议人工将'free coffee maker download'添加为否定关键词，避免继续浪费预算在非商业流量上。\",\"risk_note\":\"持续投放此类搜索词将导致预算浪费和ROAS下降\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"portable yoga mat for sale\",\"evidence\":\"全月累计40次点击，0转化，成本$46.26；属于无转化搜索词\",\"confidence\":\"medium\",\"recommendation\":\"建议人工评估'portable yoga mat for sale'的相关性，如果确认不相关则添加为否定关键词。\",\"risk_note\":\"虽然成本相对较低，但持续无转化会影响整体账户表现\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"best coffee maker buy online\",\"evidence\":\"全月累计33次点击，0转化，成本$40.01；属于无转化搜索词\",\"confidence\":\"medium\",\"recommendation\":\"建议人工检查'best coffee maker buy online'的落地页相关性，如确认问题则添加为否定关键词。\",\"risk_note\":\"搜索词看似相关但无转化，可能存在落地页或产品匹配问题\",\"data_gap\":null}],\"overall_priority\":[\"修复Generic_Search追踪故障\",\"处理Shopping_Plants成本异常\",\"添加否定关键词优化预算分配\"]}",
+          "cached": false
+        },
+        "score": 1,
+        "success": true,
+        "testCase": {
+          "vars": {
+            "case_id": "case-21",
+            "date": "2026-06-21",
+            "category": "tracking",
+            "expected_finding": "C002 在 06-20/21 连续两天 0 转化但点击正常，判定为追踪异常而非投放失效"
+          },
+          "assert": [
+            {
+              "type": "javascript",
+              "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+            },
+            {
+              "type": "javascript",
+              "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+            },
+            {
+              "type": "javascript",
+              "value": "JSON.parse(output).findings.some(f => f.type === 'tracking')"
+            },
+            {
+              "type": "javascript",
+              "value": "/C002|Generic/.test(JSON.stringify(JSON.parse(output)))"
+            }
+          ],
+          "description": "Row #21",
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 20,
+        "tokenUsage": {
+          "prompt": 0,
+          "completion": 0,
+          "cached": 0,
+          "total": 0,
+          "numRequests": 1,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "case_id": "case-21",
+          "date": "2026-06-21",
+          "category": "tracking",
+          "expected_finding": "C002 在 06-20/21 连续两天 0 转化但点击正常，判定为追踪异常而非投放失效"
+        },
+        "metadata": {
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      },
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 1,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "JSON.parse(output).findings.some(f => f.type === 'tracking')"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "/C002|Generic/.test(JSON.stringify(JSON.parse(output)))"
+              }
+            }
+          ]
+        },
+        "id": "2b1f2ff7-a4a2-494a-8b6e-92ffe121af11",
+        "latencyMs": 158187,
+        "namedScores": {},
+        "prompt": {
+          "raw": "诊断 2026-06-22 的 Google Ads 投放数据",
+          "label": "诊断 {{date}} 的 Google Ads 投放数据",
+          "config": {}
+        },
+        "promptId": "bf7c6addc55911c950e731efefb0630e1e920891eff806739637279314b56103",
+        "promptIdx": 0,
+        "provider": {
+          "id": "file://provider.py",
+          "label": "agent"
+        },
+        "response": {
+          "output": "{\"summary\":\"最近7天（2026-06-16至2026-06-22）Google Ads投放数据显示多个异常现象：Generic_Search（C002）存在追踪丢失疑似问题，Shopping_Plants（C005）出现成本突增和曝光下降，多个campaign出现转化下降，Competitor_Search（C004）存在数据缺口。整体ROAS表现良好但存在明显的投放效率问题。\",\"findings\":[{\"type\":\"tracking\",\"entity\":\"Generic_Search (C002)\",\"evidence\":\"2026-06-20至2026-06-21连续2天零转化，期间372次点击；当前点击/转化率26.3，较前期19.8提升32.7%；追踪状态为suspected_broken\",\"confidence\":\"high\",\"recommendation\":\"建议立即检查C002的转化追踪代码配置，确认转化事件是否正确设置；检查网站是否正常加载追踪脚本；考虑暂停该系列直到追踪问题解决\",\"risk_note\":\"连续2天高点击零转化表明追踪系统可能完全失效，存在严重的转化漏失风险\",\"data_gap\":null},{\"type\":\"anomaly\",\"entity\":\"Shopping_Plants (C005)\",\"evidence\":\"2026-06-19成本突增248.7%（$35.49→$123.77）；2026-06-18曝光下降70.5%（2088→617）；2026-06-20转化下降66.7%（6→2）\",\"confidence\":\"high\",\"recommendation\":\"建议人工审查C006的投放设置，检查是否存在异常竞价或预算设置；分析曝光下降原因，检查是否因匹配方式或出价策略变化导致\",\"risk_note\":\"成本突增伴随转化下降，投放效率严重恶化，ROAS从2.12可能进一步下降\",\"data_gap\":null},{\"type\":\"anomaly\",\"entity\":\"Competitor_Search (C004)\",\"evidence\":\"2026-06-22数据缺失；2026-06-19和2026-06-21出现转化下降（100%和66.7%）\",\"confidence\":\"high\",\"recommendation\":\"建议检查C004在2026-06-22的数据同步情况，确认是否存在系统问题；分析转化下降的具体原因\",\"risk_note\":\"数据缺口影响完整性能评估，可能掩盖其他问题\",\"data_gap\":\"2026-06-22缺少C004的投放数据，影响该日期的完整性能评估\"},{\"type\":\"negative_keyword\",\"entity\":\"多个搜索词\",\"evidence\":\"搜索词级别数据显示多个高成本零转化词，如'waterproof coffee maker for sale'（$40.13成本，0转化）、'eco friendly wireless earbuds for sale'（$39.02成本，0转化）等\",\"confidence\":\"medium\",\"recommendation\":\"建议人工否词以下高成本零转化搜索词：'waterproof coffee maker for sale'、'eco friendly wireless earbuds for sale'、'ergonomic wireless earbuds buy online'等\",\"risk_note\":\"这些搜索词持续产生成本但不产生转化，拉低整体投放效率\",\"data_gap\":null},{\"type\":\"scale_up\",\"entity\":\"Brand_Search (C001)\",\"evidence\":\"ROAS表现最佳（3.77），点击/转化率11.1，较前期19.9改善44.2%；转化稳定，无追踪问题\",\"confidence\":\"high\",\"recommendation\":\"建议考虑适当增加Brand_Search的预算，以利用其优秀的投放效率；分析其成功因素并应用到其他系列\",\"risk_note\":\"品牌搜索流量相对有限，扩空间需要谨慎评估\",\"data_gap\":null}],\"overall_priority\":[\"tracking\",\"anomaly\",\"negative_keyword\",\"scale_up\",\"data_gap\"]}",
+          "cached": false
+        },
+        "score": 1,
+        "success": true,
+        "testCase": {
+          "vars": {
+            "case_id": "case-22",
+            "date": "2026-06-22",
+            "category": "tracking",
+            "expected_finding": "C002 在 06-20/21 连续两天 0 转化但点击正常，判定为追踪异常而非投放失效"
+          },
+          "assert": [
+            {
+              "type": "javascript",
+              "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+            },
+            {
+              "type": "javascript",
+              "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+            },
+            {
+              "type": "javascript",
+              "value": "JSON.parse(output).findings.some(f => f.type === 'tracking')"
+            },
+            {
+              "type": "javascript",
+              "value": "/C002|Generic/.test(JSON.stringify(JSON.parse(output)))"
+            }
+          ],
+          "description": "Row #22",
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 21,
+        "tokenUsage": {
+          "prompt": 0,
+          "completion": 0,
+          "cached": 0,
+          "total": 0,
+          "numRequests": 1,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "case_id": "case-22",
+          "date": "2026-06-22",
+          "category": "tracking",
+          "expected_finding": "C002 在 06-20/21 连续两天 0 转化但点击正常，判定为追踪异常而非投放失效"
+        },
+        "metadata": {
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      },
+      {
+        "cost": 0,
+        "error": "Custom function returned false\nJSON.parse(output).findings.every(f => f.confidence !== 'high')",
+        "gradingResult": {
+          "pass": false,
+          "score": 0.6666666666666666,
+          "reason": "Custom function returned false\nJSON.parse(output).findings.every(f => f.confidence !== 'high')",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+              }
+            },
+            {
+              "pass": false,
+              "score": 0,
+              "reason": "Custom function returned false\nJSON.parse(output).findings.every(f => f.confidence !== 'high')",
+              "assertion": {
+                "type": "javascript",
+                "value": "JSON.parse(output).findings.every(f => f.confidence !== 'high')"
+              }
+            }
+          ]
+        },
+        "id": "409e2f59-1188-442c-99e9-c3ed439e91eb",
+        "latencyMs": 107106,
+        "namedScores": {},
+        "prompt": {
+          "raw": "诊断 2026-06-09 的 Google Ads 投放数据",
+          "label": "诊断 {{date}} 的 Google Ads 投放数据",
+          "config": {}
+        },
+        "promptId": "bf7c6addc55911c950e731efefb0630e1e920891eff806739637279314b56103",
+        "promptIdx": 0,
+        "provider": {
+          "id": "file://provider.py",
+          "label": "agent"
+        },
+        "response": {
+          "output": "{\"summary\":\"本账户最近7天（2026-06-03至2026-06-09）存在多个转化下降异常，主要影响Generic_Search和Competitor_Search系列。追踪系统健康，无技术故障。Competitor_Search系列连续两天出现显著转化下降，需重点关注。\",\"findings\":[{\"type\":\"anomaly\",\"entity\":\"Generic_Search (C002)\",\"evidence\":\"2026-06-06转化从11降至5，下降54.5%；日均转化9.1，CPA 24.52，ROAS 2.11\",\"confidence\":\"high\",\"recommendation\":\"建议人工检查6月6日转化下降的具体原因，分析是否与广告创意、出价策略或竞争环境变化相关\",\"risk_note\":\"转化下降可能影响系列整体效果，但追踪系统健康，排除技术故障\",\"data_gap\":null},{\"type\":\"anomaly\",\"entity\":\"Competitor_Search (C004)\",\"evidence\":\"6月3日转化从6降至2（-66.7%），6月5日转化从7降至1（-85.7%）；日均转化3.1，CPA 32.9，ROAS 1.57\",\"confidence\":\"high\",\"recommendation\":\"建议人工分析搜索词层级数据，识别无效搜索词并考虑添加否词；检查出价策略是否需要调整\",\"risk_note\":\"连续两天显著转化下降，系列ROAS最低，存在优化空间\",\"data_gap\":null}],\"overall_priority\":[\"Competitor_Search (C004)转化下降异常\",\"Generic_Search (C002)转化下降异常\"]}",
+          "cached": false
+        },
+        "score": 0.6666666666666666,
+        "success": false,
+        "testCase": {
+          "vars": {
+            "case_id": "case-23",
+            "date": "2026-06-09",
+            "category": "normal",
+            "expected_finding": "无异常；正常波动不应产生高置信度报警"
+          },
+          "assert": [
+            {
+              "type": "javascript",
+              "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+            },
+            {
+              "type": "javascript",
+              "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+            },
+            {
+              "type": "javascript",
+              "value": "JSON.parse(output).findings.every(f => f.confidence !== 'high')"
+            }
+          ],
+          "description": "Row #23",
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 22,
+        "tokenUsage": {
+          "prompt": 0,
+          "completion": 0,
+          "cached": 0,
+          "total": 0,
+          "numRequests": 1,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "case_id": "case-23",
+          "date": "2026-06-09",
+          "category": "normal",
+          "expected_finding": "无异常；正常波动不应产生高置信度报警"
+        },
+        "metadata": {
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 1
+      },
+      {
+        "cost": 0,
+        "error": "Custom function returned false\nJSON.parse(output).findings.every(f => f.confidence !== 'high')",
+        "gradingResult": {
+          "pass": false,
+          "score": 0.6666666666666666,
+          "reason": "Custom function returned false\nJSON.parse(output).findings.every(f => f.confidence !== 'high')",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+              }
+            },
+            {
+              "pass": false,
+              "score": 0,
+              "reason": "Custom function returned false\nJSON.parse(output).findings.every(f => f.confidence !== 'high')",
+              "assertion": {
+                "type": "javascript",
+                "value": "JSON.parse(output).findings.every(f => f.confidence !== 'high')"
+              }
+            }
+          ]
+        },
+        "id": "a5d9b78f-2b25-43fd-bc83-a4eb690b4a7e",
+        "latencyMs": 70637,
+        "namedScores": {},
+        "prompt": {
+          "raw": "诊断 2026-06-11 的 Google Ads 投放数据",
+          "label": "诊断 {{date}} 的 Google Ads 投放数据",
+          "config": {}
+        },
+        "promptId": "bf7c6addc55911c950e731efefb0630e1e920891eff806739637279314b56103",
+        "promptIdx": 0,
+        "provider": {
+          "id": "file://provider.py",
+          "label": "agent"
+        },
+        "response": {
+          "output": "{\"summary\":\"最近7天（2026-06-05至2026-06-11）Google Ads投放数据显示整体表现正常，但存在两个高严重性的转化下降异常。同时发现3个符合条件的否词机会。追踪健康检查显示所有campaign状态正常。\",\"findings\":[{\"type\":\"anomaly\",\"entity\":\"C002 (Generic_Search)\",\"evidence\":\"2026-06-06转化从11个骤降至5个，降幅54.5%，连续7天共61个转化，ROAS 1.92\",\"confidence\":\"high\",\"recommendation\":\"建议人工检查该系列6月6日转化异常原因，分析是否为短期波动或需要调整投放策略\",\"risk_note\":\"转化下降可能影响整体账户表现，但该系列整体ROAS仍保持在合理水平\",\"data_gap\":null},{\"type\":\"anomaly\",\"entity\":\"C004 (Competitor_Search)\",\"evidence\":\"2026-06-05转化从7个骤降至1个，降幅85.7%，连续7天共20个转化，ROAS 1.43\",\"confidence\":\"high\",\"recommendation\":\"建议人工检查该系列6月5日转化异常原因，分析竞争环境变化或关键词策略调整\",\"risk_note\":\"转化大幅下降且ROAS较低，需要重点关注\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"free coffee maker download\",\"evidence\":\"58次点击，0转化，累计成本$150.80，完全无转化效果\",\"confidence\":\"high\",\"recommendation\":\"建议人工将该搜索词添加为否定关键词，避免无效点击浪费预算\",\"risk_note\":\"高成本无转化，持续消耗预算且无任何回报\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"portable yoga mat for sale\",\"evidence\":\"40次点击，0转化，累计成本$46.26，完全无转化效果\",\"confidence\":\"high\",\"recommendation\":\"建议人工将该搜索词添加为否定关键词，避免无效点击浪费预算\",\"risk_note\":\"中等成本无转化，持续消耗预算\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"best coffee maker buy online\",\"evidence\":\"33次点击，0转化，累计成本$40.01，完全无转化效果\",\"confidence\":\"high\",\"recommendation\":\"建议人工将该搜索词添加为否定关键词，避免无效点击浪费预算\",\"risk_note\":\"中等成本无转化，持续消耗预算\",\"data_gap\":null}],\"overall_priority\":[\"C002 (Generic_Search)转化异常\",\"C004 (Competitor_Search)转化异常\",\"否词优化建议\"]}",
+          "cached": false
+        },
+        "score": 0.6666666666666666,
+        "success": false,
+        "testCase": {
+          "vars": {
+            "case_id": "case-24",
+            "date": "2026-06-11",
+            "category": "normal",
+            "expected_finding": "无异常；正常波动不应产生高置信度报警"
+          },
+          "assert": [
+            {
+              "type": "javascript",
+              "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+            },
+            {
+              "type": "javascript",
+              "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+            },
+            {
+              "type": "javascript",
+              "value": "JSON.parse(output).findings.every(f => f.confidence !== 'high')"
+            }
+          ],
+          "description": "Row #24",
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 23,
+        "tokenUsage": {
+          "prompt": 0,
+          "completion": 0,
+          "cached": 0,
+          "total": 0,
+          "numRequests": 1,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "case_id": "case-24",
+          "date": "2026-06-11",
+          "category": "normal",
+          "expected_finding": "无异常；正常波动不应产生高置信度报警"
+        },
+        "metadata": {
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 1
+      },
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 1,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "JSON.parse(output).findings.every(f => f.confidence !== 'high')"
+              }
+            }
+          ]
+        },
+        "id": "560c18e3-ba76-4098-8b8c-e3c021b94550",
+        "latencyMs": 55317,
+        "namedScores": {},
+        "prompt": {
+          "raw": "诊断 2026-06-12 的 Google Ads 投放数据",
+          "label": "诊断 {{date}} 的 Google Ads 投放数据",
+          "config": {}
+        },
+        "promptId": "bf7c6addc55911c950e731efefb0630e1e920891eff806739637279314b56103",
+        "promptIdx": 0,
+        "provider": {
+          "id": "file://provider.py",
+          "label": "agent"
+        },
+        "response": {
+          "output": "{\"summary\":\"最近7天（2026-06-06至2026-06-12）Google Ads投放数据显示整体表现相对稳定，主要异常为Generic_Search（C002）在6月6日出现单日转化骤降，但后续迅速恢复。所有campaign追踪状态健康，无零转化连续天数。整体ROAS表现良好，其中Shopping_Plants（C005）表现最佳。\",\"findings\":[{\"type\":\"anomaly\",\"entity\":\"Generic_Search (C002)\",\"evidence\":\"2026-06-06转化5个，相比前一日（6月5日）11个下降54.5%，但后续6月7-12日转化恢复至8-10个。7天总转化60个，CPC 1.29，CPA 27.69，ROAS 1.88\",\"confidence\":\"medium\",\"recommendation\":\"建议人工检查6月6日的具体投放情况，分析转化骤降的临时性因素（如流量质量、竞品活动等），确认是否需要调整出价或否定策略\",\"risk_note\":\"单日转化骤降可能反映流量质量问题，但后续恢复表明可能是临时波动\",\"data_gap\":\"缺少6月5日及之前的历史数据对比，无法确认是否为持续趋势\"},{\"type\":\"negative_keyword\",\"entity\":\"Competitor_Search (C004)\",\"evidence\":\"7天转化23个，CPA 31.36（最高），ROAS 1.65（最低），转化效率相对较低\",\"confidence\":\"low\",\"recommendation\":\"建议人工检查搜索词级别数据，识别低效搜索词并考虑添加否定词，优化投放效率\",\"risk_note\":\"转化效率较低可能影响整体账户表现，需要持续观察\",\"data_gap\":\"缺少搜索词级别的详细数据，无法确定具体哪些搜索词表现不佳\"}],\"overall_priority\":[\"anomaly\",\"negative_keyword\"]}",
+          "cached": false
+        },
+        "score": 1,
+        "success": true,
+        "testCase": {
+          "vars": {
+            "case_id": "case-25",
+            "date": "2026-06-12",
+            "category": "normal",
+            "expected_finding": "无异常；正常波动不应产生高置信度报警"
+          },
+          "assert": [
+            {
+              "type": "javascript",
+              "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+            },
+            {
+              "type": "javascript",
+              "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+            },
+            {
+              "type": "javascript",
+              "value": "JSON.parse(output).findings.every(f => f.confidence !== 'high')"
+            }
+          ],
+          "description": "Row #25",
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 24,
+        "tokenUsage": {
+          "prompt": 0,
+          "completion": 0,
+          "cached": 0,
+          "total": 0,
+          "numRequests": 1,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "case_id": "case-25",
+          "date": "2026-06-12",
+          "category": "normal",
+          "expected_finding": "无异常；正常波动不应产生高置信度报警"
+        },
+        "metadata": {
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      }
+    ],
+    "stats": {
+      "successes": 18,
+      "failures": 7,
+      "errors": 0,
+      "tokenUsage": {
+        "prompt": 0,
+        "completion": 0,
+        "cached": 0,
+        "total": 0,
+        "numRequests": 25,
+        "completionDetails": {
+          "reasoning": 0,
+          "acceptedPrediction": 0,
+          "rejectedPrediction": 0,
+          "cacheReadInputTokens": 0,
+          "cacheCreationInputTokens": 0
+        },
+        "assertions": {
+          "total": 0,
+          "prompt": 0,
+          "completion": 0,
+          "cached": 0,
+          "numRequests": 0,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          }
+        }
+      },
+      "durationMs": 1305149,
+      "evaluationDurationMs": 1305149
+    }
+  },
+  "config": {
+    "tags": {},
+    "description": "ads-diagnosis-agent evaluation (25 cases)",
+    "prompts": [
+      "诊断 {{date}} 的 Google Ads 投放数据"
+    ],
+    "providers": [
+      {
+        "id": "file://provider.py",
+        "label": "agent"
+      }
+    ],
+    "tests": [
+      {
+        "vars": {
+          "case_id": "case-01",
+          "date": "2026-06-15",
+          "category": "cost_spike",
+          "expected_finding": "C001 在 2026-06-15 消耗环比突增 >50% 且转化下降"
+        },
+        "assert": [
+          {
+            "type": "javascript",
+            "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+          },
+          {
+            "type": "javascript",
+            "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+          },
+          {
+            "type": "javascript",
+            "value": "JSON.stringify(JSON.parse(output)).includes('C001')"
+          },
+          {
+            "type": "javascript",
+            "value": "/消耗|成本|cost/i.test(JSON.stringify(JSON.parse(output)))"
+          }
+        ],
+        "description": "Row #1"
+      },
+      {
+        "vars": {
+          "case_id": "case-02",
+          "date": "2026-06-16",
+          "category": "cost_spike",
+          "expected_finding": "C001 在 2026-06-15 消耗环比突增 >50% 且转化下降"
+        },
+        "assert": [
+          {
+            "type": "javascript",
+            "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+          },
+          {
+            "type": "javascript",
+            "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+          },
+          {
+            "type": "javascript",
+            "value": "JSON.stringify(JSON.parse(output)).includes('C001')"
+          },
+          {
+            "type": "javascript",
+            "value": "/消耗|成本|cost/i.test(JSON.stringify(JSON.parse(output)))"
+          }
+        ],
+        "description": "Row #2"
+      },
+      {
+        "vars": {
+          "case_id": "case-03",
+          "date": "2026-06-17",
+          "category": "cost_spike",
+          "expected_finding": "C001 在 2026-06-15 消耗环比突增 >50% 且转化下降"
+        },
+        "assert": [
+          {
+            "type": "javascript",
+            "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+          },
+          {
+            "type": "javascript",
+            "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+          },
+          {
+            "type": "javascript",
+            "value": "JSON.stringify(JSON.parse(output)).includes('C001')"
+          },
+          {
+            "type": "javascript",
+            "value": "/消耗|成本|cost/i.test(JSON.stringify(JSON.parse(output)))"
+          }
+        ],
+        "description": "Row #3"
+      },
+      {
+        "vars": {
+          "case_id": "case-04",
+          "date": "2026-06-18",
+          "category": "cost_spike",
+          "expected_finding": "C001 在 2026-06-15 消耗环比突增 >50% 且转化下降"
+        },
+        "assert": [
+          {
+            "type": "javascript",
+            "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+          },
+          {
+            "type": "javascript",
+            "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+          },
+          {
+            "type": "javascript",
+            "value": "JSON.stringify(JSON.parse(output)).includes('C001')"
+          },
+          {
+            "type": "javascript",
+            "value": "/消耗|成本|cost/i.test(JSON.stringify(JSON.parse(output)))"
+          }
+        ],
+        "description": "Row #4"
+      },
+      {
+        "vars": {
+          "case_id": "case-05",
+          "date": "2026-06-19",
+          "category": "cost_spike",
+          "expected_finding": "C005 在 2026-06-19 消耗环比突增（06-18 缩量后的反弹）"
+        },
+        "assert": [
+          {
+            "type": "javascript",
+            "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+          },
+          {
+            "type": "javascript",
+            "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+          },
+          {
+            "type": "javascript",
+            "value": "JSON.stringify(JSON.parse(output)).includes('C005')"
+          },
+          {
+            "type": "javascript",
+            "value": "/消耗|成本|cost/i.test(JSON.stringify(JSON.parse(output)))"
+          }
+        ],
+        "description": "Row #5"
+      },
+      {
+        "vars": {
+          "case_id": "case-06",
+          "date": "2026-06-24",
+          "category": "negative_keyword",
+          "expected_finding": "搜索词 free coffee maker download 累计 0 转化高消耗，建议加否定词"
+        },
+        "assert": [
+          {
+            "type": "javascript",
+            "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+          },
+          {
+            "type": "javascript",
+            "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+          },
+          {
+            "type": "javascript",
+            "value": "JSON.stringify(JSON.parse(output)).includes('free coffee maker download')"
+          },
+          {
+            "type": "javascript",
+            "value": "JSON.parse(output).findings.some(f => f.type === 'negative_keyword')"
+          }
+        ],
+        "description": "Row #6"
+      },
+      {
+        "vars": {
+          "case_id": "case-07",
+          "date": "2026-06-25",
+          "category": "negative_keyword",
+          "expected_finding": "搜索词 free coffee maker download 累计 0 转化高消耗，建议加否定词"
+        },
+        "assert": [
+          {
+            "type": "javascript",
+            "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+          },
+          {
+            "type": "javascript",
+            "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+          },
+          {
+            "type": "javascript",
+            "value": "JSON.stringify(JSON.parse(output)).includes('free coffee maker download')"
+          },
+          {
+            "type": "javascript",
+            "value": "JSON.parse(output).findings.some(f => f.type === 'negative_keyword')"
+          }
+        ],
+        "description": "Row #7"
+      },
+      {
+        "vars": {
+          "case_id": "case-08",
+          "date": "2026-06-26",
+          "category": "negative_keyword",
+          "expected_finding": "搜索词 free coffee maker download 累计 0 转化高消耗，建议加否定词"
+        },
+        "assert": [
+          {
+            "type": "javascript",
+            "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+          },
+          {
+            "type": "javascript",
+            "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+          },
+          {
+            "type": "javascript",
+            "value": "JSON.stringify(JSON.parse(output)).includes('free coffee maker download')"
+          },
+          {
+            "type": "javascript",
+            "value": "JSON.parse(output).findings.some(f => f.type === 'negative_keyword')"
+          }
+        ],
+        "description": "Row #8"
+      },
+      {
+        "vars": {
+          "case_id": "case-09",
+          "date": "2026-06-28",
+          "category": "negative_keyword",
+          "expected_finding": "搜索词 free coffee maker download 累计 0 转化高消耗，建议加否定词"
+        },
+        "assert": [
+          {
+            "type": "javascript",
+            "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+          },
+          {
+            "type": "javascript",
+            "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+          },
+          {
+            "type": "javascript",
+            "value": "JSON.stringify(JSON.parse(output)).includes('free coffee maker download')"
+          },
+          {
+            "type": "javascript",
+            "value": "JSON.parse(output).findings.some(f => f.type === 'negative_keyword')"
+          }
+        ],
+        "description": "Row #9"
+      },
+      {
+        "vars": {
+          "case_id": "case-10",
+          "date": "2026-06-30",
+          "category": "negative_keyword",
+          "expected_finding": "搜索词 free coffee maker download 累计 0 转化高消耗，建议加否定词"
+        },
+        "assert": [
+          {
+            "type": "javascript",
+            "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+          },
+          {
+            "type": "javascript",
+            "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+          },
+          {
+            "type": "javascript",
+            "value": "JSON.stringify(JSON.parse(output)).includes('free coffee maker download')"
+          },
+          {
+            "type": "javascript",
+            "value": "JSON.parse(output).findings.some(f => f.type === 'negative_keyword')"
+          }
+        ],
+        "description": "Row #10"
+      },
+      {
+        "vars": {
+          "case_id": "case-11",
+          "date": "2026-06-10",
+          "category": "scale_up",
+          "expected_finding": "C001 品牌词 ROAS≈3.5 健康，给出放量建议（scale_up）"
+        },
+        "assert": [
+          {
+            "type": "javascript",
+            "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+          },
+          {
+            "type": "javascript",
+            "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+          },
+          {
+            "type": "javascript",
+            "value": "JSON.stringify(JSON.parse(output)).includes('C001')"
+          },
+          {
+            "type": "javascript",
+            "value": "JSON.parse(output).findings.some(f => f.type === 'scale_up') || JSON.stringify(JSON.parse(output)).includes('放量')"
+          }
+        ],
+        "description": "Row #11"
+      },
+      {
+        "vars": {
+          "case_id": "case-12",
+          "date": "2026-06-12",
+          "category": "scale_up",
+          "expected_finding": "C001 品牌词 ROAS≈3.5 健康，给出放量建议（scale_up）"
+        },
+        "assert": [
+          {
+            "type": "javascript",
+            "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+          },
+          {
+            "type": "javascript",
+            "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+          },
+          {
+            "type": "javascript",
+            "value": "JSON.stringify(JSON.parse(output)).includes('C001')"
+          },
+          {
+            "type": "javascript",
+            "value": "JSON.parse(output).findings.some(f => f.type === 'scale_up') || JSON.stringify(JSON.parse(output)).includes('放量')"
+          }
+        ],
+        "description": "Row #12"
+      },
+      {
+        "vars": {
+          "case_id": "case-13",
+          "date": "2026-06-13",
+          "category": "scale_up",
+          "expected_finding": "C001 品牌词 ROAS≈3.5 健康，给出放量建议（scale_up）"
+        },
+        "assert": [
+          {
+            "type": "javascript",
+            "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+          },
+          {
+            "type": "javascript",
+            "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+          },
+          {
+            "type": "javascript",
+            "value": "JSON.stringify(JSON.parse(output)).includes('C001')"
+          },
+          {
+            "type": "javascript",
+            "value": "JSON.parse(output).findings.some(f => f.type === 'scale_up') || JSON.stringify(JSON.parse(output)).includes('放量')"
+          }
+        ],
+        "description": "Row #13"
+      },
+      {
+        "vars": {
+          "case_id": "case-14",
+          "date": "2026-06-14",
+          "category": "scale_up",
+          "expected_finding": "C001 品牌词 ROAS≈3.5 健康，给出放量建议（scale_up）"
+        },
+        "assert": [
+          {
+            "type": "javascript",
+            "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+          },
+          {
+            "type": "javascript",
+            "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+          },
+          {
+            "type": "javascript",
+            "value": "JSON.stringify(JSON.parse(output)).includes('C001')"
+          },
+          {
+            "type": "javascript",
+            "value": "JSON.parse(output).findings.some(f => f.type === 'scale_up') || JSON.stringify(JSON.parse(output)).includes('放量')"
+          }
+        ],
+        "description": "Row #14"
+      },
+      {
+        "vars": {
+          "case_id": "case-15",
+          "date": "2026-06-27",
+          "category": "cold_start",
+          "expected_finding": "C003 新上市（06-26）累计点击 <30，只给观察建议"
+        },
+        "assert": [
+          {
+            "type": "javascript",
+            "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+          },
+          {
+            "type": "javascript",
+            "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+          },
+          {
+            "type": "javascript",
+            "value": "JSON.parse(output).findings.some(f => /C003|New_Product/.test(f.entity) && f.confidence === 'low')"
+          },
+          {
+            "type": "javascript",
+            "value": "JSON.parse(output).findings.every(f => !/C003|New_Product/.test(f.entity) || f.confidence === 'low')"
+          }
+        ],
+        "description": "Row #15"
+      },
+      {
+        "vars": {
+          "case_id": "case-16",
+          "date": "2026-06-29",
+          "category": "cold_start",
+          "expected_finding": "C003 新上市（06-26）累计点击 <30，只给观察建议"
+        },
+        "assert": [
+          {
+            "type": "javascript",
+            "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+          },
+          {
+            "type": "javascript",
+            "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+          },
+          {
+            "type": "javascript",
+            "value": "JSON.parse(output).findings.some(f => /C003|New_Product/.test(f.entity) && f.confidence === 'low')"
+          },
+          {
+            "type": "javascript",
+            "value": "JSON.parse(output).findings.every(f => !/C003|New_Product/.test(f.entity) || f.confidence === 'low')"
+          }
+        ],
+        "description": "Row #16"
+      },
+      {
+        "vars": {
+          "case_id": "case-17",
+          "date": "2026-06-30",
+          "category": "cold_start",
+          "expected_finding": "C003 新上市（06-26）累计点击 <30，只给观察建议"
+        },
+        "assert": [
+          {
+            "type": "javascript",
+            "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+          },
+          {
+            "type": "javascript",
+            "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+          },
+          {
+            "type": "javascript",
+            "value": "JSON.parse(output).findings.some(f => /C003|New_Product/.test(f.entity) && f.confidence === 'low')"
+          },
+          {
+            "type": "javascript",
+            "value": "JSON.parse(output).findings.every(f => !/C003|New_Product/.test(f.entity) || f.confidence === 'low')"
+          }
+        ],
+        "description": "Row #17"
+      },
+      {
+        "vars": {
+          "case_id": "case-18",
+          "date": "2026-06-23",
+          "category": "data_gap",
+          "expected_finding": "明确声明 C004 在 2026-06-22 存在数据缺口"
+        },
+        "assert": [
+          {
+            "type": "javascript",
+            "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+          },
+          {
+            "type": "javascript",
+            "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+          },
+          {
+            "type": "javascript",
+            "value": "JSON.stringify(JSON.parse(output)).includes('06-22')"
+          },
+          {
+            "type": "javascript",
+            "value": "JSON.parse(output).findings.some(f => f.data_gap)"
+          }
+        ],
+        "description": "Row #18"
+      },
+      {
+        "vars": {
+          "case_id": "case-19",
+          "date": "2026-06-24",
+          "category": "data_gap",
+          "expected_finding": "明确声明 C004 在 2026-06-22 存在数据缺口"
+        },
+        "assert": [
+          {
+            "type": "javascript",
+            "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+          },
+          {
+            "type": "javascript",
+            "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+          },
+          {
+            "type": "javascript",
+            "value": "JSON.stringify(JSON.parse(output)).includes('06-22')"
+          },
+          {
+            "type": "javascript",
+            "value": "JSON.parse(output).findings.some(f => f.data_gap)"
+          }
+        ],
+        "description": "Row #19"
+      },
+      {
+        "vars": {
+          "case_id": "case-20",
+          "date": "2026-06-25",
+          "category": "data_gap",
+          "expected_finding": "明确声明 C004 在 2026-06-22 存在数据缺口"
+        },
+        "assert": [
+          {
+            "type": "javascript",
+            "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+          },
+          {
+            "type": "javascript",
+            "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+          },
+          {
+            "type": "javascript",
+            "value": "JSON.stringify(JSON.parse(output)).includes('06-22')"
+          },
+          {
+            "type": "javascript",
+            "value": "JSON.parse(output).findings.some(f => f.data_gap)"
+          }
+        ],
+        "description": "Row #20"
+      },
+      {
+        "vars": {
+          "case_id": "case-21",
+          "date": "2026-06-21",
+          "category": "tracking",
+          "expected_finding": "C002 在 06-20/21 连续两天 0 转化但点击正常，判定为追踪异常而非投放失效"
+        },
+        "assert": [
+          {
+            "type": "javascript",
+            "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+          },
+          {
+            "type": "javascript",
+            "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+          },
+          {
+            "type": "javascript",
+            "value": "JSON.parse(output).findings.some(f => f.type === 'tracking')"
+          },
+          {
+            "type": "javascript",
+            "value": "/C002|Generic/.test(JSON.stringify(JSON.parse(output)))"
+          }
+        ],
+        "description": "Row #21"
+      },
+      {
+        "vars": {
+          "case_id": "case-22",
+          "date": "2026-06-22",
+          "category": "tracking",
+          "expected_finding": "C002 在 06-20/21 连续两天 0 转化但点击正常，判定为追踪异常而非投放失效"
+        },
+        "assert": [
+          {
+            "type": "javascript",
+            "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+          },
+          {
+            "type": "javascript",
+            "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+          },
+          {
+            "type": "javascript",
+            "value": "JSON.parse(output).findings.some(f => f.type === 'tracking')"
+          },
+          {
+            "type": "javascript",
+            "value": "/C002|Generic/.test(JSON.stringify(JSON.parse(output)))"
+          }
+        ],
+        "description": "Row #22"
+      },
+      {
+        "vars": {
+          "case_id": "case-23",
+          "date": "2026-06-09",
+          "category": "normal",
+          "expected_finding": "无异常；正常波动不应产生高置信度报警"
+        },
+        "assert": [
+          {
+            "type": "javascript",
+            "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+          },
+          {
+            "type": "javascript",
+            "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+          },
+          {
+            "type": "javascript",
+            "value": "JSON.parse(output).findings.every(f => f.confidence !== 'high')"
+          }
+        ],
+        "description": "Row #23"
+      },
+      {
+        "vars": {
+          "case_id": "case-24",
+          "date": "2026-06-11",
+          "category": "normal",
+          "expected_finding": "无异常；正常波动不应产生高置信度报警"
+        },
+        "assert": [
+          {
+            "type": "javascript",
+            "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+          },
+          {
+            "type": "javascript",
+            "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+          },
+          {
+            "type": "javascript",
+            "value": "JSON.parse(output).findings.every(f => f.confidence !== 'high')"
+          }
+        ],
+        "description": "Row #24"
+      },
+      {
+        "vars": {
+          "case_id": "case-25",
+          "date": "2026-06-12",
+          "category": "normal",
+          "expected_finding": "无异常；正常波动不应产生高置信度报警"
+        },
+        "assert": [
+          {
+            "type": "javascript",
+            "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+          },
+          {
+            "type": "javascript",
+            "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+          },
+          {
+            "type": "javascript",
+            "value": "JSON.parse(output).findings.every(f => f.confidence !== 'high')"
+          }
+        ],
+        "description": "Row #25"
+      }
+    ],
+    "env": {},
+    "outputPath": [
+      "C:\\Users\\13642\\Documents\\ads-diagnosis-agent\\evals\\round1.json"
+    ],
+    "extensions": [],
+    "metadata": {},
+    "evaluateOptions": {
+      "maxConcurrency": 2
+    },
+    "basePath": "C:\\Users\\13642\\Documents\\ads-diagnosis-agent\\evals"
+  },
+  "shareableUrl": null,
+  "metadata": {
+    "promptfooVersion": "0.124.1",
+    "nodeVersion": "v22.23.2",
+    "platform": "win32",
+    "arch": "x64",
+    "exportedAt": "2026-10-10T14:45:54.190Z",
+    "evaluationCreatedAt": "2026-10-10T14:24:07.438Z"
+  },
+  "vars": [
+    "case_id",
+    "date",
+    "category",
+    "expected_finding"
+  ],
+  "runtimeOptions": {
+    "eventSource": "cli",
+    "maxConcurrency": 2,
+    "showProgressBar": true,
+    "repeat": 1,
+    "cache": false
+  }
+}
