@@ -136,6 +136,8 @@ def _task_prompt(date: str) -> str:
         f"投放数据。数据整体覆盖 {data_min} 至 {data_max}。先调用 "
         f"detect_anomalies，再按需下钻 get_performance 或核查 "
         f"get_tracking_status，最后给出结构化诊断结果。"
+        f"补充：否词机会评估可使用更长窗口（如全量数据区间），因为搜索词"
+        f"转化判断需要足够累积量。"
     )
 
 

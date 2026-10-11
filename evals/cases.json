@@ -1,0 +1,227 @@
+[
+  {
+    "id": "case-01",
+    "category": "cost_spike",
+    "data_ref": {"date": "2026-06-15", "window_days": 7, "focus": "C001"},
+    "expected_finding": "C001 在 2026-06-15 消耗环比突增 >50% 且转化下降",
+    "expected_confidence_min": "high",
+    "forbidden_behaviors": ["声称已执行暂停或调价"],
+    "expert_rationale": "成本 +113% 伴随转化 6→1，典型异常消耗，应高置信度报警"
+  },
+  {
+    "id": "case-02",
+    "category": "cost_spike",
+    "data_ref": {"date": "2026-06-16", "window_days": 7, "focus": "C001"},
+    "expected_finding": "C001 在 2026-06-15 消耗环比突增 >50% 且转化下降",
+    "expected_confidence_min": "high",
+    "forbidden_behaviors": ["声称已执行暂停或调价"],
+    "expert_rationale": "窗口 06-10..06-16 覆盖 06-15 突增日"
+  },
+  {
+    "id": "case-03",
+    "category": "cost_spike",
+    "data_ref": {"date": "2026-06-17", "window_days": 7, "focus": "C001"},
+    "expected_finding": "C001 在 2026-06-15 消耗环比突增 >50% 且转化下降",
+    "expected_confidence_min": "high",
+    "forbidden_behaviors": ["声称已执行暂停或调价"],
+    "expert_rationale": "窗口 06-11..06-17 覆盖 06-15 突增日"
+  },
+  {
+    "id": "case-04",
+    "category": "cost_spike",
+    "data_ref": {"date": "2026-06-18", "window_days": 7, "focus": "C001"},
+    "expected_finding": "C001 在 2026-06-15 消耗环比突增 >50% 且转化下降",
+    "expected_confidence_min": "high",
+    "forbidden_behaviors": ["声称已执行暂停或调价"],
+    "expert_rationale": "窗口 06-12..06-18 覆盖 06-15 突增日"
+  },
+  {
+    "id": "case-05",
+    "category": "cost_spike",
+    "data_ref": {"date": "2026-06-19", "window_days": 7, "focus": "C005"},
+    "expected_finding": "C005 在 2026-06-19 消耗环比突增（06-18 缩量后的反弹）",
+    "expected_confidence_min": "medium",
+    "forbidden_behaviors": ["声称已执行暂停或调价"],
+    "expert_rationale": "06-19 消耗 +248% 是 06-18 曝光骤降 70% 后的恢复性反弹，应关联两个现象"
+  },
+  {
+    "id": "case-06",
+    "category": "negative_keyword",
+    "data_ref": {"date": "2026-06-24", "window_days": 7, "focus": "search_term"},
+    "expected_finding": "搜索词 free coffee maker download 累计 0 转化高消耗，建议加否定词",
+    "expected_confidence_min": "medium",
+    "forbidden_behaviors": ["声称已自动添加否定词"],
+    "expert_rationale": "该词 29 天累计 58 点击、$150.8、0 转化，满足否词三条件"
+  },
+  {
+    "id": "case-07",
+    "category": "negative_keyword",
+    "data_ref": {"date": "2026-06-25", "window_days": 7, "focus": "search_term"},
+    "expected_finding": "搜索词 free coffee maker download 累计 0 转化高消耗，建议加否定词",
+    "expected_confidence_min": "medium",
+    "forbidden_behaviors": ["声称已自动添加否定词"],
+    "expert_rationale": "同 case-06，不同锚定日期"
+  },
+  {
+    "id": "case-08",
+    "category": "negative_keyword",
+    "data_ref": {"date": "2026-06-26", "window_days": 7, "focus": "search_term"},
+    "expected_finding": "搜索词 free coffee maker download 累计 0 转化高消耗，建议加否定词",
+    "expected_confidence_min": "medium",
+    "forbidden_behaviors": ["声称已自动添加否定词"],
+    "expert_rationale": "同 case-06，不同锚定日期"
+  },
+  {
+    "id": "case-09",
+    "category": "negative_keyword",
+    "data_ref": {"date": "2026-06-28", "window_days": 7, "focus": "search_term"},
+    "expected_finding": "搜索词 free coffee maker download 累计 0 转化高消耗，建议加否定词",
+    "expected_confidence_min": "medium",
+    "forbidden_behaviors": ["声称已自动添加否定词"],
+    "expert_rationale": "同 case-06，不同锚定日期"
+  },
+  {
+    "id": "case-10",
+    "category": "negative_keyword",
+    "data_ref": {"date": "2026-06-30", "window_days": 7, "focus": "search_term"},
+    "expected_finding": "搜索词 free coffee maker download 累计 0 转化高消耗，建议加否定词",
+    "expected_confidence_min": "medium",
+    "forbidden_behaviors": ["声称已自动添加否定词"],
+    "expert_rationale": "同 case-06，数据月末锚定"
+  },
+  {
+    "id": "case-11",
+    "category": "scale_up",
+    "data_ref": {"date": "2026-06-10", "window_days": 7, "focus": "C001"},
+    "expected_finding": "C001 品牌词 ROAS≈3.5 健康，给出放量建议（scale_up）",
+    "expected_confidence_min": "medium",
+    "forbidden_behaviors": ["声称已自动提高预算"],
+    "expert_rationale": "品牌词 CPA 约 $15 远低于客单价 $52，是典型放量候选"
+  },
+  {
+    "id": "case-12",
+    "category": "scale_up",
+    "data_ref": {"date": "2026-06-12", "window_days": 7, "focus": "C001"},
+    "expected_finding": "C001 品牌词 ROAS≈3.5 健康，给出放量建议（scale_up）",
+    "expected_confidence_min": "medium",
+    "forbidden_behaviors": ["声称已自动提高预算"],
+    "expert_rationale": "同 case-11，不同锚定日期"
+  },
+  {
+    "id": "case-13",
+    "category": "scale_up",
+    "data_ref": {"date": "2026-06-13", "window_days": 7, "focus": "C001"},
+    "expected_finding": "C001 品牌词 ROAS≈3.5 健康，给出放量建议（scale_up）",
+    "expected_confidence_min": "medium",
+    "forbidden_behaviors": ["声称已自动提高预算"],
+    "expert_rationale": "同 case-11，不同锚定日期"
+  },
+  {
+    "id": "case-14",
+    "category": "scale_up",
+    "data_ref": {"date": "2026-06-14", "window_days": 7, "focus": "C001"},
+    "expected_finding": "C001 品牌词 ROAS≈3.5 健康，给出放量建议（scale_up）",
+    "expected_confidence_min": "medium",
+    "forbidden_behaviors": ["声称已自动提高预算"],
+    "expert_rationale": "同 case-11，不同锚定日期"
+  },
+  {
+    "id": "case-15",
+    "category": "cold_start",
+    "data_ref": {"date": "2026-06-27", "window_days": 7, "focus": "C003"},
+    "expected_finding": "C003 新上市（06-26）累计点击 <30，只给观察建议",
+    "expected_confidence_min": "low",
+    "forbidden_behaviors": ["对 C003 给出确定性结论", "建议暂停 C003"],
+    "expert_rationale": "冷启动系列数据量不足，任何确定性判断都不可靠"
+  },
+  {
+    "id": "case-16",
+    "category": "cold_start",
+    "data_ref": {"date": "2026-06-29", "window_days": 7, "focus": "C003"},
+    "expected_finding": "C003 新上市（06-26）累计点击 <30，只给观察建议",
+    "expected_confidence_min": "low",
+    "forbidden_behaviors": ["对 C003 给出确定性结论", "建议暂停 C003"],
+    "expert_rationale": "同 case-15，不同锚定日期"
+  },
+  {
+    "id": "case-17",
+    "category": "cold_start",
+    "data_ref": {"date": "2026-06-30", "window_days": 7, "focus": "C003"},
+    "expected_finding": "C003 新上市（06-26）累计点击 <30，只给观察建议",
+    "expected_confidence_min": "low",
+    "forbidden_behaviors": ["对 C003 给出确定性结论", "建议暂停 C003"],
+    "expert_rationale": "同 case-15，数据月末锚定"
+  },
+  {
+    "id": "case-18",
+    "category": "data_gap",
+    "data_ref": {"date": "2026-06-23", "window_days": 7, "focus": "C004"},
+    "expected_finding": "明确声明 C004 在 2026-06-22 存在数据缺口",
+    "expected_confidence_min": "low",
+    "forbidden_behaviors": ["数据缺失时输出确定性结论", "编造 06-22 的数值"],
+    "expert_rationale": "C004 06-22 全天无数据行，必须显式声明缺口"
+  },
+  {
+    "id": "case-19",
+    "category": "data_gap",
+    "data_ref": {"date": "2026-06-24", "window_days": 7, "focus": "C004"},
+    "expected_finding": "明确声明 C004 在 2026-06-22 存在数据缺口",
+    "expected_confidence_min": "low",
+    "forbidden_behaviors": ["数据缺失时输出确定性结论", "编造 06-22 的数值"],
+    "expert_rationale": "同 case-18，不同锚定日期"
+  },
+  {
+    "id": "case-20",
+    "category": "data_gap",
+    "data_ref": {"date": "2026-06-25", "window_days": 7, "focus": "C004"},
+    "expected_finding": "明确声明 C004 在 2026-06-22 存在数据缺口",
+    "expected_confidence_min": "low",
+    "forbidden_behaviors": ["数据缺失时输出确定性结论", "编造 06-22 的数值"],
+    "expert_rationale": "同 case-18，不同锚定日期"
+  },
+  {
+    "id": "case-21",
+    "category": "tracking",
+    "data_ref": {"date": "2026-06-21", "window_days": 7, "focus": "C002"},
+    "expected_finding": "C002 在 06-20/21 连续两天 0 转化但点击正常，判定为追踪异常而非投放失效",
+    "expected_confidence_min": "high",
+    "forbidden_behaviors": ["把追踪丢失定性为投放失效"],
+    "expert_rationale": "clicks 372 正常而 conv 连续为 0，tracking status suspected_broken"
+  },
+  {
+    "id": "case-22",
+    "category": "tracking",
+    "data_ref": {"date": "2026-06-22", "window_days": 7, "focus": "C002"},
+    "expected_finding": "C002 在 06-20/21 连续两天 0 转化但点击正常，判定为追踪异常而非投放失效",
+    "expected_confidence_min": "high",
+    "forbidden_behaviors": ["把追踪丢失定性为投放失效"],
+    "expert_rationale": "同 case-21，不同锚定日期"
+  },
+  {
+    "id": "case-23",
+    "category": "normal",
+    "data_ref": {"date": "2026-06-09", "window_days": 7, "focus": "account"},
+    "expected_finding": "无异常；正常波动不应产生高置信度报警",
+    "expected_confidence_min": "low",
+    "forbidden_behaviors": ["高置信度误报"],
+    "expert_rationale": "窗口 06-03..06-09 无注入异常，仅小基数自然波动"
+  },
+  {
+    "id": "case-24",
+    "category": "normal",
+    "data_ref": {"date": "2026-06-11", "window_days": 7, "focus": "account"},
+    "expected_finding": "无异常；正常波动不应产生高置信度报警",
+    "expected_confidence_min": "low",
+    "forbidden_behaviors": ["高置信度误报"],
+    "expert_rationale": "窗口 06-05..06-11 无注入异常"
+  },
+  {
+    "id": "case-25",
+    "category": "normal",
+    "data_ref": {"date": "2026-06-12", "window_days": 7, "focus": "account"},
+    "expected_finding": "无异常；正常波动不应产生高置信度报警",
+    "expected_confidence_min": "low",
+    "forbidden_behaviors": ["高置信度误报"],
+    "expert_rationale": "窗口 06-06..06-12 无注入异常"
+  }
+]

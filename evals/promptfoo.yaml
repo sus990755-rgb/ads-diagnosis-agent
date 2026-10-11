@@ -1,0 +1,13 @@
+description: ads-diagnosis-agent evaluation (25 cases)
+
+prompts:
+  - "诊断 {{date}} 的 Google Ads 投放数据"
+
+providers:
+  - id: file://provider.py
+    label: agent
+
+tests: file://tests.json
+
+evaluateOptions:
+  maxConcurrency: 2
