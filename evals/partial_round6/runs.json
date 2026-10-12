@@ -1,0 +1,436 @@
+[
+  {
+    "run_id": "962e17a83c5f",
+    "anchor_date": "2026-06-09",
+    "status": "ok",
+    "started_at": "2026-10-12T16:29:49",
+    "ended_at": "2026-10-12T16:32:22",
+    "duration_ms": 153118.7,
+    "input_tokens": 55231,
+    "output_tokens": 2196,
+    "error": null,
+    "tool_calls": [
+      {
+        "seq": 1,
+        "tool": "detect_anomalies",
+        "duration_ms": 77.6,
+        "error": null
+      },
+      {
+        "seq": 2,
+        "tool": "get_performance",
+        "duration_ms": 44.6,
+        "error": null
+      },
+      {
+        "seq": 3,
+        "tool": "get_tracking_status",
+        "duration_ms": 49.1,
+        "error": null
+      },
+      {
+        "seq": 4,
+        "tool": "get_performance",
+        "duration_ms": 8.7,
+        "error": null
+      },
+      {
+        "seq": 5,
+        "tool": "detect_anomalies",
+        "duration_ms": 69.0,
+        "error": null
+      },
+      {
+        "seq": 6,
+        "tool": "get_performance",
+        "duration_ms": 8.9,
+        "error": null
+      }
+    ],
+    "output_json": "{\"summary\":\"账户最近7天表现总体稳定，但存在几个小基数转化波动和否词机会。追踪健康，无严重异常。Brand_Search系列表现优异，可考虑放量。\",\"findings\":[{\"type\":\"anomaly\",\"entity\":\"C002 - Generic_Search\",\"evidence\":\"2026-06-06转化从11个降至5个，减少6个（-54.5%），属于小基数波动\",\"confidence\":\"low\",\"recommendation\":\"建议人工观察后续转化趋势，单日波动属正常范围\",\"risk_note\":\"转化波动较小，风险较低\",\"data_gap\":null},{\"type\":\"anomaly\",\"entity\":\"C004 - Competitor_Search\",\"evidence\":\"2026-06-03转化从6个降至2个，减少4个（-66.7%）；2026-06-05转化从7个降至1个，减少6个（-85.7%），均属小基数波动\",\"confidence\":\"low\",\"recommendation\":\"建议人工观察后续转化趋势，单日波动属正常范围\",\"risk_note\":\"转化波动较小，风险较低\",\"data_gap\":null},{\"type\":\"anomaly\",\"entity\":\"C005 - Shopping_Plants\",\"evidence\":\"2026-06-02转化从7个降至3个，减少4个（-57.1%），属于小基数波动\",\"confidence\":\"low\",\"recommendation\":\"建议人工观察后续转化趋势，单日波动属正常范围\",\"risk_note\":\"转化波动较小，风险较低\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"eco friendly wireless earbuds buy online\",\"evidence\":\"9天内点击46次，转化0次，消耗$55.76，C002系列AG11广告组\",\"confidence\":\"medium\",\"recommendation\":\"建议人工评估添加为否定关键词，避免无效流量消耗\",\"risk_note\":\"持续消耗无转化，影响整体效率\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"ergonomic wireless earbuds buy online\",\"evidence\":\"9天内点击44次，转化0次，消耗$54.66，C002系列AG11广告组\",\"confidence\":\"medium\",\"recommendation\":\"建议人工评估添加为否定关键词，避免无效流量消耗\",\"risk_note\":\"持续消耗无转化，影响整体效率\",\"data_gap\":null},{\"type\":\"scale_up\",\"entity\":\"C001 - Brand_Search\",\"evidence\":\"全量区间ROAS 3.23，累计转化115个，表现稳定优异\",\"confidence\":\"high\",\"recommendation\":\"建议人工评估提高预算/出价，放大优质流量\",\"risk_note\":\"放量需监控转化质量，避免稀释效果\",\"data_gap\":null}],\"overall_priority\":[\"C001 - Brand_Search 放量机会\",\"eco friendly wireless earbuds buy online 否词机会\",\"ergonomic wireless earbuds buy online 否词机会\",\"C004 - Competitor_Search 小基数波动观察\",\"C002 - Generic_Search 小基数波动观察\",\"C005 - Shopping_Plants 小基数波动观察\"]}"
+  },
+  {
+    "run_id": "49616e3d35f8",
+    "anchor_date": "2026-06-10",
+    "status": "ok",
+    "started_at": "2026-10-12T16:32:27",
+    "ended_at": "2026-10-12T16:33:24",
+    "duration_ms": 56962.5,
+    "input_tokens": 26006,
+    "output_tokens": 1653,
+    "error": null,
+    "tool_calls": [
+      {
+        "seq": 1,
+        "tool": "detect_anomalies",
+        "duration_ms": 75.7,
+        "error": null
+      },
+      {
+        "seq": 2,
+        "tool": "get_performance",
+        "duration_ms": 49.5,
+        "error": null
+      },
+      {
+        "seq": 3,
+        "tool": "get_tracking_status",
+        "duration_ms": 50.4,
+        "error": null
+      },
+      {
+        "seq": 4,
+        "tool": "get_performance",
+        "duration_ms": 11.0,
+        "error": null
+      }
+    ],
+    "output_json": "{\"summary\":\"本账户最近7天（2026-06-04至2026-06-10）投放数据显示整体表现正常，但存在个别campaign的转化波动。追踪系统健康，无数据缺口。Brand_Search系列表现优异，ROAS达3.23，具备放量潜力。\",\"findings\":[{\"type\":\"anomaly\",\"entity\":\"C002 - Generic_Search\",\"evidence\":\"2026-06-06转化从11个降至5个，环比下降54.5%（单日减少6个）\",\"confidence\":\"low\",\"recommendation\":\"建议人工观察Generic_Search系列转化波动，单日减少6个属于小基数噪声，建议继续观察2-3天确认是否为趋势性变化\",\"risk_note\":\"小基数波动可能为统计噪声，不建议立即调整投放策略\",\"data_gap\":null},{\"type\":\"anomaly\",\"entity\":\"C004 - Competitor_Search\",\"evidence\":\"2026-06-05转化从7个降至1个，环比下降85.7%（单日减少6个）\",\"confidence\":\"low\",\"recommendation\":\"建议人工观察Competitor_Search系列转化波动，单日减少6个属于小基数噪声，建议继续观察2-3天确认是否为趋势性变化\",\"risk_note\":\"小基数波动可能为统计噪声，不建议立即调整投放策略\",\"data_gap\":null},{\"type\":\"scale_up\",\"entity\":\"C001 - Brand_Search\",\"evidence\":\"全量区间ROAS 3.23，累计转化115个，CPA 16.2美元，表现稳定优异\",\"confidence\":\"high\",\"recommendation\":\"建议人工评估提高Brand_Search系列的预算或出价，该系列具备良好的盈利能力和稳定性\",\"risk_note\":\"放量前建议确认品牌搜索词的竞争环境是否发生变化\",\"data_gap\":null}],\"overall_priority\":[\"scale_up: C001 - Brand_Search\",\"anomaly: C002 - Generic_Search\",\"anomaly: C004 - Competitor_Search\"]}"
+  },
+  {
+    "run_id": "edb36ca8bf6a",
+    "anchor_date": "2026-06-11",
+    "status": "ok",
+    "started_at": "2026-10-12T16:33:34",
+    "ended_at": "2026-10-12T16:35:44",
+    "duration_ms": 130140.4,
+    "input_tokens": 46873,
+    "output_tokens": 2742,
+    "error": null,
+    "tool_calls": [
+      {
+        "seq": 1,
+        "tool": "detect_anomalies",
+        "duration_ms": 66.7,
+        "error": null
+      },
+      {
+        "seq": 2,
+        "tool": "get_performance",
+        "duration_ms": 57.2,
+        "error": null
+      },
+      {
+        "seq": 3,
+        "tool": "get_tracking_status",
+        "duration_ms": 49.7,
+        "error": null
+      },
+      {
+        "seq": 4,
+        "tool": "get_performance",
+        "duration_ms": 6.6,
+        "error": null
+      },
+      {
+        "seq": 5,
+        "tool": "get_performance",
+        "duration_ms": 14.2,
+        "error": null
+      }
+    ],
+    "output_json": "{\"summary\":\"账户最近7天（2026-06-05至2026-06-11）投放数据显示整体表现正常，但存在两个转化下降异常和多个否词机会。追踪健康状态良好，无数据缺口。\",\"findings\":[{\"type\":\"anomaly\",\"entity\":\"C002 - Generic_Search\",\"evidence\":\"2026-06-06转化从11个降至5个，下降54.5%（单日绝对减少6个）\",\"confidence\":\"low\",\"recommendation\":\"建议人工检查6月6日转化下降原因，观察后续表现\",\"risk_note\":\"单日转化减少未达到8个阈值，可能为统计噪声\",\"data_gap\":null},{\"type\":\"anomaly\",\"entity\":\"C004 - Competitor_Search\",\"evidence\":\"2026-06-05转化从7个降至1个，下降85.7%（单日绝对减少6个）\",\"confidence\":\"low\",\"recommendation\":\"建议人工检查6月5日转化下降原因，观察后续表现\",\"risk_note\":\"单日转化减少未达到8个阈值，可能为统计噪声\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"eco friendly wireless earbuds buy online\",\"evidence\":\"点击55次，转化0个，累计成本$67.9\",\"confidence\":\"medium\",\"recommendation\":\"建议人工评估添加为否定关键词\",\"risk_note\":\"高成本无转化，存在优化空间\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"ergonomic wireless earbuds buy online\",\"evidence\":\"点击52次，转化0个，累计成本$65.54\",\"confidence\":\"medium\",\"recommendation\":\"建议人工评估添加为否定关键词\",\"risk_note\":\"高成本无转化，存在优化空间\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"waterproof wireless earbuds buy online\",\"evidence\":\"点击49次，转化0个，累计成本$60.65\",\"confidence\":\"medium\",\"recommendation\":\"建议人工评估添加为否定关键词\",\"risk_note\":\"高成本无转化，存在优化空间\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"premium wireless earbuds buy online\",\"evidence\":\"点击44次，转化0个，累计成本$54.98\",\"confidence\":\"medium\",\"recommendation\":\"建议人工评估添加为否定关键词\",\"risk_note\":\"高成本无转化，存在优化空间\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"lightweight standing desk buy online\",\"evidence\":\"点击28次，转化0个，累计成本$32.5\",\"confidence\":\"medium\",\"recommendation\":\"建议人工评估添加为否定关键词\",\"risk_note\":\"中等成本无转化，存在优化空间\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"ergonomic desk lamp for sale\",\"evidence\":\"点击27次，转化0个，累计成本$32.36\",\"confidence\":\"medium\",\"recommendation\":\"建议人工评估添加为否定关键词\",\"risk_note\":\"中等成本无转化，存在优化空间\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"lightweight desk lamp buy online\",\"evidence\":\"点击25次，转化0个，累计成本$30.37\",\"confidence\":\"medium\",\"recommendation\":\"建议人工评估添加为否定关键词\",\"risk_note\":\"中等成本无转化，存在优化空间\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"portable backpack buy online\",\"evidence\":\"点击24次，转化0个，累计成本$29.99\",\"confidence\":\"medium\",\"recommendation\":\"建议人工评估添加为否定关键词\",\"risk_note\":\"中等成本无转化，存在优化空间\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"discount desk lamp for sale\",\"evidence\":\"点击24次，转化0个，累计成本$29.79\",\"confidence\":\"medium\",\"recommendation\":\"建议人工评估添加为否定关键词\",\"risk_note\":\"中等成本无转化，存在优化空间\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"ergonomic standing desk for sale\",\"evidence\":\"点击34次，转化0个，累计成本$39.35\",\"confidence\":\"medium\",\"recommendation\":\"建议人工评估添加为否定关键词\",\"risk_note\":\"中等成本无转化，存在优化空间\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"eco friendly backpack buy online\",\"evidence\":\"点击23次，转化0个，累计成本$29.08\",\"confidence\":\"medium\",\"recommendation\":\"建议人工评估添加为否定关键词\",\"risk_note\":\"中等成本无转化，存在优化空间\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"waterproof backpack buy online\",\"evidence\":\"点击23次，转化0个，累计成本$28.49\",\"confidence\":\"medium\",\"recommendation\":\"建议人工评估添加为否定关键词\",\"risk_note\":\"中等成本无转化，存在优化空间\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"cheap desk lamp buy online\",\"evidence\":\"点击24次，转化0个，累计成本$29.2\",\"confidence\":\"medium\",\"recommendation\":\"建议人工评估添加为否定关键词\",\"risk_note\":\"中等成本无转化，存在优化空间\",\"data_gap\":null},{\"type\":\"scale_up\",\"entity\":\"C001 - Brand_Search\",\"evidence\":\"全量区间ROAS=2.78，累计转化35个，表现稳定\",\"confidence\":\"medium\",\"recommendation\":\"建议人工评估提高预算/出价\",\"risk_note\":\"ROAS接近3，有放量空间但需谨慎评估\",\"data_gap\":null},{\"type\":\"scale_up\",\"entity\":\"C005 - Shopping_Plants\",\"evidence\":\"全量区间ROAS=2.22，累计转化63个，表现稳定\",\"confidence\":\"medium\",\"recommendation\":\"建议人工评估提高预算/出价\",\"risk_note\":\"ROAS接近3，有放量空间但需谨慎评估\",\"data_gap\":null}],\"overall_priority\":[\"转化下降异常监控\",\"否词机会优化\",\"健康系列放量评估\"]}"
+  },
+  {
+    "run_id": "f4170880c077",
+    "anchor_date": "2026-06-15",
+    "status": "degraded",
+    "started_at": "2026-10-12T16:38:03",
+    "ended_at": "2026-10-12T16:47:28",
+    "duration_ms": 565034.4,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "error": "ModelBehaviorError: Chat Completions response terminated with finish_reason='length' but produced no assistant text, tool call, or refusal.",
+    "tool_calls": [
+      {
+        "seq": 1,
+        "tool": "detect_anomalies",
+        "duration_ms": 94.5,
+        "error": null
+      },
+      {
+        "seq": 2,
+        "tool": "get_performance",
+        "duration_ms": 64.3,
+        "error": null
+      },
+      {
+        "seq": 3,
+        "tool": "get_tracking_status",
+        "duration_ms": 80.7,
+        "error": null
+      },
+      {
+        "seq": 4,
+        "tool": "get_performance",
+        "duration_ms": 13.4,
+        "error": null
+      },
+      {
+        "seq": 5,
+        "tool": "get_performance",
+        "duration_ms": 8.3,
+        "error": null
+      }
+    ],
+    "output_json": "{\"summary\":\"诊断运行失败，输出降级报告。原因：ModelBehaviorError: Chat Completions response terminated with finish_reason='length' but produced no assistant text, tool call, or refusal.\",\"findings\":[{\"type\":\"none\",\"entity\":\"account\",\"evidence\":\"本次运行未能完成工具调用或模型输出校验。\",\"confidence\":\"low\",\"recommendation\":\"建议人工检查运行环境（API 配置/网络/数据文件）后重跑。\",\"risk_note\":\"本报告为降级输出，未基于完整数据分析。\",\"data_gap\":\"运行失败，无可用诊断数据：Chat Completions response terminated with finish_reason='length' but produced no assistant text, tool call, or refusal.\"}],\"overall_priority\":[]}"
+  },
+  {
+    "run_id": "f8a673835546",
+    "anchor_date": "2026-06-16",
+    "status": "ok",
+    "started_at": "2026-10-12T16:47:28",
+    "ended_at": "2026-10-12T16:49:41",
+    "duration_ms": 132640.2,
+    "input_tokens": 57032,
+    "output_tokens": 3311,
+    "error": null,
+    "tool_calls": [
+      {
+        "seq": 1,
+        "tool": "detect_anomalies",
+        "duration_ms": 88.1,
+        "error": null
+      },
+      {
+        "seq": 2,
+        "tool": "get_performance",
+        "duration_ms": 37.2,
+        "error": null
+      },
+      {
+        "seq": 3,
+        "tool": "get_tracking_status",
+        "duration_ms": 58.6,
+        "error": null
+      },
+      {
+        "seq": 4,
+        "tool": "get_performance",
+        "duration_ms": 5.9,
+        "error": null
+      },
+      {
+        "seq": 5,
+        "tool": "detect_anomalies",
+        "duration_ms": 63.6,
+        "error": null
+      },
+      {
+        "seq": 6,
+        "tool": "get_performance",
+        "duration_ms": 8.0,
+        "error": null
+      }
+    ],
+    "output_json": "{\"summary\":\"最近7天（2026-06-10至2026-06-16）Google Ads投放诊断发现：1）Brand_Search（C001）在6月15日出现成本突增（+113.4%）和转化下降；2）5个搜索词存在否词机会；3）Brand_Search（C001）全量区间ROAS达3.23，具备放量潜力；4）所有campaign追踪状态健康。\",\"findings\":[{\"type\":\"anomaly\",\"entity\":\"Brand_Search (C001)\",\"evidence\":\"2026-06-15成本从$57.72突增至$123.17（+113.4%），同日转化从6个降至1个（-83.3%）\",\"confidence\":\"medium\",\"recommendation\":\"建议人工检查6月15日Brand_Search的投放设置，分析成本突增原因，考虑是否需要调整出价或预算分配\",\"risk_note\":\"成本突增伴随转化下降，可能影响整体投放效率\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"eco friendly wireless earbuds buy online\",\"evidence\":\"81点击，0转化，累计成本$102.18（C002/AG11）\",\"confidence\":\"medium\",\"recommendation\":\"建议人工评估添加为否定关键词，避免无效点击浪费\",\"risk_note\":\"持续消耗预算无转化回报\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"ergonomic wireless earbuds buy online\",\"evidence\":\"72点击，0转化，累计成本$91.72（C002/AG11）\",\"confidence\":\"medium\",\"recommendation\":\"建议人工评估添加为否定关键词，避免无效点击浪费\",\"risk_note\":\"持续消耗预算无转化回报\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"free coffee maker download\",\"evidence\":\"32点击，0转化，累计成本$83.20（C004/AG19）\",\"confidence\":\"medium\",\"recommendation\":\"建议人工评估添加为否定关键词，避免无效点击浪费\",\"risk_note\":\"搜索意图不匹配，持续消耗预算\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"premium wireless earbuds buy online\",\"evidence\":\"65点击，0转化，累计成本$85.31（C002/AG10）\",\"confidence\":\"medium\",\"recommendation\":\"建议人工评估添加为否定关键词，避免无效点击浪费\",\"risk_note\":\"持续消耗预算无转化回报\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"waterproof wireless earbuds buy online\",\"evidence\":\"71点击，0转化，累计成本$89.90（C002/AG11）\",\"confidence\":\"medium\",\"recommendation\":\"建议人工评估添加为否定关键词，避免无效点击浪费\",\"risk_note\":\"持续消耗预算无转化回报\",\"data_gap\":null},{\"type\":\"scale_up\",\"entity\":\"Brand_Search (C001)\",\"evidence\":\"全量区间ROAS=3.23，累计转化115个，累计成本$1,862.68\",\"confidence\":\"high\",\"recommendation\":\"建议人工评估提高预算/出价，该系列表现优异且具备放量空间\",\"risk_note\":\"需监控放量后的转化率和成本变化\",\"data_gap\":null}],\"overall_priority\":[\"Brand_Search成本突增问题\",\"否词机会优化\",\"Brand_Search放量评估\"]}"
+  },
+  {
+    "run_id": "622fe12d7c10",
+    "anchor_date": "2026-06-17",
+    "status": "ok",
+    "started_at": "2026-10-12T16:49:41",
+    "ended_at": "2026-10-12T16:52:30",
+    "duration_ms": 169616.8,
+    "input_tokens": 47834,
+    "output_tokens": 3196,
+    "error": null,
+    "tool_calls": [
+      {
+        "seq": 1,
+        "tool": "detect_anomalies",
+        "duration_ms": 83.6,
+        "error": null
+      },
+      {
+        "seq": 2,
+        "tool": "get_performance",
+        "duration_ms": 26.9,
+        "error": null
+      },
+      {
+        "seq": 3,
+        "tool": "get_tracking_status",
+        "duration_ms": 53.9,
+        "error": null
+      },
+      {
+        "seq": 4,
+        "tool": "get_performance",
+        "duration_ms": 10.1,
+        "error": null
+      },
+      {
+        "seq": 5,
+        "tool": "get_performance",
+        "duration_ms": 8.4,
+        "error": null
+      }
+    ],
+    "output_json": "{\"summary\":\"账户最近7天（2026-06-11至2026-06-17）投放数据显示存在多个低置信度异常，包括Brand_Search和Competitor_Search的转化下降以及Brand_Search的消耗突增。追踪状态健康，无数据缺口。全量区间ROAS分析显示部分campaign具备放量潜力，同时发现多个否词机会。\",\"findings\":[{\"type\":\"anomaly\",\"entity\":\"Brand_Search (C001)\",\"evidence\":\"2026-06-13转化从5降至2（-60%），2026-06-15转化从6降至1（-83.3%），同时消耗从$57.72增至$123.17（+113.4%）\",\"confidence\":\"low\",\"recommendation\":\"建议人工检查Brand_Search系列在6月15日的广告活动变化，分析转化下降和消耗突增的具体原因\",\"risk_note\":\"转化下降幅度较大但单日绝对减少未达8个阈值，属于小基数波动\",\"data_gap\":null},{\"type\":\"anomaly\",\"entity\":\"Competitor_Search (C004)\",\"evidence\":\"2026-06-15转化从4降至1（-75%）\",\"confidence\":\"low\",\"recommendation\":\"建议人工检查Competitor_Search系列在6月15日的广告活动变化，分析转化下降的具体原因\",\"risk_note\":\"转化下降幅度较大但单日绝对减少未达8个阈值，属于小基数波动\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"eco friendly wireless earbuds buy online\",\"evidence\":\"累计点击87次，成本$109.00，转化0次，ROAS 0.0\",\"confidence\":\"medium\",\"recommendation\":\"建议人工评估将此搜索词添加为否定关键词，避免无效消耗\",\"risk_note\":\"该词有稳定点击但无转化，持续消耗预算\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"ergonomic desk lamp for sale\",\"evidence\":\"累计点击40次，成本$47.46，转化0次，ROAS 0.0\",\"confidence\":\"medium\",\"recommendation\":\"建议人工评估将此搜索词添加为否定关键词，避免无效消耗\",\"risk_note\":\"该词有稳定点击但无转化，持续消耗预算\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"lightweight desk lamp buy online\",\"evidence\":\"累计点击38次，成本$44.86，转化0次，ROAS 0.0\",\"confidence\":\"medium\",\"recommendation\":\"建议人工评估将此搜索词添加为否定关键词，避免无效消耗\",\"risk_note\":\"该词有稳定点击但无转化，持续消耗预算\",\"data_gap\":null},{\"type\":\"scale_up\",\"entity\":\"Brand_Search (C001)\",\"evidence\":\"全量区间ROAS 2.64，累计点击900次，转化55次，CPA $19.83\",\"confidence\":\"medium\",\"recommendation\":\"建议人工评估提高Brand_Search系列的预算/出价，当前ROAS表现良好\",\"risk_note\":\"ROAS接近3的阈值，放量需谨慎监控转化质量\",\"data_gap\":null},{\"type\":\"scale_up\",\"entity\":\"Shopping_Plants (C005)\",\"evidence\":\"全量区间ROAS 2.37，累计点击1861次，转化103次，CPA $21.96\",\"confidence\":\"medium\",\"recommendation\":\"建议人工评估提高Shopping_Plants系列的预算/出价，当前ROAS表现良好\",\"risk_note\":\"ROAS接近3的阈值，放量需谨慎监控转化质量\",\"data_gap\":null}],\"overall_priority\":[\"Brand_Search (C001) 异常分析\",\"Competitor_Search (C004) 异常分析\",\"否词机会评估\",\"放量机会评估\"]}"
+  },
+  {
+    "run_id": "4ee8bd7b6e50",
+    "anchor_date": "2026-06-18",
+    "status": "ok",
+    "started_at": "2026-10-12T16:52:30",
+    "ended_at": "2026-10-12T16:55:05",
+    "duration_ms": 154450.3,
+    "input_tokens": 48660,
+    "output_tokens": 2850,
+    "error": null,
+    "tool_calls": [
+      {
+        "seq": 1,
+        "tool": "detect_anomalies",
+        "duration_ms": 116.0,
+        "error": null
+      },
+      {
+        "seq": 2,
+        "tool": "get_performance",
+        "duration_ms": 20.2,
+        "error": null
+      },
+      {
+        "seq": 3,
+        "tool": "get_tracking_status",
+        "duration_ms": 47.5,
+        "error": null
+      },
+      {
+        "seq": 4,
+        "tool": "get_performance",
+        "duration_ms": 7.9,
+        "error": null
+      },
+      {
+        "seq": 5,
+        "tool": "get_performance",
+        "duration_ms": 13.5,
+        "error": null
+      }
+    ],
+    "output_json": "{\"summary\":\"最近7天（2026-06-12至2026-06-18）Google Ads投放数据显示，C005（Shopping_Plants）在6月18日出现显著曝光量下降（-70.5%），同时多个campaign出现转化波动。追踪状态健康，无技术故障。全量区间ROAS均未达到3的放量门槛，但有多个搜索词符合否词条件。\",\"findings\":[{\"type\":\"anomaly\",\"entity\":\"C005 - Shopping_Plants\",\"evidence\":\"2026-06-18曝光量617，较前日2088下降70.5%（-1471曝光），当日转化0个，较前日7个下降100%（-7个转化）\",\"confidence\":\"medium\",\"recommendation\":\"建议人工检查C005在6月18日的投放设置、预算分配和广告状态，确认是否存在投放限制或技术问题\",\"risk_note\":\"曝光量骤降可能影响品牌曝光和转化机会，需及时排查\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"ergonomic desk lamp for sale\",\"evidence\":\"累计点击43，转化0，成本$51.46，符合否词机会标准（点击≥20，转化=0，成本>$50）\",\"confidence\":\"medium\",\"recommendation\":\"建议人工评估将此搜索词添加为否定关键词，避免无效点击浪费预算\",\"risk_note\":\"该词CTR为4.95%，有一定搜索热度，添加前需确认是否包含相关业务意图\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"cheap desk lamp for sale\",\"evidence\":\"累计点击41，转化0，成本$47.64，符合否词机会标准（点击≥20，转化=0，成本>$50）\",\"confidence\":\"medium\",\"recommendation\":\"建议人工评估将此搜索词添加为否定关键词，避免无效点击浪费预算\",\"risk_note\":\"该词CTR为5.01%，搜索热度较高，添加前需确认是否与业务目标匹配\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"lightweight desk lamp buy online\",\"evidence\":\"累计点击40，转化0，成本$47.29，符合否词机会标准（点击≥20，转化=0，成本>$50）\",\"confidence\":\"medium\",\"recommendation\":\"建议人工评估将此搜索词添加为否定关键词，避免无效点击浪费预算\",\"risk_note\":\"该词CTR为5.01%，有一定搜索量，添加前需评估业务相关性\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"ergonomic desk lamp buy online\",\"evidence\":\"累计点击38，转化0，成本$46.41，符合否词机会标准（点击≥20，转化=0，成本>$50）\",\"confidence\":\"medium\",\"recommendation\":\"建议人工评估将此搜索词添加为否定关键词，避免无效点击浪费预算\",\"risk_note\":\"该词CTR为4.74%，搜索热度中等，添加前需确认业务相关性\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"premium desk lamp for sale\",\"evidence\":\"累计点击37，转化0，成本$45.00，符合否词机会标准（点击≥20，转化=0，成本>$50）\",\"confidence\":\"medium\",\"recommendation\":\"建议人工评估将此搜索词添加为否定关键词，避免无效点击浪费预算\",\"risk_note\":\"该词CTR为4.71%，搜索热度中等，添加前需评估业务匹配度\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"discount desk lamp for sale\",\"evidence\":\"累计点击37，转化0，成本$44.96，符合否词机会标准（点击≥20，转化=0，成本>$50）\",\"confidence\":\"medium\",\"recommendation\":\"建议人工评估将此搜索词添加为否定关键词，避免无效点击浪费预算\",\"risk_note\":\"该词CTR为4.51%，搜索热度中等，添加前需确认业务相关性\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"waterproof backpack for sale\",\"evidence\":\"累计点击38，转化0，成本$44.71，符合否词机会标准（点击≥20，转化=0，成本>$50）\",\"confidence\":\"medium\",\"recommendation\":\"建议人工评估将此搜索词添加为否定关键词，避免无效点击浪费预算\",\"risk_note\":\"该词CTR为4.56%，搜索热度中等，添加前需评估业务匹配度\",\"data_gap\":null},{\"type\":\"none\",\"entity\":\"整体投放表现\",\"evidence\":\"全量区间各campaign ROAS：C001=2.74，C002=2.13，C004=1.82，C005=2.33，均未达到ROAS≥3的放量门槛\",\"confidence\":\"high\",\"recommendation\":\"当前投放表现稳定，建议维持现有投放策略，继续观察数据趋势\",\"risk_note\":\"无显著风险，但需持续关注各campaign的ROAS变化\",\"data_gap\":null}],\"overall_priority\":[\"C005曝光量异常排查\",\"否词机会评估\",\"整体投放表现监控\"]}"
+  },
+  {
+    "run_id": "bddb3bace647",
+    "anchor_date": "2026-06-19",
+    "status": "ok",
+    "started_at": "2026-10-12T16:55:05",
+    "ended_at": "2026-10-12T16:59:41",
+    "duration_ms": 275648.9,
+    "input_tokens": 49616,
+    "output_tokens": 5052,
+    "error": null,
+    "tool_calls": [
+      {
+        "seq": 1,
+        "tool": "detect_anomalies",
+        "duration_ms": 86.8,
+        "error": null
+      },
+      {
+        "seq": 2,
+        "tool": "get_performance",
+        "duration_ms": 20.3,
+        "error": null
+      },
+      {
+        "seq": 3,
+        "tool": "get_tracking_status",
+        "duration_ms": 47.5,
+        "error": null
+      },
+      {
+        "seq": 4,
+        "tool": "get_performance",
+        "duration_ms": 9.2,
+        "error": null
+      },
+      {
+        "seq": 5,
+        "tool": "get_performance",
+        "duration_ms": 8.8,
+        "error": null
+      }
+    ],
+    "output_json": "{\"summary\":\"最近7天账户整体表现正常，但存在多个单日转化波动和成本突增现象。追踪健康状态良好，无追踪故障。全量数据ROAS均未达到3的放量门槛，暂无放量机会。发现多个否词机会。\",\"findings\":[{\"type\":\"anomaly\",\"entity\":\"C001 (Brand_Search)\",\"evidence\":\"6月13日转化从5降到2（-60%），6月15日转化从6降到1（-83.3%），6月15日成本从$57.72涨到$123.17（+113.4%）\",\"confidence\":\"low\",\"recommendation\":\"建议人工观察C001系列的表现，单日转化波动属于小基数噪声，建议继续观察趋势\",\"risk_note\":\"单日转化绝对减少量小于8个，属于统计噪声\",\"data_gap\":null},{\"type\":\"anomaly\",\"entity\":\"C004 (Competitor_Search)\",\"evidence\":\"6月15日转化从4降到1（-75%），6月19日转化从3降到0（-100%）\",\"confidence\":\"low\",\"recommendation\":\"建议人工观察C004系列的表现，单日转化波动属于小基数噪声，建议继续观察趋势\",\"risk_note\":\"单日转化绝对减少量小于8个，属于统计噪声\",\"data_gap\":null},{\"type\":\"anomaly\",\"entity\":\"C005 (Shopping_Plants)\",\"evidence\":\"6月18日转化从7降到0（-100%），6月19日成本从$35.49涨到$123.77（+248.7%），6月18日曝光从2088降到617（-70.5%）\",\"confidence\":\"low\",\"recommendation\":\"建议人工观察C005系列的表现，单日转化波动属于小基数噪声，成本突增需要关注\",\"risk_note\":\"单日转化绝对减少量小于8个，属于统计噪声，但成本突增明显\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"ergonomic wireless earbuds for sale\",\"evidence\":\"点击81次，成本$101.22，转化0，ROAS 0\",\"confidence\":\"medium\",\"recommendation\":\"建议人工评估添加为否定关键词，该搜索词无转化但消耗较大\",\"risk_note\":\"长期无转化但持续消耗预算\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"cheap desk lamp for sale\",\"evidence\":\"点击43次，成本$50.14，转化0，ROAS 0\",\"confidence\":\"medium\",\"recommendation\":\"建议人工评估添加为否定关键词，该搜索词无转化但消耗较大\",\"risk_note\":\"长期无转化但持续消耗预算\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"lightweight desk lamp buy online\",\"evidence\":\"点击42次，成本$49.42，转化0，ROAS 0\",\"confidence\":\"medium\",\"recommendation\":\"建议人工评估添加为否定关键词，该搜索词无转化但消耗较大\",\"risk_note\":\"长期无转化但持续消耗预算\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"premium desk lamp for sale\",\"evidence\":\"点击40次，成本$48.72，转化0，ROAS 0\",\"confidence\":\"medium\",\"recommendation\":\"建议人工评估添加为否定关键词，该搜索词无转化但消耗较大\",\"risk_note\":\"长期无转化但持续消耗预算\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"ergonomic desk lamp buy online\",\"evidence\":\"点击40次，成本$48.63，转化0，ROAS 0\",\"confidence\":\"medium\",\"recommendation\":\"建议人工评估添加为否定关键词，该搜索词无转化但消耗较大\",\"risk_note\":\"长期无转化但持续消耗预算\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"discount desk lamp for sale\",\"evidence\":\"点击39次，成本$47.37，转化0，ROAS 0\",\"confidence\":\"medium\",\"recommendation\":\"建议人工评估添加为否定关键词，该搜索词无转化但消耗较大\",\"risk_note\":\"长期无转化但持续消耗预算\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"waterproof backpack for sale\",\"evidence\":\"点击40次，成本$47.22，转化0，ROAS 0\",\"confidence\":\"medium\",\"recommendation\":\"建议人工评估添加为否定关键词，该搜索词无转化但消耗较大\",\"risk_note\":\"长期无转化但持续消耗预算\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"premium yoga mat buy online\",\"evidence\":\"点击26次，成本$31.6，转化0，ROAS 0\",\"confidence\":\"medium\",\"recommendation\":\"建议人工评估添加为否定关键词，该搜索词无转化但消耗较大\",\"risk_note\":\"长期无转化但持续消耗预算\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"waterproof yoga mat buy online\",\"evidence\":\"点击26次，成本$31.41，转化0，ROAS 0\",\"confidence\":\"medium\",\"recommendation\":\"建议人工评估添加为否定关键词，该搜索词无转化但消耗较大\",\"risk_note\":\"长期无转化但持续消耗预算\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"lightweight yoga mat buy online\",\"evidence\":\"点击25次，成本$30.73，转化0，ROAS 0\",\"confidence\":\"medium\",\"recommendation\":\"建议人工评估添加为否定关键词，该搜索词无转化但消耗较大\",\"risk_note\":\"长期无转化但持续消耗预算\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"portable yoga mat for sale\",\"evidence\":\"点击26次，成本$29.74，转化0，ROAS 0\",\"confidence\":\"medium\",\"recommendation\":\"建议人工评估添加为否定关键词，该搜索词无转化但消耗较大\",\"risk_note\":\"长期无转化但持续消耗预算\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"cheap running shoes buy online\",\"evidence\":\"点击23次，成本$28.0，转化0，ROAS 0\",\"confidence\":\"medium\",\"recommendation\":\"建议人工评估添加为否定关键词，该搜索词无转化但消耗较大\",\"risk_note\":\"长期无转化但持续消耗预算\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"best coffee maker buy online\",\"evidence\":\"点击21次，成本$25.82，转化0，ROAS 0\",\"confidence\":\"medium\",\"recommendation\":\"建议人工评估添加为否定关键词，该搜索词无转化但消耗较大\",\"risk_note\":\"长期无转化但持续消耗预算\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"best yoga mat buy online\",\"evidence\":\"点击22次，成本$27.03，转化0，ROAS 0\",\"confidence\":\"medium\",\"recommendation\":\"建议人工评估添加为否定关键词，该搜索词无转化但消耗较大\",\"risk_note\":\"长期无转化但持续消耗预算\",\"data_gap\":null}],\"overall_priority\":[\"否词机会优化\",\"异常现象观察\"]}"
+  },
+  {
+    "run_id": "b8cb3adb80de",
+    "anchor_date": "2026-06-24",
+    "status": "ok",
+    "started_at": "2026-10-12T16:59:41",
+    "ended_at": "2026-10-12T17:01:31",
+    "duration_ms": 110356.0,
+    "input_tokens": 48058,
+    "output_tokens": 2189,
+    "error": null,
+    "tool_calls": [
+      {
+        "seq": 1,
+        "tool": "detect_anomalies",
+        "duration_ms": 63.4,
+        "error": null
+      },
+      {
+        "seq": 2,
+        "tool": "get_tracking_status",
+        "duration_ms": 43.9,
+        "error": null
+      },
+      {
+        "seq": 3,
+        "tool": "get_performance",
+        "duration_ms": 22.8,
+        "error": null
+      },
+      {
+        "seq": 4,
+        "tool": "get_performance",
+        "duration_ms": 9.7,
+        "error": null
+      },
+      {
+        "seq": 5,
+        "tool": "get_performance",
+        "duration_ms": 10.9,
+        "error": null
+      }
+    ],
+    "output_json": "{\"summary\":\"账户最近7天（2026-06-18至2026-06-24）存在多个异常现象，包括转化骤降、追踪丢失、数据缺口和消耗突增。Generic_Search（C002）存在追踪异常，Competitor_Search（C004）有数据缺口，Shopping_Plants（C005）出现消耗突增和曝光下降。Brand_Search（C001）表现最佳，ROAS达4.17。搜索词层面发现多个否词机会。\",\"findings\":[{\"type\":\"tracking\",\"entity\":\"Generic_Search (C002)\",\"evidence\":\"2026-06-20至2026-06-21连续2天0转化，期间点击372次；追踪状态为suspected_broken\",\"confidence\":\"high\",\"recommendation\":\"建议人工检查转化追踪代码配置，确认转化事件是否正确设置\",\"risk_note\":\"连续2天高点击量下无转化，可能存在追踪技术故障\",\"data_gap\":null},{\"type\":\"anomaly\",\"entity\":\"Competitor_Search (C004)\",\"evidence\":\"2026-06-19转化从3降至0（-100%），2026-06-21转化从6降至2（-66.7%）；2026-06-22存在数据缺口\",\"confidence\":\"medium\",\"recommendation\":\"建议人工检查2026-06-22数据缺失原因，并监控转化趋势\",\"risk_note\":\"数据缺口可能影响分析准确性，转化波动需要进一步观察\",\"data_gap\":\"2026-06-22数据缺失，影响该日转化分析\"},{\"type\":\"anomaly\",\"entity\":\"Shopping_Plants (C005)\",\"evidence\":\"2026-06-19消耗从$35.49突增至$123.77（+248.7%）；2026-06-18曝光从2088降至617（-70.5%）\",\"confidence\":\"high\",\"recommendation\":\"建议人工检查出价策略和预算设置，确认是否存在意外调价\",\"risk_note\":\"消耗突增伴随曝光下降，可能存在出价异常或预算分配问题\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"free coffee maker download\",\"evidence\":\"累计点击46次，成本$119.60，转化0次，ROAS 0.0\",\"confidence\":\"medium\",\"recommendation\":\"建议人工评估添加为否定关键词，避免无效点击消耗\",\"risk_note\":\"该搜索词无转化但有较高点击成本\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"cheap desk lamp buy online\",\"evidence\":\"累计点击51次，成本$60.18，转化0次，ROAS 0.0\",\"confidence\":\"medium\",\"recommendation\":\"建议人工评估添加为否定关键词，避免无效点击消耗\",\"risk_note\":\"该搜索词无转化但有较高点击成本\",\"data_gap\":null},{\"type\":\"scale_up\",\"entity\":\"Brand_Search (C001)\",\"evidence\":\"全量区间ROAS 3.06，近期表现稳定，7天ROAS 4.17\",\"confidence\":\"high\",\"recommendation\":\"建议人工评估提高预算/出价，放量空间充足\",\"risk_note\":\"ROAS表现优秀，但需监控转化质量是否随流量增长而保持\",\"data_gap\":null}],\"overall_priority\":[\"tracking\",\"anomaly\",\"negative_keyword\",\"scale_up\"]}"
+  },
+  {
+    "run_id": "e11d79891f8e",
+    "anchor_date": "2026-06-25",
+    "status": "running",
+    "started_at": "2026-10-12T17:01:31",
+    "ended_at": null,
+    "duration_ms": null,
+    "input_tokens": null,
+    "output_tokens": null,
+    "error": null,
+    "tool_calls": [
+      {
+        "seq": 1,
+        "tool": "detect_anomalies",
+        "duration_ms": 79.8,
+        "error": null
+      },
+      {
+        "seq": 2,
+        "tool": "get_performance",
+        "duration_ms": 24.8,
+        "error": null
+      },
+      {
+        "seq": 3,
+        "tool": "get_tracking_status",
+        "duration_ms": 57.6,
+        "error": null
+      }
+    ],
+    "output_json": null
+  }
+]

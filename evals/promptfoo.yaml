@@ -6,8 +6,10 @@ prompts:
 providers:
   - id: file://provider.py
     label: agent
+    config:
+      timeout: 1200000  # python worker default 300s is too short for slow LLM runs
 
 tests: file://tests.json
 
 evaluateOptions:
-  maxConcurrency: 2
+  maxConcurrency: 1

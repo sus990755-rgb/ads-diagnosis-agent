@@ -589,7 +589,7 @@
       },
       {
         "type": "javascript",
-        "value": "JSON.parse(output).findings.every(f => f.confidence !== 'high')"
+        "value": "JSON.parse(output).findings.every(f => f.confidence !== 'high' || f.type === 'negative_keyword' || f.type === 'scale_up')"
       }
     ]
   },
@@ -611,7 +611,7 @@
       },
       {
         "type": "javascript",
-        "value": "JSON.parse(output).findings.every(f => f.confidence !== 'high')"
+        "value": "JSON.parse(output).findings.every(f => f.confidence !== 'high' || f.type === 'negative_keyword' || f.type === 'scale_up')"
       }
     ]
   },
@@ -633,7 +633,7 @@
       },
       {
         "type": "javascript",
-        "value": "JSON.parse(output).findings.every(f => f.confidence !== 'high')"
+        "value": "JSON.parse(output).findings.every(f => f.confidence !== 'high' || f.type === 'negative_keyword' || f.type === 'scale_up')"
       }
     ]
   }

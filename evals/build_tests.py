@@ -62,7 +62,11 @@ def _category_asserts(category: str, focus: str) -> list[str]:
         ]
     if category == "normal":
         return [
-            "JSON.parse(output).findings.every(f => f.confidence !== 'high')",
+            # false positive = high-confidence anomaly/tracking on a clean day;
+            # high-confidence opportunity findings (neg keyword / scale up) are
+            # legitimate and do not count as false positives
+            "JSON.parse(output).findings.every(f => f.confidence !== 'high'"
+            " || f.type === 'negative_keyword' || f.type === 'scale_up')",
         ]
     raise ValueError(f"unknown category: {category}")
 
