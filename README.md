@@ -1,5 +1,100 @@
 # ads-diagnosis-agent
 
-出海投放诊断 Agent（MVP）：每天检查 Google Ads 投放数据（CSV 模拟），自动发现异常并输出带置信度的诊断报告，推送到飞书。Agent 只产出建议，绝不自动执行投放修改。
+出海投放诊断 Agent（MVP）：每天检查 Google Ads 投放数据（CSV 模拟），自动发现异常并输出带置信度的结构化诊断报告，渲染为 Markdown 推送到飞书群机器人。**Agent 只产出建议，绝不自动执行任何投放修改。**
 
-> 项目开发中，完整 README（背景 / 架构 / 快速开始 / 评测结果 / 成本 / 已知限制）将在 T15 补齐。
+## 背景
+
+出海投放团队每天需要人工巡查账户：消耗突增、转化骤降、追踪丢失、否词机会、缩量、冷启动等问题发现滞后就会烧钱。本项目用"规则检测器 + LLM 判断层"的架构做每日自动诊断：数值计算全部由确定性代码完成（工程红线：任何数值计算不得由 LLM 完成），LLM 只负责归纳、定性、定置信度和写建议。
+
+## 架构
+
+```
+data/campaigns_30d.csv          # 模拟数据源（data_generator.py 生成，seed=42 可复现）
+        │
+        ▼
+┌─────────────────────────────────────────────────┐
+│ src/agent.py  (openai-agents SDK, 主循环)        │
+│  ├─ prompts/diagnose.md      系统提示词          │
+│  ├─ 任务提示词（锚定日/窗口/自检清单）            │
+│  └─ 应用层校验：提取 JSON → pydantic → 一轮修复  │
+│       → 降级报告（任何失败不静默）               │
+└─────────────────────────────────────────────────┘
+        │ function tools（每个调用写入 trace）
+        ▼
+┌─────────────────────────────────────────────────┐
+│ 工具层（纯代码，无 LLM）                          │
+│  src/tools/detect_anomalies.py   5 条规则检测     │
+│  src/tools/get_performance.py    分层指标下钻     │
+│  src/tools/get_tracking_status.py 追踪健康判定    │
+└─────────────────────────────────────────────────┘
+        │
+        ▼
+src/trace.py    SQLite 留痕（runs / tool_calls，含 token 与成本）
+src/report.py   JSON → Markdown 报告
+src/notify.py   飞书群机器人推送（签名验签；未配置则本地降级存盘）
+src/baseline.py 纯规则基线（无 LLM），用于评测对照
+```
+
+## 快速开始
+
+环境：Python ≥ 3.11，Windows / macOS / Linux 均可。
+
+```bash
+# 1. 安装依赖（uv）
+uv sync
+
+# 2. 生成模拟数据（可复现，seed 固定）
+python -m src.data_generator
+
+# 3. 配置密钥
+cp .env.example .env
+# 编辑 .env：OPENAI_API_KEY / OPENAI_BASE_URL / MODEL_NAME
+#   按评测阶段选模型（详见 MODEL_ROUTING.md，型号均已核实）：
+#   冒烟迭代用智谱 glm-4.7-flash（免费）：
+#   OPENAI_BASE_URL=https://open.bigmodel.cn/api/paas/v4
+#   MODEL_NAME=glm-4.7-flash
+#   FEISHU_WEBHOOK_URL/SECRET 留空则报告保存到本地 reports/ 目录
+
+# 4. 运行一次诊断（--date 指定锚定日，默认取数据最新日期）
+python -m src.agent --date 2026-06-21
+
+# 5. 运行规则基线对照
+python -m src.baseline --date 2026-06-21
+
+# 6. 单元测试
+python -m pytest tests/ -q
+```
+
+### 运行评测（promptfoo）
+
+```bash
+npm install -g promptfoo   # 需要 Node.js
+cd evals
+PROMPTFOO_PYTHON="..\.venv\Scripts\python.exe" \
+  promptfoo eval -c promptfoo.yaml --no-cache -o roundN.json
+```
+
+25 个 case 的定义在 `evals/cases.v1.0.frozen.json`（**Round 7 启动时冻结，此后任何 case 不得修改**，见 git tag `v1.0-eval-freeze`），断言由 `evals/build_tests.py` 生成到 `evals/tests.json`；各轮结果与失败分析见 `evals/eval_report.md`。
+
+## 评测结果
+
+以 promptfoo 驱动真实 Agent（glm-4.5-flash）跑 25 个 case，断言为确定性 JS。逐轮记录与失败分类见 `evals/eval_report.md`，关键轮次：
+
+| 轮次 | 通过率 | 主要改进 |
+|---|---|---|
+| Round 1 | 18/25 (72%) | 基线轮 |
+| Round 3 | 19/25 (76%) | 修复放量缺失、小基数误报、工具名幻觉 |
+| Round 5 | 17/25 (68%) | 并发降 1 治 429、temperature 0.1 治抖动；5 例失败为免费档基础设施降级 |
+| Round 6 | 见 eval_report.md | 小基数噪声优先级、放量改全量区间 ROAS≥3、自检清单 |
+
+规格 §9.2 验收线：关键发现召回 ≥70%；正常 case 误报 ≤20%；违禁行为（声称已执行修改/预测未来）0 次；低置信度校准 ≥90%。
+
+## 成本
+
+单次诊断运行约消耗 4.4 万 input token + 0.25 万 output token，平均耗时约 3 分钟（glm-4.5-flash 免费档，含 3-5 轮工具调用）。token 单价走 `config.py` 的 `PRICE_INPUT_CNY_PER_MTOK` / `PRICE_OUTPUT_CNY_PER_MTOK`，每次运行的 token 与成本自动写入 `trace.sqlite3`。免费档单价为 0，日频运行成本 ¥0；切换付费模型时改单价即可自动核算。
+
+## 已知限制
+
+1. **数据为 CSV 模拟**：未接真实 Google Ads API；追踪状态由数据规则推断（点击正常但转化为 0），真实场景应接转化标签/GA4 回传状态。
+2. **免费档模型稳定性**：glm-4.5-flash 存在偶发 JSON 不合法、枚举值违规和限流（429）/连接错误；应用层已做一轮修复 + 降级报告兜底，但评测中仍有约 10-20% 的运行受基础设施影响。
+3. **小基数判断依赖提示词约束**：模型偶发不遵守"单日转化减少 < 8 个 = 噪声"的优先级规则，弱模型上误报率会波动；更强模型或应用层硬校验可进一步收敛。

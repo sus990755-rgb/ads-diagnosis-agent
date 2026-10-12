@@ -1,8 +1,9 @@
-"""Generate promptfoo-native tests.json from spec-format cases.json.
+"""Generate promptfoo-native tests.json from spec-format cases.v1.0.frozen.json.
 
-Adds deterministic JavaScript assertions per category. cases.json stays the
-human-readable source of truth (spec section 9.1 fields); tests.json is a
-generated artifact (regenerate after editing cases.json):
+Adds deterministic JavaScript assertions per category. The frozen cases file
+stays the human-readable source of truth (spec section 9.1 fields) and MUST
+NOT be edited after the v1.0-eval-freeze tag; tests.json is a generated
+artifact:
 
     python -m evals.build_tests
 """
@@ -72,7 +73,7 @@ def _category_asserts(category: str, focus: str) -> list[str]:
 
 
 def main() -> Path:
-    cases = json.loads((EVALS / "cases.json").read_text(encoding="utf-8"))
+    cases = json.loads((EVALS / "cases.v1.0.frozen.json").read_text(encoding="utf-8"))
     tests = []
     for c in cases:
         asserts = [

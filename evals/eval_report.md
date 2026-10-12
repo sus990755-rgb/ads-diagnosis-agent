@@ -1,5 +1,7 @@
 # 评测报告（持续更新）
 
+**口径说明（2026-10-12）**：评测集已于 Round 7 启动时冻结为 `evals/cases.v1.0.frozen.json`（git tag `v1.0-eval-freeze`），此后任何 case 不得修改。**Round 1-6 为开发期数据，受免费档（glm-4.5-flash）限流/降级污染，仅供参考**；正式验收口径从 Round 7（agent v1.1 + deepseek-v4-flash）起算。
+
 ## Round 1（2026-10-10，promptfoo eval ID: eval-KKz-2026-10-10T14:24:07）
 
 **方法**：25 个 case（cases.json）经 promptfoo 驱动真实 Agent（glm-4.5-flash），每 case 一次完整诊断运行；断言为确定性 JS（schema 合规、非降级、分类别关键行为）。原始结果：`evals/round1.json`。
