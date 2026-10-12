@@ -81,8 +81,14 @@ def test_levels_and_include_daily() -> None:
 
 from src.tools.detect_anomalies import detect_anomalies
 
-FULL_RANGE = ["2026-06-01", "2026-06-30"]
-CLEAN_WINDOW = ["2026-06-01", "2026-06-17"]  # before every injected campaign-level anomaly
+def _detect_full() -> dict:
+    """Full-range result of one dual-range call anchored at the data end."""
+    return detect_anomalies("2026-06-30")["full_range"]
+
+
+def _detect_clean() -> dict:
+    """Window 2026-06-01..06-17: before every injected campaign-level anomaly."""
+    return detect_anomalies("2026-06-17", window_days=17)["window"]
 
 
 def _by_type(res: dict, anomaly_type: str) -> list[dict]:
@@ -91,7 +97,7 @@ def _by_type(res: dict, anomaly_type: str) -> list[dict]:
 
 def test_cost_spike_positive() -> None:
     """Rule cost_spike fires on C001's injected 2026-06-15 spike."""
-    hits = [a for a in _by_type(detect_anomalies(FULL_RANGE), "cost_spike")
+    hits = [a for a in _by_type(_detect_full(), "cost_spike")
             if a["entity_key"] == "C001"]
     assert len(hits) == 1
     assert hits[0]["severity"] == "high"
@@ -102,13 +108,13 @@ def test_cost_spike_positive() -> None:
 
 def test_cost_spike_negative() -> None:
     """Rule cost_spike stays silent on normal fluctuation (C005 clean window)."""
-    res = detect_anomalies(CLEAN_WINDOW)
+    res = _detect_clean()
     assert [a for a in _by_type(res, "cost_spike") if a["entity_key"] == "C005"] == []
 
 
 def test_conversion_drop_positive() -> None:
     """Rule conversion_drop fires on C001 2026-06-15 (6 -> 1 conversions)."""
-    hits = [a for a in _by_type(detect_anomalies(FULL_RANGE), "conversion_drop")
+    hits = [a for a in _by_type(_detect_full(), "conversion_drop")
             if a["entity_key"] == "C001" and a["evidence"]["date"] == "2026-06-15"]
     assert len(hits) == 1
     ev = hits[0]["evidence"]
@@ -149,19 +155,19 @@ def test_conversion_drop_negative(monkeypatch: pytest.MonkeyPatch) -> None:
     # -40% and exactly -50%: must NOT fire (rule is strictly > 50%)
     df = _synthetic_df([10, 10, 6, 5, 10, 10])
     monkeypatch.setattr(mod, "load_data", lambda: df)
-    res = mod.detect_anomalies(["2026-06-01", "2026-06-06"])
+    res = mod.detect_anomalies("2026-06-06", window_days=6)["window"]
     assert _by_type(res, "conversion_drop") == []
 
     # -60% on the same volume: must fire (sanity check of the synthetic setup)
     df = _synthetic_df([10, 10, 4, 10, 10, 10])
     monkeypatch.setattr(mod, "load_data", lambda: df)
-    res = mod.detect_anomalies(["2026-06-01", "2026-06-06"])
+    res = mod.detect_anomalies("2026-06-06", window_days=6)["window"]
     assert len(_by_type(res, "conversion_drop")) == 1
 
 
 def test_negative_keyword_positive() -> None:
     """Rule negative_keyword_opportunity flags the injected zero-conversion term."""
-    hits = _by_type(detect_anomalies(FULL_RANGE), "negative_keyword_opportunity")
+    hits = _by_type(_detect_full(), "negative_keyword_opportunity")
     terms = {a["entity_key"] for a in hits}
     assert "free coffee maker download" in terms
     ev = next(a["evidence"] for a in hits
@@ -172,7 +178,7 @@ def test_negative_keyword_positive() -> None:
 
 def test_negative_keyword_negative() -> None:
     """Rule negative_keyword_opportunity never flags a converting term."""
-    hits = _by_type(detect_anomalies(FULL_RANGE), "negative_keyword_opportunity")
+    hits = _by_type(_detect_full(), "negative_keyword_opportunity")
     flagged = {a["entity_key"] for a in hits}
     df = load_data()
     converting = df[df["conversions"] > 0]["search_term"].unique()
@@ -181,7 +187,7 @@ def test_negative_keyword_negative() -> None:
 
 def test_impression_drop_positive() -> None:
     """Rule impression_drop fires on C005's injected 2026-06-18 drop."""
-    hits = [a for a in _by_type(detect_anomalies(FULL_RANGE), "impression_drop")
+    hits = [a for a in _by_type(_detect_full(), "impression_drop")
             if a["entity_key"] == "C005"]
     assert len(hits) == 1
     assert hits[0]["severity"] == "medium"
@@ -192,13 +198,13 @@ def test_impression_drop_positive() -> None:
 
 def test_impression_drop_negative() -> None:
     """Rule impression_drop stays silent on normal fluctuation."""
-    res = detect_anomalies(CLEAN_WINDOW)
+    res = _detect_clean()
     assert _by_type(res, "impression_drop") == []
 
 
 def test_tracking_loss_positive() -> None:
     """Rule tracking_loss_suspected fires on C002 2026-06-20/21 zero-conversion streak."""
-    hits = [a for a in _by_type(detect_anomalies(FULL_RANGE), "tracking_loss_suspected")
+    hits = [a for a in _by_type(_detect_full(), "tracking_loss_suspected")
             if a["entity_key"] == "C002"]
     assert len(hits) == 1
     assert hits[0]["severity"] == "high"
@@ -209,19 +215,32 @@ def test_tracking_loss_positive() -> None:
 
 def test_tracking_loss_negative() -> None:
     """Cold-start C003 (low clicks) and normal campaigns are NOT flagged."""
-    res = detect_anomalies(FULL_RANGE)
+    res = _detect_full()
     flagged = {a["entity_key"] for a in _by_type(res, "tracking_loss_suspected")}
     assert "C003" not in flagged
-    res_clean = detect_anomalies(CLEAN_WINDOW)
+    res_clean = _detect_clean()
     assert _by_type(res_clean, "tracking_loss_suspected") == []
 
 
 def test_data_gap_reported() -> None:
     """The C004 2026-06-22 gap (pattern 6) surfaces as a data_gap finding."""
-    hits = _by_type(detect_anomalies(FULL_RANGE), "data_gap")
+    hits = _by_type(_detect_full(), "data_gap")
     assert len(hits) == 1
     assert hits[0]["entity_key"] == "C004"
     assert hits[0]["evidence"]["missing_date"] == "2026-06-22"
+
+
+def test_dual_range_single_call() -> None:
+    """One call returns both the diagnosis window and the full range."""
+    res = detect_anomalies("2026-06-25")
+    assert res["window"]["date_range"] == ["2026-06-19", "2026-06-25"]
+    assert res["full_range"]["date_range"] == ["2026-06-01", "2026-06-25"]
+    # the C004 06-22 gap falls inside both ranges here
+    assert _by_type(res["window"], "data_gap")
+    assert _by_type(res["full_range"], "data_gap")
+    # end_date beyond the data end is clamped, not an error
+    clamped = detect_anomalies("2026-07-15")
+    assert clamped["window"]["date_range"] == ["2026-06-24", "2026-06-30"]
 
 
 # ---- Tool 3: get_tracking_status ----
@@ -235,7 +254,7 @@ def _campaign(res: dict, cid: str) -> dict:
 
 def test_tracking_flags_c002_streak() -> None:
     """C002's 2-day zero-conversion streak marks it suspected_broken."""
-    res = get_tracking_status(FULL_RANGE)
+    res = get_tracking_status(["2026-06-01", "2026-06-30"])
     assert res["status"] == "suspected_broken"
     c002 = _campaign(res, "C002")
     assert c002["status"] == "suspected_broken"
@@ -247,7 +266,7 @@ def test_tracking_flags_c002_streak() -> None:
 
 def test_tracking_healthy_on_clean_window() -> None:
     """No campaign is flagged in the clean window 06-01..06-17."""
-    res = get_tracking_status(CLEAN_WINDOW)
+    res = get_tracking_status(["2026-06-01", "2026-06-17"])
     assert res["status"] == "healthy"
     assert all(c["status"] == "healthy" for c in res["campaigns"])
 

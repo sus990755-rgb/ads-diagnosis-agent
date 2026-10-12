@@ -23,21 +23,25 @@ _METRICS = ["impressions", "clicks", "cost_usd", "conversions"]
 _SEVERITY_ORDER = {"high": 0, "medium": 1, "low": 2}
 
 
-def detect_anomalies(date_range: list[str]) -> dict:
-    """Detect anomalous phenomena in a date range with fixed statistical rules.
+def detect_anomalies(end_date: str, window_days: int = 7) -> dict:
+    """Detect anomalous phenomena for the diagnosis window AND full history.
 
     When to call: call this FIRST in every diagnosis run, before forming any
-    conclusion. It surfaces candidate phenomena; you must still verify and
-    interpret them (e.g. with get_performance / get_tracking_status).
+    conclusion. ONE call returns both ranges — do not call it twice. It
+    surfaces candidate phenomena; you must still verify and interpret them
+    (e.g. with get_performance / get_tracking_status).
 
     Input constraints:
-    - date_range: [start_date, end_date], inclusive, "YYYY-MM-DD".
-      Day-over-day comparisons use the full dataset timeline, so the first
-      day of the range is still compared against the real previous day;
-      only anomalies whose date falls inside the range are reported.
+    - end_date: anchor date "YYYY-MM-DD" (clamped to the latest data date).
+    - window_days: diagnosis window length, default 7.
 
-    Returns a dict with:
-    - anomalies: list of findings, each with:
+    Returns a dict with two keys, each holding an independent result:
+    - "window": the recent window [end_date - window_days + 1 .. end_date];
+    - "full_range": [first data date .. end_date], whose accumulated volume
+      is what the negative-keyword rule needs.
+    Each result has: date_range, anomalies (list of findings, sorted by
+    severity high-first), note (null, or an explanation when empty).
+    Each anomaly has:
         type: one of "cost_spike" (cost +>50% DoD), "conversion_drop"
               (conversions ->50% DoD from a non-zero base),
               "negative_keyword_opportunity" (search term with clicks>=20,
@@ -51,19 +55,30 @@ def detect_anomalies(date_range: list[str]) -> dict:
         severity: high | medium | low;
         evidence: the exact numbers behind the finding (previous/current
               values, dates, streak length, etc.).
-      Findings are sorted by severity (high first).
-    - note: null, or an explanation when the range has no data.
 
     This tool never explains WHY something happened, never predicts future
     performance, and never recommends actions — it only reports phenomena
     with their evidence numbers.
     """
-    start = pd.to_datetime(date_range[0], format="%Y-%m-%d")
-    end = pd.to_datetime(date_range[1], format="%Y-%m-%d")
-    if start > end:
-        raise ValueError(f"range start {date_range[0]} is after end {date_range[1]}")
-
     df = load_data()
+    data_min, data_max = df["date"].min(), df["date"].max()
+    end = min(pd.to_datetime(end_date, format="%Y-%m-%d"), data_max)
+    if end < data_min:
+        raise ValueError(f"end_date {end_date} is before the first data date {data_min.date()}")
+    start = max(end - pd.Timedelta(days=window_days - 1), data_min)
+    return {
+        "window": _detect_in_range(df, start, end),
+        "full_range": _detect_in_range(df, data_min, end),
+    }
+
+
+def _detect_in_range(df: pd.DataFrame, start: pd.Timestamp, end: pd.Timestamp) -> dict:
+    """Run all detection rules on [start, end] of an already-loaded dataset.
+
+    Day-over-day comparisons use the full dataset timeline, so the first
+    day of the range is still compared against the real previous day;
+    only anomalies whose date falls inside the range are reported.
+    """
     anomalies: list[dict] = []
 
     # --- daily campaign-level rules (full timeline for DoD context) ---
@@ -199,11 +214,11 @@ def detect_anomalies(date_range: list[str]) -> dict:
     note = None
     if in_range.empty:
         note = (
-            f"no data in requested range {date_range[0]}..{date_range[1]}; "
+            f"no data in requested range {start.date()}..{end.date()}; "
             f"data covers {df['date'].min().date()}..{df['date'].max().date()}"
         )
     return {
-        "date_range": [date_range[0], date_range[1]],
+        "date_range": [str(start.date()), str(end.date())],
         "anomalies": anomalies,
         "note": note,
     }

@@ -58,7 +58,7 @@ def baseline_diagnose(date: str) -> DiagnosisResult:
     """Diagnose the 7-day window ending at ``date`` with pure rules."""
     end = date_cls.fromisoformat(date)
     start = end - timedelta(days=6)
-    result = detect_anomalies([str(start), str(end)])
+    result = detect_anomalies(str(end))["window"]
 
     findings: list[Finding] = []
     for a in result["anomalies"]:

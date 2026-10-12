@@ -21,7 +21,7 @@ import time
 from datetime import date as date_cls, timedelta
 from typing import Literal
 
-from agents import Agent, Runner, function_tool, set_tracing_disabled
+from agents import Agent, ModelSettings, Runner, function_tool, set_tracing_disabled
 from agents.models.openai_chatcompletions import OpenAIChatCompletionsModel
 from openai import AsyncOpenAI
 from pydantic import BaseModel
@@ -122,6 +122,9 @@ def _build_agent(run_id: str) -> Agent:
         name="ads-diagnosis-agent",
         instructions=instructions,
         model=model,
+        # Low temperature keeps output stable across eval replays: the free
+        # tier's default sampling made severity/type labels flip run to run.
+        model_settings=ModelSettings(temperature=0.1),
         tools=_traced_tools(run_id),
     )
 
@@ -133,11 +136,19 @@ def _task_prompt(date: str) -> str:
     start = end - timedelta(days=6)
     return (
         f"今天是 {date}。请诊断本账户最近 7 天（{start} 至 {end}）的 Google Ads "
-        f"投放数据。数据整体覆盖 {data_min} 至 {data_max}。先调用 "
-        f"detect_anomalies，再按需下钻 get_performance 或核查 "
-        f"get_tracking_status，最后给出结构化诊断结果。"
-        f"补充：否词机会评估可使用更长窗口（如全量数据区间），因为搜索词"
-        f"转化判断需要足够累积量。"
+        f"投放数据。数据整体覆盖 {data_min} 至 {data_max}。"
+        f"可用工具只有 3 个：detect_anomalies、get_performance、get_tracking_status"
+        f"（不得调用任何其他工具名）。先调用一次 detect_anomalies"
+        f"（一次调用即返回诊断窗口 window 与全量区间 full_range 两份结果），再按需下钻 "
+        f"get_performance 或核查 get_tracking_status，最后给出结构化诊断结果。"
+        f"严格禁止引用 {date} 之后的数据（未来数据不存在）；"
+        f"否词机会评估可使用 [{data_min} 至 {end}] 的较长窗口，"
+        f"因为搜索词转化判断需要足够累积量。"
+        f"输出前逐条自检："
+        f"1) anomaly/tracking finding 给 high 之前，确认其单日转化绝对减少 ≥ 8 个，"
+        f"否则一律压回 low（小基数噪声按天独立判定，不得跨天拼接升级）；"
+        f"2) scale_up 只给全量区间 ROAS ≥ 3 的实体，ROAS < 3 一律不得放量；"
+        f"3) 异常类 finding 的证据事件必须在 {start} 至 {end} 窗口内。"
     )
 
 
@@ -186,15 +197,17 @@ async def run_diagnosis(date: str) -> DiagnosisResult:
         model_io = result.to_input_list()
         try:
             output = _parse_result(result.final_output)
-        except (ValueError, json.JSONDecodeError):
+        except (ValueError, json.JSONDecodeError) as parse_err:
             repair = await Runner.run(
                 agent,
                 input=result.to_input_list()
                 + [
                     {
                         "role": "user",
-                        "content": "你的上一次输出不是合法 JSON。请只输出符合 schema "
-                        "的纯 JSON 对象，不要用代码块包裹，不要任何其他文字。",
+                        "content": f"你的上一次输出未通过校验，错误信息：{parse_err}。"
+                        "请修正后只输出符合 schema 的纯 JSON 对象，不要用代码块包裹，"
+                        "不要任何其他文字。注意 findings[].type 只能取 "
+                        "anomaly / negative_keyword / scale_up / tracking / none。",
                     }
                 ],
                 max_turns=4,
