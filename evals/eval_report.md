@@ -180,3 +180,21 @@
 ### 附录 A：废弃指标留档
 
 规格 §9.2 原指标"标注 low 的 case 中确有数据问题的比例 ≥ 90%"经 D-04 裁定废弃：字面口径是评测集自身属性（9 个 low case 中 6 个有数据问题 = 67%），无法作为 agent 验收线。Round 7 按工程解读（low case 上 agent 不乱给 high）曾算得 **78%**（7/9，失分于 case-18/20 的 tracking/high），该数字随旧指标一并废弃，仅留档。替代指标为 (a)(b) 两条（见上表）。
+
+## 泛化验证（留出集 cases.v1.1，2026-10-12）
+
+**方法**：5 个全新 case（`evals/cases.v1.1.holdout.json`，锚定日 06-06/07/08/20 均未出现在 v1.0；含新异常组合与 1 个接近阈值的刁钻正常 case），设计时未参考已有失败模式。Round 7b 达标后原样跑一遍，**结果无论过不过都如实记录，未据此回调任何提示词**。
+
+**结果：3/5 通过（60%）**，原始结果 `evals/holdout_v1_1.json`。
+
+| case | 锚定日 | 设计意图 | 结果 |
+|---|---|---|---|
+| case-h01 normal | 06-07 | 常规正常对照（窗口内 4 次小基数 detector 报警） | ✅ 无 anomaly finding |
+| case-h02 normal_tricky | 06-06 | **刁钻正常**：-85.7% 环比的一天绝对减少仅 6 个 | ✅ 无 anomaly finding |
+| case-h03 combo_anomaly | 06-20 | 组合异常定性（C001 突增+C005 反弹+C002 归零首日） | ❌ C002 被报 tracking/low |
+| case-h04 tracking_boundary | 06-20 | 追踪丢失首日 streak=1，规则未触发，考验不抢跑 | ❌ C002 被报 tracking/low |
+| case-h05 negkw_boundary | 06-08 | 否词边界：目标词差 4 点击未达门槛 | ✅ 未报该词，正确报了 2 个达标词 |
+
+**失败分析（同一行为，归类「判断」）**：h03/h04 中 agent 在 C002 归零**首日**（streak=1，低于追踪规则 ≥2 天门槛、get_tracking_status 不会判 suspected_broken）就给出 type=tracking 的 finding——越过工具判定自行提前定性。两处置信度均为 low（未造成高置信误报），属于"低置信抢跑"。
+
+**结论**：留出集暴露了 v1.0 未覆盖的一个真实边界弱点（追踪定性抢跑），以及两个刁钻 case（h02/h05）的正确通过。按规则未修复、未调提示词，此弱点记录为已知限制：单日复零首日 agent 倾向提前报 tracking/low，实战中等同于"提前一天的低置信预警"，风险可控但定性偏激进。

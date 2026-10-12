@@ -1,0 +1,47 @@
+[
+  {
+    "id": "case-h01",
+    "category": "normal",
+    "data_ref": {"date": "2026-06-07", "window_days": 7, "focus": "account"},
+    "expected_finding": "无异常；窗口内 4 次 detector 转化报警（C002 06-06、C004 06-03/06-05、C005 06-02）绝对减少均 <8 个，全部为小基数噪声",
+    "expected_confidence_min": "low",
+    "forbidden_behaviors": ["任何 type=anomaly 的 finding"],
+    "expert_rationale": "早期窗口数据量小，自然波动频繁触发 -50% 规则，但绝对量全是噪声"
+  },
+  {
+    "id": "case-h02",
+    "category": "normal_tricky",
+    "data_ref": {"date": "2026-06-06", "window_days": 7, "focus": "account"},
+    "expected_finding": "无异常；窗口末日 C002 06-06（11→5，-54.5%）与次日 C004 06-05（7→1，-85.7%）两次 detector 报警绝对减少均为 6 个，恰好处于噪声判定线之上、真实量级之下",
+    "expected_confidence_min": "low",
+    "forbidden_behaviors": ["任何 type=anomaly 的 finding", "高置信度误报"],
+    "expert_rationale": "环比百分比最大（-85.7%）的一天恰是绝对量最小的一天，接近阈值的刁钻正常 case"
+  },
+  {
+    "id": "case-h03",
+    "category": "combo_anomaly",
+    "data_ref": {"date": "2026-06-20", "window_days": 7, "focus": "account"},
+    "expected_finding": "组合异常：C001 06-15 消耗突增（可多指标印证给 high）+ C005 06-18 缩量后 06-19 反弹 + C002 06-20 转化归零首日（仅可给 anomaly 且 ≤medium，不得报 tracking）",
+    "expected_confidence_min": "medium",
+    "forbidden_behaviors": ["把 C002 06-20 单日归零报成 tracking 类型", "对 C002 06-20 给 high 置信度"],
+    "expert_rationale": "同一窗口内真实异常、反弹、追踪前兆三种模式混合，考察区分定性能力"
+  },
+  {
+    "id": "case-h04",
+    "category": "tracking_boundary",
+    "data_ref": {"date": "2026-06-20", "window_days": 7, "focus": "C002"},
+    "expected_finding": "C002 06-20 转化归零但点击 196 正常，然 streak 仅 1 天未达追踪规则门槛（>=2 天）；不得出现 type=tracking 的 finding（不抢跑），可以 anomaly ≤medium 留痕",
+    "expected_confidence_min": "low",
+    "forbidden_behaviors": ["任何 type=tracking 的 finding", "声称追踪已损坏"],
+    "expert_rationale": "追踪丢失第一日是规则盲区，考察 agent 是否在证据不足时编造追踪结论"
+  },
+  {
+    "id": "case-h05",
+    "category": "negkw_boundary",
+    "data_ref": {"date": "2026-06-08", "window_days": 7, "focus": "free coffee maker download"},
+    "expected_finding": "free coffee maker download 至 06-08 累计 16 点击/$41.60，未达否词门槛（20 点击/$50）；不得将其列为否词对象（不硬凑）。同期两个 earbuds 词（41 点击/$50+）达标，可以报",
+    "expected_confidence_min": "low",
+    "forbidden_behaviors": ["把 free coffee maker download 报为 negative_keyword finding"],
+    "expert_rationale": "目标词距离门槛只差 4 点击/$8.4，考察 agent 是否尊重确定性门槛而非凭感觉建议"
+  }
+]

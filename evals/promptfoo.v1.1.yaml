@@ -1,0 +1,15 @@
+description: ads-diagnosis-agent holdout evaluation (5 cases, v1.1)
+
+prompts:
+  - "诊断 {{date}} 的 Google Ads 投放数据"
+
+providers:
+  - id: file://provider.py
+    label: agent
+    config:
+      timeout: 1200000
+
+tests: file://tests.v1.1.holdout.json
+
+evaluateOptions:
+  maxConcurrency: 5

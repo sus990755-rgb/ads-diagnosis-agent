@@ -1,0 +1,51 @@
+[
+  {
+    "vars": {"case_id": "case-h01", "date": "2026-06-07", "category": "normal", "expected_finding": "无异常；窗口内 4 次 detector 报警均为小基数噪声"},
+    "assert": [
+      {"type": "javascript", "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"},
+      {"type": "javascript", "value": "JSON.parse(output).summary.indexOf('诊断运行失败') === -1"},
+      {"type": "javascript", "value": "JSON.parse(output).findings.every(f => f.confidence !== 'low' || /缺口|小基数|冷启动|追踪/.test((f.evidence || '') + (f.risk_note || '') + (f.data_gap || '')))"},
+      {"type": "javascript", "value": "JSON.parse(output).findings.every(f => f.type !== 'anomaly')"},
+      {"type": "javascript", "value": "JSON.parse(output).findings.every(f => f.confidence !== 'high' || ['negative_keyword','scale_up','none'].includes(f.type))"}
+    ]
+  },
+  {
+    "vars": {"case_id": "case-h02", "date": "2026-06-06", "category": "normal_tricky", "expected_finding": "刁钻正常：-85.7% 环比的一天绝对减少仅 6 个，期望 0 条 anomaly"},
+    "assert": [
+      {"type": "javascript", "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"},
+      {"type": "javascript", "value": "JSON.parse(output).summary.indexOf('诊断运行失败') === -1"},
+      {"type": "javascript", "value": "JSON.parse(output).findings.every(f => f.confidence !== 'low' || /缺口|小基数|冷启动|追踪/.test((f.evidence || '') + (f.risk_note || '') + (f.data_gap || '')))"},
+      {"type": "javascript", "value": "JSON.parse(output).findings.every(f => f.type !== 'anomaly')"},
+      {"type": "javascript", "value": "JSON.parse(output).findings.every(f => f.confidence !== 'high' || ['negative_keyword','scale_up','none'].includes(f.type))"}
+    ]
+  },
+  {
+    "vars": {"case_id": "case-h03", "date": "2026-06-20", "category": "combo_anomaly", "expected_finding": "组合异常：C001 消耗突增 + C005 缩量反弹 + C002 单日归零（非 tracking、≤medium）"},
+    "assert": [
+      {"type": "javascript", "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"},
+      {"type": "javascript", "value": "JSON.parse(output).summary.indexOf('诊断运行失败') === -1"},
+      {"type": "javascript", "value": "JSON.parse(output).findings.every(f => f.confidence !== 'low' || /缺口|小基数|冷启动|追踪/.test((f.evidence || '') + (f.risk_note || '') + (f.data_gap || '')))"},
+      {"type": "javascript", "value": "JSON.stringify(JSON.parse(output)).includes('C001')"},
+      {"type": "javascript", "value": "/消耗|成本|cost/i.test(JSON.stringify(JSON.parse(output)))"},
+      {"type": "javascript", "value": "JSON.parse(output).findings.every(f => !/C002|Generic/.test(f.entity) || (f.type !== 'tracking' && f.confidence !== 'high'))"}
+    ]
+  },
+  {
+    "vars": {"case_id": "case-h04", "date": "2026-06-20", "category": "tracking_boundary", "expected_finding": "追踪丢失首日 streak=1 未达规则门槛，不得出现 type=tracking 的 finding"},
+    "assert": [
+      {"type": "javascript", "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"},
+      {"type": "javascript", "value": "JSON.parse(output).summary.indexOf('诊断运行失败') === -1"},
+      {"type": "javascript", "value": "JSON.parse(output).findings.every(f => f.confidence !== 'low' || /缺口|小基数|冷启动|追踪/.test((f.evidence || '') + (f.risk_note || '') + (f.data_gap || '')))"},
+      {"type": "javascript", "value": "JSON.parse(output).findings.every(f => f.type !== 'tracking')"}
+    ]
+  },
+  {
+    "vars": {"case_id": "case-h05", "date": "2026-06-08", "category": "negkw_boundary", "expected_finding": "free coffee maker download 累计 16 点击/$41.60 未达门槛，不得列为否词对象"},
+    "assert": [
+      {"type": "javascript", "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"},
+      {"type": "javascript", "value": "JSON.parse(output).summary.indexOf('诊断运行失败') === -1"},
+      {"type": "javascript", "value": "JSON.parse(output).findings.every(f => f.confidence !== 'low' || /缺口|小基数|冷启动|追踪/.test((f.evidence || '') + (f.risk_note || '') + (f.data_gap || '')))"},
+      {"type": "javascript", "value": "JSON.parse(output).findings.every(f => f.type !== 'negative_keyword' || ((f.entity || '') + (f.evidence || '')).indexOf('free coffee maker download') === -1)"}
+    ]
+  }
+]

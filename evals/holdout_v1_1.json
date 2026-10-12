@@ -1,0 +1,1058 @@
+{
+  "evalId": "eval-Uly-2026-10-12T14:19:55",
+  "results": {
+    "version": 3,
+    "timestamp": "2026-10-12T14:19:55.024Z",
+    "prompts": [
+      {
+        "id": "bf7c6addc55911c950e731efefb0630e1e920891eff806739637279314b56103",
+        "raw": "诊断 {{date}} 的 Google Ads 投放数据",
+        "label": "诊断 {{date}} 的 Google Ads 投放数据",
+        "provider": "agent",
+        "metrics": {
+          "score": 4.583333333333333,
+          "testPassCount": 3,
+          "testFailCount": 2,
+          "testErrorCount": 0,
+          "assertPassCount": 22,
+          "assertFailCount": 2,
+          "totalLatencyMs": 357859,
+          "tokenUsage": {
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "total": 0,
+            "numRequests": 5,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            },
+            "assertions": {
+              "total": 0,
+              "prompt": 0,
+              "completion": 0,
+              "cached": 0,
+              "numRequests": 0,
+              "completionDetails": {
+                "reasoning": 0,
+                "acceptedPrediction": 0,
+                "rejectedPrediction": 0,
+                "cacheReadInputTokens": 0,
+                "cacheCreationInputTokens": 0
+              }
+            }
+          },
+          "namedScores": {},
+          "namedScoresCount": {},
+          "namedScoreWeights": {},
+          "cost": 0
+        }
+      }
+    ],
+    "results": [
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 1,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "JSON.parse(output).summary.indexOf('诊断运行失败') === -1"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "JSON.parse(output).findings.every(f => f.confidence !== 'low' || /缺口|小基数|冷启动|追踪/.test((f.evidence || '') + (f.risk_note || '') + (f.data_gap || '')))"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "JSON.parse(output).findings.every(f => f.type !== 'anomaly')"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "JSON.parse(output).findings.every(f => f.confidence !== 'high' || ['negative_keyword','scale_up','none'].includes(f.type))"
+              }
+            }
+          ]
+        },
+        "id": "c806ae59-14da-48f2-890e-c86bacd06987",
+        "latencyMs": 41979,
+        "namedScores": {},
+        "prompt": {
+          "raw": "诊断 2026-06-07 的 Google Ads 投放数据",
+          "label": "诊断 {{date}} 的 Google Ads 投放数据",
+          "config": {}
+        },
+        "promptId": "bf7c6addc55911c950e731efefb0630e1e920891eff806739637279314b56103",
+        "promptIdx": 0,
+        "provider": {
+          "id": "file://provider.py",
+          "label": "agent"
+        },
+        "response": {
+          "output": "{\"summary\":\"本次诊断覆盖 2026-06-01 至 2026-06-07（锚定日 2026-06-07，当日数据已到齐），账户共 4 个 campaign。整体结论：无高置信度异常。detect_anomalies 在诊断窗口（window）与全量区间（full_range）各报出 4 条 conversion_drop，全部为单日、且单日转化绝对减少均 < 8 个（C002 06-06 由 11→5 即 -6；C004 06-03 由 6→2 即 -4、06-05 由 7→1 即 -6；C005 06-02 由 7→3 即 -4），按小基数噪声逐日独立判定，均不得升级，故不计入 type=anomaly，仅以 type=none 留痕（依据关键词：小基数）。转化追踪健康：get_tracking_status 对 C001/C002/C004/C005 全部返回 healthy，无零转化连续 streak，无需输出 tracking finding。否词机会：按窗口累积量（2026-06-01 至 2026-06-07）核查 search_term 明细，无任何搜索词同时满足 点击≥20、转化=0、消耗>$50（零转化词中消耗最高为 'ergonomic wireless earbuds buy online' 的 $46.79，未过 $50 门槛），故无 negative_keyword finding，detect_anomalies 的 full_range 亦未报出该现象。放量评估：全量区间（2026-06-01 至 2026-06-07）ROAS 分别为 C001=3.36、C005=2.21、C002=1.96、C004=1.77，仅 C001 (Brand_Search) 达到 ROAS≥3 硬门槛，作为唯一 scale_up 候选。数据无历史缺口（data_gap 为 null），2026-06-08 及之后的未来数据一律未引用。\",\"findings\":[{\"type\":\"none\",\"entity\":\"C002(Generic_Search) / C004(Competitor_Search) / C005(Shopping_Plants)\",\"evidence\":\"detect_anomalies 诊断窗口内报出 4 条 conversion_drop：C002 2026-06-06 转化 11→5（-6，-54.5%）；C004 2026-06-03 转化 6→2（-4，-66.7%）；C004 2026-06-05 转化 1（前一日 7，-6，-85.7%）；C005 2026-06-02 转化 7→3（-4，-57.1%）。每条单日转化绝对减少均 < 8，且各实体单日转化基数本身很小（2~11 个），属逐日独立的统计噪声，不得跨天拼接升级。\",\"confidence\":\"low\",\"recommendation\":\"无需干预。建议保持观察，待单日转化绝对变化量达到非噪声量级（≥8 个）或出现与消耗/点击同向的多指标印证异常时再行评估。\",\"risk_note\":\"压低依据：小基数。单日转化绝对减少均 < 8 个，按规则一律视为噪声，最高仅 low；此为噪声留痕，非 anomaly。\",\"data_gap\":null},{\"type\":\"scale_up\",\"entity\":\"C001 (Brand_Search)\",\"evidence\":\"全量区间（2026-06-01 至 2026-06-07）汇总：impressions 7307、clicks 354、cost_usd 424.27、conversions 27、conversion_value_usd 1423.91、CPA 15.71、ROAS 3.36。为账户内唯一 ROAS≥3 的 campaign（对比 C005=2.21、C002=1.96、C004=1.77）。累计点击 354 ≥ 30，非冷启动；get_tracking_status 对 C001 返回 healthy。\",\"confidence\":\"medium\",\"recommendation\":\"建议人工评估对 C001 (Brand_Search) 适度提高预算/出价以争取更多品牌流量；仅作建议，不代表已执行任何调整。\",\"risk_note\":\"数据完整、追踪健康，但放量受外部竞争与季节性等不可控变量影响，根因无法仅凭数据确认，故给 medium。另需注意 C001 近 7 天转化呈走弱趋势（06-01 为 8 个，其后为 4/4/2/2/3/4），全量 ROAS 在一定程度上由 06-01 的高转化价值支撑；建议放量前复核近期转化质量。\",\"data_gap\":null}],\"overall_priority\":[\"无高置信度异常：C002/C004/C005 的转化环比下降均为单日小基数噪声（单日绝对减少 < 8），逐日独立判定，不升级为 anomaly。\",\"放量机会（中优先级）：仅 C001 (Brand_Search) 全量 ROAS 3.36 ≥ 3，建议人工评估提高预算/出价。\",\"否词（低优先级）：窗口内无搜索词同时满足 点击≥20、转化=0、消耗>$50，暂无可否词项。\",\"追踪（无风险）：全部 4 个 campaign 追踪状态 healthy，无零转化连续 streak。\"]}",
+          "cached": false
+        },
+        "score": 1,
+        "success": true,
+        "testCase": {
+          "vars": {
+            "case_id": "case-h01",
+            "date": "2026-06-07",
+            "category": "normal",
+            "expected_finding": "无异常；窗口内 4 次 detector 报警均为小基数噪声"
+          },
+          "assert": [
+            {
+              "type": "javascript",
+              "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+            },
+            {
+              "type": "javascript",
+              "value": "JSON.parse(output).summary.indexOf('诊断运行失败') === -1"
+            },
+            {
+              "type": "javascript",
+              "value": "JSON.parse(output).findings.every(f => f.confidence !== 'low' || /缺口|小基数|冷启动|追踪/.test((f.evidence || '') + (f.risk_note || '') + (f.data_gap || '')))"
+            },
+            {
+              "type": "javascript",
+              "value": "JSON.parse(output).findings.every(f => f.type !== 'anomaly')"
+            },
+            {
+              "type": "javascript",
+              "value": "JSON.parse(output).findings.every(f => f.confidence !== 'high' || ['negative_keyword','scale_up','none'].includes(f.type))"
+            }
+          ],
+          "description": "Row #1",
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 0,
+        "tokenUsage": {
+          "prompt": 0,
+          "completion": 0,
+          "cached": 0,
+          "total": 0,
+          "numRequests": 1,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "case_id": "case-h01",
+          "date": "2026-06-07",
+          "category": "normal",
+          "expected_finding": "无异常；窗口内 4 次 detector 报警均为小基数噪声"
+        },
+        "metadata": {
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      },
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 1,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "JSON.parse(output).summary.indexOf('诊断运行失败') === -1"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "JSON.parse(output).findings.every(f => f.confidence !== 'low' || /缺口|小基数|冷启动|追踪/.test((f.evidence || '') + (f.risk_note || '') + (f.data_gap || '')))"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "JSON.parse(output).findings.every(f => f.type !== 'anomaly')"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "JSON.parse(output).findings.every(f => f.confidence !== 'high' || ['negative_keyword','scale_up','none'].includes(f.type))"
+              }
+            }
+          ]
+        },
+        "id": "e450232e-3881-4b27-a124-4e7ad75feb89",
+        "latencyMs": 54015,
+        "namedScores": {},
+        "prompt": {
+          "raw": "诊断 2026-06-06 的 Google Ads 投放数据",
+          "label": "诊断 {{date}} 的 Google Ads 投放数据",
+          "config": {}
+        },
+        "promptId": "bf7c6addc55911c950e731efefb0630e1e920891eff806739637279314b56103",
+        "promptIdx": 0,
+        "provider": {
+          "id": "file://provider.py",
+          "label": "agent"
+        },
+        "response": {
+          "output": "{\"summary\":\"本次诊断锚定日 2026-06-06，请求窗口 2026-05-31~2026-06-06，但数据覆盖自 2026-06-01 起，05-31 无数据，故实际诊断窗口为 2026-06-01~2026-06-06（按窗口截断处理，不构成数据缺口），未引用 06-06 之后数据。全账户 4 个 campaign（C001 Brand_Search、C002 Generic_Search、C004 Competitor_Search、C005 Shopping_Plants）数据完整，get_tracking_status 整体为 healthy、无零转化连续段，未发现消耗突增、展示骤降或追踪中断。detect_anomalies 在 window 与 full_range 两个区间报出 4 起 conversion_drop（C002 06-06、C004 06-03、C004 06-05、C005 06-02），单日转化绝对减少分别为 -6/-4/-6/-4，均 < 8 且基数仅为个位数，按小基数规则且按天独立判定为统计噪声，已从 high 降级，不作为 anomaly 上报，仅以 type=none 留痕。否词机会：6 天窗口内所有零转化搜索词累计消耗均未超过 $50 阈值（最高为 'ergonomic wireless earbuds buy online' $38.93/32 点击/0 转化），未触发否词规则。放量评估覆盖全部 campaign：仅 C001 Brand_Search 全量 ROAS 3.34（≥3）达标；C002/C005/C004 全量 ROAS 分别为 1.99/2.13/1.76，均低于 3，不予放量。以上均为建议，未执行任何投放修改；不含任何对未来转化的预测。\",\"findings\":[{\"type\":\"scale_up\",\"entity\":\"C001 (Brand_Search)\",\"evidence\":\"全量区间 2026-06-01~2026-06-06：消耗 $363.29、点击 303、转化 23、转化价值 $1214.16、ROAS 3.34、CPA $15.80；六个自然日消耗稳定（$56~$66），追踪状态 healthy，窗口内无异常。其余 campaign 全量 ROAS：C002=1.99、C005=2.13、C004=1.76，均 <3。\",\"confidence\":\"medium\",\"recommendation\":\"建议人工评估对 C001 Brand_Search 小幅提高预算或出价以争取更多品牌流量，先小步测试并密切监控 ROAS 是否维持在 ≥3。\",\"risk_note\":\"品牌搜索 ROAS 偏高属常见现象；历史仅 6 天偏短，且该系列近期单日转化偏弱（06-04/05/06 为 2/2/3），放量后 ROAS 可能回落，并存在竞争、季节性等外部不可控变量。\",\"data_gap\":null},{\"type\":\"none\",\"entity\":\"C002 / C004 / C005 转化波动\",\"evidence\":\"detect_anomalies 报出 4 起 conversion_drop：C002 2026-06-06 由 11→5（-6，-54.5%）、C004 2026-06-03 由 6→2（-4，-66.7%）、C004 2026-06-05 由 7→1（-6，-85.7%）、C005 2026-06-02 由 7→3（-4，-57.1%）。单日转化绝对减少均 <8，各系列单日转化基数仅个位数。\",\"confidence\":\"low\",\"recommendation\":\"无需投放动作，建议继续观察，待单个系列积累更多转化后再评估趋势。\",\"risk_note\":\"小基数：单日转化基数为个位数，环比百分比虽大但绝对变化均 <8，属统计噪声，按天独立判定，不升级为异常。\",\"data_gap\":null},{\"type\":\"none\",\"entity\":\"搜索词否词机会扫描\",\"evidence\":\"2026-06-01~2026-06-06 零转化且点击≥20 的搜索词中，累计消耗最高者为 'ergonomic wireless earbuds buy online'（32 点击/0 转化/$38.93），其后 'portable coffee maker for sale' $35.92、'eco friendly wireless earbuds buy online' $35.88、'cheap coffee maker buy online' $33.88 等均未超过 $50 累积消耗阈值。\",\"confidence\":\"low\",\"recommendation\":\"暂不建议加否词；建议持续累积这些零转化搜索词的消耗与点击，待达到阈值（消耗 >$50 且点击≥20、转化=0）后再由人工评估是否否定。\",\"risk_note\":\"小基数/累积不足：6 天窗口偏短，搜索词消耗尚未累积到 $50 阈值，否词判断需更长窗口的累积量支撑。\",\"data_gap\":null}],\"overall_priority\":[\"人工评估 C001 Brand_Search 的小幅放量（全量 ROAS 3.34，CPA $15.80），并监控放量后 ROAS 是否维持 ≥3\",\"对 C002/C004/C005 的小基数单日转化波动保持观察，暂不采取投放动作\",\"持续累积零转化搜索词的消耗/点击，达标后再人工评估否词\",\"对全账户追踪状态保持例行核查（当前 healthy）\"]}",
+          "cached": false
+        },
+        "score": 1,
+        "success": true,
+        "testCase": {
+          "vars": {
+            "case_id": "case-h02",
+            "date": "2026-06-06",
+            "category": "normal_tricky",
+            "expected_finding": "刁钻正常：-85.7% 环比的一天绝对减少仅 6 个，期望 0 条 anomaly"
+          },
+          "assert": [
+            {
+              "type": "javascript",
+              "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+            },
+            {
+              "type": "javascript",
+              "value": "JSON.parse(output).summary.indexOf('诊断运行失败') === -1"
+            },
+            {
+              "type": "javascript",
+              "value": "JSON.parse(output).findings.every(f => f.confidence !== 'low' || /缺口|小基数|冷启动|追踪/.test((f.evidence || '') + (f.risk_note || '') + (f.data_gap || '')))"
+            },
+            {
+              "type": "javascript",
+              "value": "JSON.parse(output).findings.every(f => f.type !== 'anomaly')"
+            },
+            {
+              "type": "javascript",
+              "value": "JSON.parse(output).findings.every(f => f.confidence !== 'high' || ['negative_keyword','scale_up','none'].includes(f.type))"
+            }
+          ],
+          "description": "Row #2",
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 1,
+        "tokenUsage": {
+          "prompt": 0,
+          "completion": 0,
+          "cached": 0,
+          "total": 0,
+          "numRequests": 1,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "case_id": "case-h02",
+          "date": "2026-06-06",
+          "category": "normal_tricky",
+          "expected_finding": "刁钻正常：-85.7% 环比的一天绝对减少仅 6 个，期望 0 条 anomaly"
+        },
+        "metadata": {
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      },
+      {
+        "cost": 0,
+        "error": "Custom function returned false\nJSON.parse(output).findings.every(f => !/C002|Generic/.test(f.entity) || (f.type !== 'tracking' && f.confidence !== 'high'))",
+        "gradingResult": {
+          "pass": false,
+          "score": 0.8333333333333334,
+          "reason": "Custom function returned false\nJSON.parse(output).findings.every(f => !/C002|Generic/.test(f.entity) || (f.type !== 'tracking' && f.confidence !== 'high'))",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "JSON.parse(output).summary.indexOf('诊断运行失败') === -1"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "JSON.parse(output).findings.every(f => f.confidence !== 'low' || /缺口|小基数|冷启动|追踪/.test((f.evidence || '') + (f.risk_note || '') + (f.data_gap || '')))"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "JSON.stringify(JSON.parse(output)).includes('C001')"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "/消耗|成本|cost/i.test(JSON.stringify(JSON.parse(output)))"
+              }
+            },
+            {
+              "pass": false,
+              "score": 0,
+              "reason": "Custom function returned false\nJSON.parse(output).findings.every(f => !/C002|Generic/.test(f.entity) || (f.type !== 'tracking' && f.confidence !== 'high'))",
+              "assertion": {
+                "type": "javascript",
+                "value": "JSON.parse(output).findings.every(f => !/C002|Generic/.test(f.entity) || (f.type !== 'tracking' && f.confidence !== 'high'))"
+              }
+            }
+          ]
+        },
+        "id": "486645f2-5439-4e72-928e-2c6809cab89e",
+        "latencyMs": 121531,
+        "namedScores": {},
+        "prompt": {
+          "raw": "诊断 2026-06-20 的 Google Ads 投放数据",
+          "label": "诊断 {{date}} 的 Google Ads 投放数据",
+          "config": {}
+        },
+        "promptId": "bf7c6addc55911c950e731efefb0630e1e920891eff806739637279314b56103",
+        "promptIdx": 0,
+        "provider": {
+          "id": "file://provider.py",
+          "label": "agent"
+        },
+        "response": {
+          "output": "{\"summary\":\"本次诊断窗口为 2026-06-14 至 2026-06-20（账户数据区间自 2026-06-01 起；本报告分析截至 2026-06-20，锚定日数据以工具返回为准，当日转化可能尚未完整）。detect_anomalies 未报出 data_gap，get_performance 各 campaign 每日均有行，数据无缺口，本次运行不受缺口降级影响。全局评估：4 个 campaign 全量区间（2026-06-01..2026-06-20）ROAS 均低于 3（C001 Brand_Search 2.83、C002 Generic_Search 1.93、C004 Competitor_Search 1.79、C005 Shopping_Plants 2.35），全部不满足放量硬门槛，本次无 scale_up 建议。最强信号为 C002 (Generic_Search) 转化追踪疑似失效（tracking status = suspected_broken，2026-06-20 零转化 / 196 次点击），已单列 tracking finding（low）。窗口内若干 conversion_drop 的单日转化绝对减少均 < 8（C001 06-15 减 5、C001 06-20 减 4、C004 06-15 减 3、C004 06-19 减 3、C005 06-18 减 7），按小基数噪声规则按天独立判定，未升级为 anomaly（见 type=none）。另发现 7 个零转化、累计消耗 > $50 的搜索词构成否词机会。C001 06-15 单日消耗 +113%、C005 06-18 单日展现 -70.5% 均为单日现象，置信度均为 low。\",\"findings\":[{\"type\":\"tracking\",\"entity\":\"C002 Generic_Search\",\"evidence\":\"get_tracking_status([2026-06-14,2026-06-20]) 判定 C002 为 suspected_broken：zero_conversion_streak 报告自 2026-06-20 起连续 2 天零转化、累计 372 clicks（streak 末端 2026-06-21 超出允许窗口，未作为证据采纳）；窗口内 2026-06-20 单日 196 clicks / 0 conversions，前一日 06-19 为 9 conversions；clicks_per_conversion 由上一等长窗口 20.1 升至 22.4（+11.3%）。\",\"confidence\":\"low\",\"recommendation\":\"建议人工核查 C002 (Generic_Search) 的转化追踪链路（GTM/pixel/离线导入）在 2026-06-20 前后是否失效，并与后端订单数据核对，区分‘追踪丢失’与‘真实转化下降’。\",\"risk_note\":\"追踪状态为 suspected_broken，仅为数据形态疑似，未经标签/像素配置验证；窗口内可用的零转化日仅 2026-06-20 一天（06-21 超出窗口），证据强度有限。依据：追踪存疑。\",\"data_gap\":null},{\"type\":\"anomaly\",\"entity\":\"C001 Brand_Search\",\"evidence\":\"detect_anomalies(window) cost_spike：2026-06-15 消耗 $123.17 vs 06-14 $57.72（+113.4%），同日 clicks 48→94、conversions 6→1（-83.3%，绝对减少 5 个）。全量区间 C001 ROAS 2.83、累计 clicks 1052。\",\"confidence\":\"low\",\"recommendation\":\"建议人工查看 2026-06-15 C001 的竞价/预算调整记录与当日搜索词流量来源，确认是否为短期流量或竞价变化导致的单日消耗翻倍。\",\"risk_note\":\"单日事件、未连续；同日转化绝对减少仅 5 个（<8），按小基数规则视为统计噪声，不足以支撑高/中置信度异常；消耗绝对值（$57.72→$123.17）本身非小基数，故仍作为 anomaly 留痕。依据：小基数。\",\"data_gap\":null},{\"type\":\"anomaly\",\"entity\":\"C005 Shopping_Plants\",\"evidence\":\"detect_anomalies(window) impression_drop：2026-06-18 展现 617 vs 06-17 2088（-70.5%），同日 clicks 106→35、消耗 $128.62→$35.49、conversions 7→0；次日 06-19 展现回升至 2180、消耗 $123.77（对 06-18 低基数 $35.49 的 +248.7% 属小基数回弹）。\",\"confidence\":\"low\",\"recommendation\":\"建议人工核查 2026-06-18 C005 (Shopping_Plants) 的预算/出价、商品 feed 与审核状态及竞争环境，确认单日展现骤降的原因。\",\"risk_note\":\"单日事件；当日转化绝对减少 7 个（<8）属噪声；06-19 消耗突增系相对 $35.49 小基数的回弹，不计为独立异常。依据：小基数。\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"cheap desk lamp for sale\",\"evidence\":\"full_range(2026-06-01..2026-06-20) 搜索词 'cheap desk lamp for sale'（campaign C004 / ad_group AG21）：clicks 45、conversions 0、cost $52.78，满足否词机会规则（clicks≥20、conversions=0、累计消耗>$50）。\",\"confidence\":\"medium\",\"recommendation\":\"建议人工评估将该搜索词添加为否定关键词，并复核其广告组与落地页相关性。\",\"risk_note\":\"搜索词层级长窗口累计判断；C004 追踪状态 healthy、数据无缺口，但否词为判断性建议，需人工结合业务相关性决策。\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"ergonomic desk lamp buy online\",\"evidence\":\"full_range(2026-06-01..2026-06-20) 搜索词 'ergonomic desk lamp buy online'（campaign C004 / ad_group AG23）：clicks 43、conversions 0、cost $52.84，满足否词机会规则。\",\"confidence\":\"medium\",\"recommendation\":\"建议人工评估将该搜索词添加为否定关键词，并复核其广告组与落地页相关性。\",\"risk_note\":\"搜索词层级长窗口累计判断；C004 追踪状态 healthy、数据无缺口，否词为判断性建议。\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"ergonomic desk lamp for sale\",\"evidence\":\"full_range(2026-06-01..2026-06-20) 搜索词 'ergonomic desk lamp for sale'（campaign C004 / ad_group AG23）：clicks 47、conversions 0、cost $56.56，满足否词机会规则。\",\"confidence\":\"medium\",\"recommendation\":\"建议人工评估将该搜索词添加为否定关键词，并复核其广告组与落地页相关性。\",\"risk_note\":\"搜索词层级长窗口累计判断；C004 追踪状态 healthy、数据无缺口，否词为判断性建议。\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"lightweight desk lamp buy online\",\"evidence\":\"full_range(2026-06-01..2026-06-20) 搜索词 'lightweight desk lamp buy online'（campaign C004 / ad_group AG22）：clicks 45、conversions 0、cost $52.76，满足否词机会规则。\",\"confidence\":\"medium\",\"recommendation\":\"建议人工评估将该搜索词添加为否定关键词，并复核其广告组与落地页相关性。\",\"risk_note\":\"搜索词层级长窗口累计判断；C004 追踪状态 healthy、数据无缺口，否词为判断性建议。\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"premium desk lamp for sale\",\"evidence\":\"full_range(2026-06-01..2026-06-20) 搜索词 'premium desk lamp for sale'（campaign C004 / ad_group AG21）：clicks 42、conversions 0、cost $51.49，满足否词机会规则。\",\"confidence\":\"medium\",\"recommendation\":\"建议人工评估将该搜索词添加为否定关键词，并复核其广告组与落地页相关性。\",\"risk_note\":\"搜索词层级长窗口累计判断；C004 追踪状态 healthy、数据无缺口，否词为判断性建议。\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"free coffee maker download\",\"evidence\":\"full_range(2026-06-01..2026-06-20) 搜索词 'free coffee maker download'（campaign C004 / ad_group AG19）：clicks 40、conversions 0、cost $104.00、CPC $2.60，满足否词机会规则。\",\"confidence\":\"medium\",\"recommendation\":\"建议人工评估将该搜索词添加为否定关键词（‘download’意图疑似与转化目标不符），并复核广告组与落地页相关性。\",\"risk_note\":\"搜索词层级长窗口累计判断；C004 追踪状态 healthy、数据无缺口，否词为判断性建议。\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"ergonomic wireless earbuds buy online\",\"evidence\":\"full_range(2026-06-01..2026-06-20) 搜索词 'ergonomic wireless earbuds buy online'（campaign C002 / ad_group AG11）：clicks 91、conversions 0、cost $115.08，满足否词机会规则。\",\"confidence\":\"low\",\"recommendation\":\"建议人工先确认 C002 转化追踪恢复后再评估该词的否词处理，并复核其广告组与落地页相关性。\",\"risk_note\":\"追踪存疑：该词所属 C002 (Generic_Search) 追踪状态为 suspected_broken，0 转化可能部分源于追踪问题而非词本身无效，依据不足故降级。依据：追踪存疑。\",\"data_gap\":null},{\"type\":\"none\",\"entity\":\"窗口内 conversion_drop 噪声（C001/C004/C005）\",\"evidence\":\"窗口内 detect_anomalies 报出的 conversion_drop 单日转化绝对减少：C001 06-15 6→1（-5）、C001 06-20 7→3（-4）、C004 06-15 4→1（-3）、C004 06-19 3→0（-3）、C005 06-18 7→0（-7），均 <8。\",\"confidence\":\"low\",\"recommendation\":\"建议无需干预，继续按天观察；若某实体连续多日出现同向变化再行复核。\",\"risk_note\":\"按天独立判定，均为小基数统计噪声，不跨天拼接升级为 anomaly；仅作留痕。依据：小基数。\",\"data_gap\":null},{\"type\":\"none\",\"entity\":\"账户放量评估（全部 campaign）\",\"evidence\":\"全量区间（2026-06-01..2026-06-20）ROAS：C001 Brand_Search 2.83、C002 Generic_Search 1.93、C004 Competitor_Search 1.79、C005 Shopping_Plants 2.35，全部 < 3，不满足放量硬门槛。\",\"confidence\":\"medium\",\"recommendation\":\"建议人工持续观察各 campaign 的 ROAS 演化，待某实体在全量区间稳定达到 ROAS ≥ 3 且近期无异常时再评估放量。\",\"risk_note\":\"放量评估覆盖全部 campaign，基于全量数据（无缺口），ROAS < 3 故本次不给出 scale_up，此为排除性结论。\",\"data_gap\":null}],\"overall_priority\":[\"1. 人工核查 C002 (Generic_Search) 转化追踪疑似失效（2026-06-20 零转化 / 196 次点击，tracking status = suspected_broken）\",\"2. 人工评估 C004/C002 共 7 个零转化高消耗搜索词的否词处理\",\"3. 复核 C001 06-15 单日消耗翻倍（+113.4%）与 C005 06-18 单日展现骤降（-70.5%）\",\"4. 账户暂无满足 ROAS≥3 的放量对象，维持观察\"]}",
+          "cached": false
+        },
+        "score": 0.8333333333333334,
+        "success": false,
+        "testCase": {
+          "vars": {
+            "case_id": "case-h03",
+            "date": "2026-06-20",
+            "category": "combo_anomaly",
+            "expected_finding": "组合异常：C001 消耗突增 + C005 缩量反弹 + C002 单日归零（非 tracking、≤medium）"
+          },
+          "assert": [
+            {
+              "type": "javascript",
+              "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+            },
+            {
+              "type": "javascript",
+              "value": "JSON.parse(output).summary.indexOf('诊断运行失败') === -1"
+            },
+            {
+              "type": "javascript",
+              "value": "JSON.parse(output).findings.every(f => f.confidence !== 'low' || /缺口|小基数|冷启动|追踪/.test((f.evidence || '') + (f.risk_note || '') + (f.data_gap || '')))"
+            },
+            {
+              "type": "javascript",
+              "value": "JSON.stringify(JSON.parse(output)).includes('C001')"
+            },
+            {
+              "type": "javascript",
+              "value": "/消耗|成本|cost/i.test(JSON.stringify(JSON.parse(output)))"
+            },
+            {
+              "type": "javascript",
+              "value": "JSON.parse(output).findings.every(f => !/C002|Generic/.test(f.entity) || (f.type !== 'tracking' && f.confidence !== 'high'))"
+            }
+          ],
+          "description": "Row #3",
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 2,
+        "tokenUsage": {
+          "prompt": 0,
+          "completion": 0,
+          "cached": 0,
+          "total": 0,
+          "numRequests": 1,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "case_id": "case-h03",
+          "date": "2026-06-20",
+          "category": "combo_anomaly",
+          "expected_finding": "组合异常：C001 消耗突增 + C005 缩量反弹 + C002 单日归零（非 tracking、≤medium）"
+        },
+        "metadata": {
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 1
+      },
+      {
+        "cost": 0,
+        "error": "Custom function returned false\nJSON.parse(output).findings.every(f => f.type !== 'tracking')",
+        "gradingResult": {
+          "pass": false,
+          "score": 0.75,
+          "reason": "Custom function returned false\nJSON.parse(output).findings.every(f => f.type !== 'tracking')",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "JSON.parse(output).summary.indexOf('诊断运行失败') === -1"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "JSON.parse(output).findings.every(f => f.confidence !== 'low' || /缺口|小基数|冷启动|追踪/.test((f.evidence || '') + (f.risk_note || '') + (f.data_gap || '')))"
+              }
+            },
+            {
+              "pass": false,
+              "score": 0,
+              "reason": "Custom function returned false\nJSON.parse(output).findings.every(f => f.type !== 'tracking')",
+              "assertion": {
+                "type": "javascript",
+                "value": "JSON.parse(output).findings.every(f => f.type !== 'tracking')"
+              }
+            }
+          ]
+        },
+        "id": "29f39b21-c1b2-484d-87f4-0f7f73f387fc",
+        "latencyMs": 107762,
+        "namedScores": {},
+        "prompt": {
+          "raw": "诊断 2026-06-20 的 Google Ads 投放数据",
+          "label": "诊断 {{date}} 的 Google Ads 投放数据",
+          "config": {}
+        },
+        "promptId": "bf7c6addc55911c950e731efefb0630e1e920891eff806739637279314b56103",
+        "promptIdx": 0,
+        "provider": {
+          "id": "file://provider.py",
+          "label": "agent"
+        },
+        "response": {
+          "output": "{\"summary\":\"诊断区间 2026-06-14 至 2026-06-20（锚定日 2026-06-20，全量数据起点 2026-06-01）。detect_anomalies 一次调用返回 window 与 full_range 两份结果；随后下钻 get_performance（campaign 级，全量+窗口含日拆）与 get_tracking_status（两个区间）。本窗口内各 campaign 在自身活跃区间均无缺失日期，未发现历史数据缺口，故未触发缺口降级，全部 findings 的 data_gap 为 null。需注意：锚定日 2026-06-20 为当日，转化可能存在归因滞后、尚未完整，本报告分析截至 2026-06-20。核心结论：①C002 追踪状态为 suspected_broken，已单独出具 tracking finding；②C005 在 2026-06-18 出现单日投放骤降（曝光/点击/消耗同向大幅下滑）；③C001 在 2026-06-15 出现单日消耗/点击翻倍；④长窗口（06-01 至 06-20）累计曝光下发现 7 个零转化、累计消耗>$50 的搜索词（C004 六个、C002 一个），构成否词机会；⑤放量评估：全部 4 个 campaign 全量区间 ROAS 均 <3（C001 2.83、C005 2.35、C002 1.93、C004 1.79），本期不给出任何 scale_up。窗口内其余单日转化波动（C001 6→1、7→3；C004 4→1、3→0；C005 7→0）单日绝对减少均 <8，按小基数噪声规则逐日独立判定，不作为异常上报。\",\"findings\":[{\"type\":\"tracking\",\"entity\":\"C002 Generic_Search\",\"evidence\":\"get_tracking_status 对 [2026-06-14,2026-06-20] 与 [2026-06-01,2026-06-20] 均返回 status=suspected_broken：C002 存在连续 2 天零转化 streak（2026-06-20..2026-06-21，372 次点击），clicks_per_conversion 22.4，reason='conversions=0 for 2 consecutive days with 372 clicks'。窗口内 2026-06-20 单日 clicks=196、conversions=0（2026-06-19 为 9），单日转化绝对减少 9 个（≥8）；detect_anomalies 亦报 tracking_loss_suspected（zero_conversion_days=2, clicks=372）。累计点击 3744（非冷启动，>30）。\",\"confidence\":\"low\",\"recommendation\":\"建议人工核查 C002 的转化追踪（转化代码/归因配置）是否正常，区分『追踪中断』与『真实转化下滑』；在核实前不建议据 06-20 的 0 转化调整出价或预算。\",\"risk_note\":\"压低依据：追踪存疑（tracking status=suspected_broken）。该状态仅表示数据形态与追踪中断一致，并非已证实的根因；且零转化 streak 第 2 天 2026-06-21 落在诊断窗口之外，窗口内仅 2026-06-20 单日，故不给更高置信度。\",\"data_gap\":null},{\"type\":\"anomaly\",\"entity\":\"C005 Shopping_Plants\",\"evidence\":\"2026-06-18 单日：impressions 617（前一日 06-17 为 2088，-70.5%），clicks 35（前值 106，-67%），cost_usd 35.49（前值 128.62，-72.4%），conversions 0（前值 7）。2026-06-19 已恢复：impressions 2180、cost_usd 123.77、conversions 6。detect_anomalies 报 impression_drop(medium, 06-18) 及 cost_spike 06-19。C005 追踪状态 healthy。\",\"confidence\":\"medium\",\"recommendation\":\"建议人工核查 C005 在 2026-06-18 是否存在预算/出价限制、投放时段或落地页/库存等导致当日曝光骤降的因素；属单日事件，暂不建议激进调整。\",\"risk_note\":\"单日事件、根因无法仅凭数据确认（可能为大盘/外部或投放设置波动，属不可控变量）；2026-06-19 的 +248.7% cost_spike 是相对被压低的 06-18 基数（35.49）的恢复，非真实突增。当日转化减少 7 个（<8）为噪声，不作定级依据。\",\"data_gap\":null},{\"type\":\"anomaly\",\"entity\":\"C001 Brand_Search\",\"evidence\":\"2026-06-15 单日：cost_usd 123.17（前值 57.72，+113.4%），clicks 94（前值 48，+95.8%），impressions 1035（前值 1047，基本持平），CPC≈1.31（其余日≈1.20），conversions 1（前值 6，-5）。detect_anomalies 报 cost_spike（+113.4%）。C001 追踪状态 healthy。\",\"confidence\":\"medium\",\"recommendation\":\"建议人工核查 C001 在 2026-06-15 点击/消耗翻倍但曝光持平的来源（是否有出价调整、无效点击/流量质量异常），必要时检查搜索词与 IP 排除。\",\"risk_note\":\"单日事件；当日转化减少 5 个（<8）属噪声，不能作为高置信依据，故整体给 medium；未发现追踪异常。\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"C004 Competitor_Search / cheap desk lamp for sale (AG21)\",\"evidence\":\"全量区间 [2026-06-01,2026-06-20]：clicks 45、conversions 0、cost_usd 52.78（detect_anomalies full_range negative_keyword_opportunity）。C004 追踪状态 healthy。\",\"confidence\":\"medium\",\"recommendation\":\"建议人工评估将该搜索词加为否定关键词（或先加为观察型否定），以止损零转化消耗。\",\"risk_note\":\"累计点击 45（>30）非冷启动；为零转化高消耗机会型发现，是否否定需人工结合业务意图判断。\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"C004 Competitor_Search / ergonomic desk lamp buy online (AG23)\",\"evidence\":\"全量区间 [2026-06-01,2026-06-20]：clicks 43、conversions 0、cost_usd 52.84（detect_anomalies full_range）。C004 追踪状态 healthy。\",\"confidence\":\"medium\",\"recommendation\":\"建议人工评估将其加为否定关键词。\",\"risk_note\":\"累计点击 43（>30）非冷启动；是否否定需人工判断。\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"C004 Competitor_Search / ergonomic desk lamp for sale (AG23)\",\"evidence\":\"全量区间 [2026-06-01,2026-06-20]：clicks 47、conversions 0、cost_usd 56.56（detect_anomalies full_range）。C004 追踪状态 healthy。\",\"confidence\":\"medium\",\"recommendation\":\"建议人工评估将其加为否定关键词。\",\"risk_note\":\"累计点击 47（>30）非冷启动；是否否定需人工判断。\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"C004 Competitor_Search / lightweight desk lamp buy online (AG22)\",\"evidence\":\"全量区间 [2026-06-01,2026-06-20]：clicks 45、conversions 0、cost_usd 52.76（detect_anomalies full_range）。C004 追踪状态 healthy。\",\"confidence\":\"medium\",\"recommendation\":\"建议人工评估将其加为否定关键词。\",\"risk_note\":\"累计点击 45（>30）非冷启动；是否否定需人工判断。\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"C004 Competitor_Search / premium desk lamp for sale (AG21)\",\"evidence\":\"全量区间 [2026-06-01,2026-06-20]：clicks 42、conversions 0、cost_usd 51.49（detect_anomalies full_range）。C004 追踪状态 healthy。\",\"confidence\":\"medium\",\"recommendation\":\"建议人工评估将其加为否定关键词。\",\"risk_note\":\"累计点击 42（>30）非冷启动；是否否定需人工判断。\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"C004 Competitor_Search / free coffee maker download (AG19)\",\"evidence\":\"全量区间 [2026-06-01,2026-06-20]：clicks 40、conversions 0、cost_usd 104.00（detect_anomalies full_range，成本最高的否词机会）。C004 追踪状态 healthy。\",\"confidence\":\"medium\",\"recommendation\":\"建议人工评估将其加为否定关键词（消耗较高，优先级靠前）。\",\"risk_note\":\"累计点击 40（>30）非冷启动；是否否定需人工判断。\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"C002 Generic_Search / ergonomic wireless earbuds buy online (AG11)\",\"evidence\":\"全量区间 [2026-06-01,2026-06-20]：clicks 91、conversions 0、cost_usd 115.08（detect_anomalies full_range）。但 C002 追踪状态为 suspected_broken。\",\"confidence\":\"low\",\"recommendation\":\"建议人工先修复/核实 C002 追踪，再重新评估该词是否应否定；在追踪恢复前不宜仅凭 0 转化做否词决策。\",\"risk_note\":\"压低依据：追踪存疑（C002 tracking=suspected_broken），其 0 转化可能为转化漏记而非真实无转化。累计点击 91（>30）非冷启动。\",\"data_gap\":null},{\"type\":\"none\",\"entity\":\"账户全量区间放量评估 (2026-06-01..2026-06-20)\",\"evidence\":\"全量区间 ROAS：C001 Brand_Search 2.83、C005 Shopping_Plants 2.35、C002 Generic_Search 1.93、C004 Competitor_Search 1.79；对应 CPA 18.19/22.23/26.75/29.37。全部 <3。\",\"confidence\":\"medium\",\"recommendation\":\"本期不建议对任何 campaign 放量（ROAS 均未达 ≥3 硬门槛）；建议人工在修复 C002 追踪并观察各系列 ROAS 走势后再评估放量。\",\"risk_note\":\"C002 追踪存疑，其 ROAS/CPA 可能因转化漏记而失真，需修复后再评估；放量门控按全量区间 ROAS≥3 执行，无满足者。\",\"data_gap\":null},{\"type\":\"none\",\"entity\":\"C001/C004/C005 单日转化波动（噪声留痕）\",\"evidence\":\"窗口内多起单日 conversion_drop：C001 06-15 6→1、06-20 7→3；C004 06-15 4→1、06-19 3→0；C005 06-18 7→0。单日绝对减少分别为 5/4/3/3/7 个，均 <8。\",\"confidence\":\"low\",\"recommendation\":\"无需处置，继续观察；不据此调整出价或预算。\",\"risk_note\":\"压低依据：小基数（单日转化绝对减少 <8，属统计噪声，按天独立判定，不跨天拼接升级）。\",\"data_gap\":null}],\"overall_priority\":[\"优先排查 C002 Generic_Search 的转化追踪（suspected_broken，2026-06-20 单日 196 点击 0 转化），确认是追踪中断还是真实下滑\",\"核查 C005 Shopping_Plants 2026-06-18 单日投放骤降（曝光 -70.5%、消耗 -72.4%）的原因\",\"核查 C001 Brand_Search 2026-06-15 单日消耗/点击翻倍（+113.4%）的流量来源\",\"评估并人工处理 7 个零转化高消耗搜索词否词机会（C004 六个、C002 一个）\",\"放量评估：全部 campaign 全量 ROAS<3，本期不给出 scale_up\"]}",
+          "cached": false
+        },
+        "score": 0.75,
+        "success": false,
+        "testCase": {
+          "vars": {
+            "case_id": "case-h04",
+            "date": "2026-06-20",
+            "category": "tracking_boundary",
+            "expected_finding": "追踪丢失首日 streak=1 未达规则门槛，不得出现 type=tracking 的 finding"
+          },
+          "assert": [
+            {
+              "type": "javascript",
+              "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+            },
+            {
+              "type": "javascript",
+              "value": "JSON.parse(output).summary.indexOf('诊断运行失败') === -1"
+            },
+            {
+              "type": "javascript",
+              "value": "JSON.parse(output).findings.every(f => f.confidence !== 'low' || /缺口|小基数|冷启动|追踪/.test((f.evidence || '') + (f.risk_note || '') + (f.data_gap || '')))"
+            },
+            {
+              "type": "javascript",
+              "value": "JSON.parse(output).findings.every(f => f.type !== 'tracking')"
+            }
+          ],
+          "description": "Row #4",
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 3,
+        "tokenUsage": {
+          "prompt": 0,
+          "completion": 0,
+          "cached": 0,
+          "total": 0,
+          "numRequests": 1,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "case_id": "case-h04",
+          "date": "2026-06-20",
+          "category": "tracking_boundary",
+          "expected_finding": "追踪丢失首日 streak=1 未达规则门槛，不得出现 type=tracking 的 finding"
+        },
+        "metadata": {
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 1
+      },
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 1,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "JSON.parse(output).summary.indexOf('诊断运行失败') === -1"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "JSON.parse(output).findings.every(f => f.confidence !== 'low' || /缺口|小基数|冷启动|追踪/.test((f.evidence || '') + (f.risk_note || '') + (f.data_gap || '')))"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "value": "JSON.parse(output).findings.every(f => f.type !== 'negative_keyword' || ((f.entity || '') + (f.evidence || '')).indexOf('free coffee maker download') === -1)"
+              }
+            }
+          ]
+        },
+        "id": "1d57b826-6ac9-415f-8ba4-ce448349a612",
+        "latencyMs": 32572,
+        "namedScores": {},
+        "prompt": {
+          "raw": "诊断 2026-06-08 的 Google Ads 投放数据",
+          "label": "诊断 {{date}} 的 Google Ads 投放数据",
+          "config": {}
+        },
+        "promptId": "bf7c6addc55911c950e731efefb0630e1e920891eff806739637279314b56103",
+        "promptIdx": 0,
+        "provider": {
+          "id": "file://provider.py",
+          "label": "agent"
+        },
+        "response": {
+          "output": "{\"summary\":\"本次诊断窗口为 2026-06-02 至 2026-06-08，全量区间（数据起点至锚定日）为 2026-06-01 至 2026-06-08，本报告分析截至 2026-06-08，未引用任何 2026-06-08 之后的数据。检测器在窗口内报出 4 条 conversion_drop 信号（C002 6/6、C004 6/3 与 6/5、C005 6/2），但其单日转化绝对减少量分别为 6、4、6、4 个，均 < 8 个，按小基数噪声规则逐日独立判定为统计噪声，故不输出为 anomaly，仅在此留痕。追踪状态核查结果为 healthy（C001/C002/C004/C005 均无零转化连断），故无 tracking 类 finding。全量区间 4 个 campaign 均有效投放：C001 Brand_Search 全量 ROAS 3.19（≥3）为唯一可评估放量的实体；C002 Generic_Search ROAS 1.95、C004 Competitor_Search ROAS 1.72、C005 Shopping_Plants ROAS 2.12 均低于 3 的硬门槛，一律不建议放量。否词机会方面，长窗口 [2026-06-01 至 2026-06-08] 内有两个搜索词满足 clicks≥20、conversions=0、累计消耗>$50。本次运行未发现历史数据缺口，无缺口封顶降级。\",\"findings\":[{\"type\":\"negative_keyword\",\"entity\":\"eco friendly wireless earbuds buy online\",\"evidence\":\"长窗口 [2026-06-01 至 2026-06-08]：clicks=41、conversions=0、cost_usd=50.15、ctr=5.08%、cpc=1.22，所属 campaign_id=C002（Generic_Search）、ad_group_id=AG11；detect_anomalies full_range 亦报出 negative_keyword_opportunity（medium）。\",\"confidence\":\"medium\",\"recommendation\":\"建议人工评估将该搜索词加入否词列表或调整匹配方式，先确认其是否与产品意图不符，再决定是否否定。\",\"risk_note\":\"该词为通用搜索词，转化判断依赖现有追踪口径；累计消耗仅略高于 $50 阈值，且存在大盘/竞争等外部不可控变量，根因无法仅凭数据确认，故为 medium。\",\"data_gap\":null},{\"type\":\"negative_keyword\",\"entity\":\"ergonomic wireless earbuds buy online\",\"evidence\":\"长窗口 [2026-06-01 至 2026-06-08]：clicks=41、conversions=0、cost_usd=50.37、ctr=5.35%、cpc=1.23，所属 campaign_id=C002（Generic_Search）、ad_group_id=AG11；detect_anomalies full_range 亦报出 negative_keyword_opportunity（medium）。\",\"confidence\":\"medium\",\"recommendation\":\"建议人工评估将该搜索词加入否词列表或调整匹配方式，核实其搜索意图后再决定处置。\",\"risk_note\":\"累计消耗仅略高于 $50 阈值、点击基数 41 属中等，外部不可控变量（搜索意图波动）无法排除，故为 medium。\",\"data_gap\":null},{\"type\":\"scale_up\",\"entity\":\"C001 Brand_Search\",\"evidence\":\"全量区间 [2026-06-01 至 2026-06-08]：cost_usd=475.81、clicks=397、conversions=29、conversion_value_usd=1518.76、cpa=16.41、roas=3.19（≥3 门槛），窗口 2026-06-02 至 2026-06-08 未被检测器报出任何 anomaly，追踪状态 healthy。\",\"confidence\":\"medium\",\"recommendation\":\"建议人工评估提高该 campaign 的预算/出价以获取更多品牌流量。\",\"risk_note\":\"ROAS 3.19 仅略高于 3 的硬门槛，品牌词放量空间可能受品牌搜索总量上限约束，且出价提升存在竞争等外部变量，故为 medium。\",\"data_gap\":null},{\"type\":\"none\",\"entity\":\"C002 / C004 / C005\",\"evidence\":\"窗口内 conversion_drop 信号：C002 2026-06-06 conversions=5（前一日 11，减少 6）；C004 2026-06-03 conversions=2（前一日 6，减少 4）、2026-06-05 conversions=1（前一日 7，减少 6）；C005 2026-06-02 conversions=3（前一日 7，减少 4）。各单日转化绝对减少量均 < 8，按小基数规则逐日独立判定为统计噪声。\",\"confidence\":\"low\",\"recommendation\":\"无需处置；建议继续观察后续每日转化量，若单日绝对减少达到非噪声量级或连续出现再行评估。\",\"risk_note\":\"小基数：四起波动单日转化绝对减少均 < 8 个，属噪声，按天独立判定，不得跨天拼接升级为更高置信度。\",\"data_gap\":null}],\"overall_priority\":[\"人工评估 C002（Generic_Search）中 'eco friendly wireless earbuds buy online' 与 'ergonomic wireless earbuds buy online' 两个零转化高消耗搜索词的否词处置\",\"人工评估 C001（Brand_Search）的放量空间（全量 ROAS 3.19）\",\"持续观察 C002/C004/C005 的日转化波动（当前均为小基数噪声），无需立即处置\"]}",
+          "cached": false
+        },
+        "score": 1,
+        "success": true,
+        "testCase": {
+          "vars": {
+            "case_id": "case-h05",
+            "date": "2026-06-08",
+            "category": "negkw_boundary",
+            "expected_finding": "free coffee maker download 累计 16 点击/$41.60 未达门槛，不得列为否词对象"
+          },
+          "assert": [
+            {
+              "type": "javascript",
+              "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+            },
+            {
+              "type": "javascript",
+              "value": "JSON.parse(output).summary.indexOf('诊断运行失败') === -1"
+            },
+            {
+              "type": "javascript",
+              "value": "JSON.parse(output).findings.every(f => f.confidence !== 'low' || /缺口|小基数|冷启动|追踪/.test((f.evidence || '') + (f.risk_note || '') + (f.data_gap || '')))"
+            },
+            {
+              "type": "javascript",
+              "value": "JSON.parse(output).findings.every(f => f.type !== 'negative_keyword' || ((f.entity || '') + (f.evidence || '')).indexOf('free coffee maker download') === -1)"
+            }
+          ],
+          "description": "Row #5",
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 4,
+        "tokenUsage": {
+          "prompt": 0,
+          "completion": 0,
+          "cached": 0,
+          "total": 0,
+          "numRequests": 1,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "case_id": "case-h05",
+          "date": "2026-06-08",
+          "category": "negkw_boundary",
+          "expected_finding": "free coffee maker download 累计 16 点击/$41.60 未达门槛，不得列为否词对象"
+        },
+        "metadata": {
+          "_promptfooFileMetadata": {}
+        },
+        "failureReason": 0
+      }
+    ],
+    "stats": {
+      "successes": 3,
+      "failures": 2,
+      "errors": 0,
+      "tokenUsage": {
+        "prompt": 0,
+        "completion": 0,
+        "cached": 0,
+        "total": 0,
+        "numRequests": 5,
+        "completionDetails": {
+          "reasoning": 0,
+          "acceptedPrediction": 0,
+          "rejectedPrediction": 0,
+          "cacheReadInputTokens": 0,
+          "cacheCreationInputTokens": 0
+        },
+        "assertions": {
+          "total": 0,
+          "prompt": 0,
+          "completion": 0,
+          "cached": 0,
+          "numRequests": 0,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          }
+        }
+      },
+      "durationMs": 121625,
+      "evaluationDurationMs": 121625
+    }
+  },
+  "config": {
+    "tags": {},
+    "description": "ads-diagnosis-agent holdout evaluation (5 cases, v1.1)",
+    "prompts": [
+      "诊断 {{date}} 的 Google Ads 投放数据"
+    ],
+    "providers": [
+      {
+        "id": "file://provider.py",
+        "label": "agent",
+        "config": {
+          "timeout": 1200000
+        }
+      }
+    ],
+    "tests": [
+      {
+        "vars": {
+          "case_id": "case-h01",
+          "date": "2026-06-07",
+          "category": "normal",
+          "expected_finding": "无异常；窗口内 4 次 detector 报警均为小基数噪声"
+        },
+        "assert": [
+          {
+            "type": "javascript",
+            "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+          },
+          {
+            "type": "javascript",
+            "value": "JSON.parse(output).summary.indexOf('诊断运行失败') === -1"
+          },
+          {
+            "type": "javascript",
+            "value": "JSON.parse(output).findings.every(f => f.confidence !== 'low' || /缺口|小基数|冷启动|追踪/.test((f.evidence || '') + (f.risk_note || '') + (f.data_gap || '')))"
+          },
+          {
+            "type": "javascript",
+            "value": "JSON.parse(output).findings.every(f => f.type !== 'anomaly')"
+          },
+          {
+            "type": "javascript",
+            "value": "JSON.parse(output).findings.every(f => f.confidence !== 'high' || ['negative_keyword','scale_up','none'].includes(f.type))"
+          }
+        ],
+        "description": "Row #1"
+      },
+      {
+        "vars": {
+          "case_id": "case-h02",
+          "date": "2026-06-06",
+          "category": "normal_tricky",
+          "expected_finding": "刁钻正常：-85.7% 环比的一天绝对减少仅 6 个，期望 0 条 anomaly"
+        },
+        "assert": [
+          {
+            "type": "javascript",
+            "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+          },
+          {
+            "type": "javascript",
+            "value": "JSON.parse(output).summary.indexOf('诊断运行失败') === -1"
+          },
+          {
+            "type": "javascript",
+            "value": "JSON.parse(output).findings.every(f => f.confidence !== 'low' || /缺口|小基数|冷启动|追踪/.test((f.evidence || '') + (f.risk_note || '') + (f.data_gap || '')))"
+          },
+          {
+            "type": "javascript",
+            "value": "JSON.parse(output).findings.every(f => f.type !== 'anomaly')"
+          },
+          {
+            "type": "javascript",
+            "value": "JSON.parse(output).findings.every(f => f.confidence !== 'high' || ['negative_keyword','scale_up','none'].includes(f.type))"
+          }
+        ],
+        "description": "Row #2"
+      },
+      {
+        "vars": {
+          "case_id": "case-h03",
+          "date": "2026-06-20",
+          "category": "combo_anomaly",
+          "expected_finding": "组合异常：C001 消耗突增 + C005 缩量反弹 + C002 单日归零（非 tracking、≤medium）"
+        },
+        "assert": [
+          {
+            "type": "javascript",
+            "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+          },
+          {
+            "type": "javascript",
+            "value": "JSON.parse(output).summary.indexOf('诊断运行失败') === -1"
+          },
+          {
+            "type": "javascript",
+            "value": "JSON.parse(output).findings.every(f => f.confidence !== 'low' || /缺口|小基数|冷启动|追踪/.test((f.evidence || '') + (f.risk_note || '') + (f.data_gap || '')))"
+          },
+          {
+            "type": "javascript",
+            "value": "JSON.stringify(JSON.parse(output)).includes('C001')"
+          },
+          {
+            "type": "javascript",
+            "value": "/消耗|成本|cost/i.test(JSON.stringify(JSON.parse(output)))"
+          },
+          {
+            "type": "javascript",
+            "value": "JSON.parse(output).findings.every(f => !/C002|Generic/.test(f.entity) || (f.type !== 'tracking' && f.confidence !== 'high'))"
+          }
+        ],
+        "description": "Row #3"
+      },
+      {
+        "vars": {
+          "case_id": "case-h04",
+          "date": "2026-06-20",
+          "category": "tracking_boundary",
+          "expected_finding": "追踪丢失首日 streak=1 未达规则门槛，不得出现 type=tracking 的 finding"
+        },
+        "assert": [
+          {
+            "type": "javascript",
+            "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+          },
+          {
+            "type": "javascript",
+            "value": "JSON.parse(output).summary.indexOf('诊断运行失败') === -1"
+          },
+          {
+            "type": "javascript",
+            "value": "JSON.parse(output).findings.every(f => f.confidence !== 'low' || /缺口|小基数|冷启动|追踪/.test((f.evidence || '') + (f.risk_note || '') + (f.data_gap || '')))"
+          },
+          {
+            "type": "javascript",
+            "value": "JSON.parse(output).findings.every(f => f.type !== 'tracking')"
+          }
+        ],
+        "description": "Row #4"
+      },
+      {
+        "vars": {
+          "case_id": "case-h05",
+          "date": "2026-06-08",
+          "category": "negkw_boundary",
+          "expected_finding": "free coffee maker download 累计 16 点击/$41.60 未达门槛，不得列为否词对象"
+        },
+        "assert": [
+          {
+            "type": "javascript",
+            "value": "\nconst o = JSON.parse(output);\nreturn typeof o.summary === 'string' && Array.isArray(o.findings)\n  && Array.isArray(o.overall_priority)\n  && o.findings.every(f => ['anomaly','negative_keyword','scale_up','tracking','none'].includes(f.type)\n      && ['high','medium','low'].includes(f.confidence));\n"
+          },
+          {
+            "type": "javascript",
+            "value": "JSON.parse(output).summary.indexOf('诊断运行失败') === -1"
+          },
+          {
+            "type": "javascript",
+            "value": "JSON.parse(output).findings.every(f => f.confidence !== 'low' || /缺口|小基数|冷启动|追踪/.test((f.evidence || '') + (f.risk_note || '') + (f.data_gap || '')))"
+          },
+          {
+            "type": "javascript",
+            "value": "JSON.parse(output).findings.every(f => f.type !== 'negative_keyword' || ((f.entity || '') + (f.evidence || '')).indexOf('free coffee maker download') === -1)"
+          }
+        ],
+        "description": "Row #5"
+      }
+    ],
+    "env": {},
+    "outputPath": [
+      "C:\\Users\\13642\\Documents\\ads-diagnosis-agent\\evals\\holdout_v1_1.json"
+    ],
+    "extensions": [],
+    "metadata": {},
+    "evaluateOptions": {
+      "maxConcurrency": 5
+    },
+    "basePath": "C:\\Users\\13642\\Documents\\ads-diagnosis-agent\\evals"
+  },
+  "shareableUrl": null,
+  "metadata": {
+    "promptfooVersion": "0.124.1",
+    "nodeVersion": "v22.23.2",
+    "platform": "win32",
+    "arch": "x64",
+    "exportedAt": "2026-10-12T14:21:57.882Z",
+    "evaluationCreatedAt": "2026-10-12T14:19:55.024Z"
+  },
+  "vars": [
+    "case_id",
+    "date",
+    "category",
+    "expected_finding"
+  ],
+  "runtimeOptions": {
+    "eventSource": "cli",
+    "maxConcurrency": 5,
+    "showProgressBar": true,
+    "repeat": 1,
+    "cache": false
+  }
+}
