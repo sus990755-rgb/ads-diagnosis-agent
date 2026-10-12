@@ -12,4 +12,4 @@ providers:
 tests: file://tests.json
 
 evaluateOptions:
-  maxConcurrency: 1
+  maxConcurrency: 5

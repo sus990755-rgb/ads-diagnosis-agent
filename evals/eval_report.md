@@ -108,3 +108,75 @@
 | 2026-06-28 | 4 条 finding，全部 high | C003 冷启动（累计 24 点击）消耗 $4.4→$7.7 被报 high——冷启动小基数误报 |
 
 **结论**：基线的注入模式召回尚可（C001/C002/C004 缺口/C005 均能命中），但**所有 finding 一律 high 置信度**，抽样 3 天约 23 条 finding 中近半属于噪声或错误定性（追踪丢失当转化骤降、冷启动波动当异常）；且无 scale_up 放量建议、否词机会只有现象无判断。Agent 的增量价值正是规则之外的判断层：置信度校准（小基数/冷启动压 low）、追踪状态定性（type=tracking）、数据缺口显式声明与结论折损、主动放量评估。这正是 §9.2 误报率指标（正常 case 误报 ≤20%）只有 Agent 能达标的原因。
+
+## Round 7 / 7b（2026-10-12，正式基线；eval ID: eval-5Ql-2026-10-12T13:19:13 及 7b 复测）
+
+**评测对象**：agent v1.1（detect_anomalies 单次双区间调用 + 小基数/放量/自检/封顶全套提示词）+ deepseek-v4-flash，并发 5。评测集 `cases.v1.0.frozen.json`（tag `v1.0-eval-freeze`）。Round 1-6 为开发期数据（免费档限流污染），仅供参考。
+
+**过程**：Round 7 首跑 24/25（case-25 因 none/high 被旧断言误判 → D-03）；按新口径重评 22/25（正常 case 报 anomaly/low、case-18/20 tracking/high、low 缺压低依据）→ 三项提示词修复（D-05）→ Round 7b 首跑 7/25（兜底断言与强制措辞"整体降级"碰撞 → D-06 框架缺陷，修正断言标记后离线重评）。
+
+### §9.2 四条验收线（Round 7b，修正断言后）
+
+| 验收线 | 数值 | 判定 |
+|---|---|---|
+| 关键发现召回率 ≥70% | 22/22 = 100% | ✅ |
+| 正常 case 误报率 ≤20%（anomaly 数必须为 0） | 0/3 = 0% | ✅ |
+| 违禁行为 = 0（一票否决） | 0 次 | ✅ |
+| (a) Finding 级校准 ≥90%（low 带数据不足依据） | 84/84 = 100% | ✅ |
+| (b) Case 级保守性（冷启动/缺数据 high 数 = 0） | 0 条 | ✅ |
+
+**总分 25/25，四条线全过。** 旧指标"标注 low 的 case 中确有数据问题比例"已废弃（见附录 A）。
+
+### 分类别拆解
+
+| 类别 | 通过/总数 |
+|---|---|
+| 异常消耗 | 5/5 |
+| 否词机会 | 5/5 |
+| 放量建议 | 4/4 |
+| 冷启动 | 3/3 |
+| 数据缺失 | 3/3 |
+| 追踪丢失 | 2/2 |
+| 正常对照 | 3/3 |
+
+### 每 case 明细（耗时 / LLM 往返 / findings 构成）
+
+| case | 类别 | 耗时s | 往返 | findings |
+|---|---|---|---|---|
+| case-01 | cost_spike | 39 | 4 | anomaly/medium×1, negative_keyword/medium×5, none/low×1 |
+| case-02 | cost_spike | 91 | 5 | anomaly/medium×1, negative_keyword/medium×5, none/low×2 |
+| case-03 | cost_spike | 40 | 4 | anomaly/medium×1, negative_keyword/medium×4, none/low×1 |
+| case-04 | cost_spike | 52 | 3 | anomaly/medium×1, anomaly/low×1, negative_keyword/medium×3, none/medium×1 |
+| case-05 | cost_spike | 76 | 4 | anomaly/medium×2, negative_keyword/medium×4, none/low×1 |
+| case-06 | negative_keyword | 52 | 4 | tracking/low×1, anomaly/low×2, negative_keyword/low×3, scale_up/low×1 |
+| case-07 | negative_keyword | 39 | 4 | tracking/low×1, anomaly/low×1, negative_keyword/low×2, scale_up/low×1, none/low×2 |
+| case-08 | negative_keyword | 63 | 4 | tracking/low×1, none/low×2, negative_keyword/low×2, scale_up/low×1 |
+| case-09 | negative_keyword | 49 | 4 | anomaly/low×1, negative_keyword/low×1, scale_up/low×1, none/low×3 |
+| case-10 | negative_keyword | 40 | 4 | scale_up/medium×1, negative_keyword/medium×1, anomaly/low×1, none/low×2 |
+| case-11 | scale_up | 40 | 5 | negative_keyword/medium×5, negative_keyword/low×1, none/low×1 |
+| case-12 | scale_up | 37 | 5 | none/low×1, negative_keyword/medium×5, negative_keyword/low×1 |
+| case-13 | scale_up | 28 | 5 | negative_keyword/medium×5, negative_keyword/low×1, none/low×1 |
+| case-14 | scale_up | 55 | 4 | none/low×1, negative_keyword/medium×7 |
+| case-15 | cold_start | 64 | 5 | tracking/low×1, negative_keyword/low×1, scale_up/low×1, none/low×2 |
+| case-16 | cold_start | 73 | 4 | tracking/low×1, negative_keyword/medium×1, scale_up/medium×1, none/low×2 |
+| case-17 | cold_start | 58 | 5 | negative_keyword/medium×1, scale_up/medium×1, none/low×2 |
+| case-18 | data_gap | 66 | 5 | tracking/low×1, anomaly/low×2, negative_keyword/low×6, scale_up/low×1 |
+| case-19 | data_gap | 56 | 5 | tracking/low×1, anomaly/low×2, negative_keyword/low×3, scale_up/low×1, none/low×1 |
+| case-20 | data_gap | 47 | 5 | tracking/low×1, negative_keyword/low×2, scale_up/low×1, none/low×1 |
+| case-21 | tracking | 93 | 5 | tracking/low×1, anomaly/low×2, negative_keyword/medium×7, none/low×1 |
+| case-22 | tracking | 70 | 4 | tracking/low×1, anomaly/medium×1, negative_keyword/medium×7, scale_up/medium×1 |
+| case-23 | normal | 25 | 4 | negative_keyword/medium×2, none/low×1 |
+| case-24 | normal | 37 | 5 | negative_keyword/medium×6, none/low×1 |
+| case-25 | normal | 29 | 4 | negative_keyword/medium×5, negative_keyword/low×1, none/low×1 |
+
+**效率**：平均 53s/case、**4.4 次 LLM 往返**（Round 6 基线 5.9 次 ↓25%，并行下钻指令生效）；全轮 4m54s（对比 Round 5 的 1h38m）。正常对照 case 的 anomaly finding 数为 0（修复一生效）；数据缺口窗口全部触发"整体降级"声明且 findings 压 low（修复二生效）；全部 84 条 low finding 带四关键词压低依据（修复三机检通过）。
+
+### 评测框架缺陷发现与修复（本轮共 3 处，详见 DECISION_LOG）
+
+1. **D-03**：正常 case 断言白名单缺 none → case-25 的 none/high 被误判；修复后同时补强"正常 case anomaly 数必须为 0"。
+2. **D-05 修复三配套**：low finding 压低依据从模型自觉升级为机器强制（LOW_REASON_ASSERT 四关键词校验）。
+3. **D-06**：兜底断言匹配词"降级"与 D-05 强制措辞"整体降级"碰撞，Round 7b 首跑 18 例误判；断言标记精确化为"诊断运行失败"。教训：提示词引入强制措辞须同步检索断言库。
+
+### 附录 A：废弃指标留档
+
+规格 §9.2 原指标"标注 low 的 case 中确有数据问题的比例 ≥ 90%"经 D-04 裁定废弃：字面口径是评测集自身属性（9 个 low case 中 6 个有数据问题 = 67%），无法作为 agent 验收线。Round 7 按工程解读（low case 上 agent 不乱给 high）曾算得 **78%**（7/9，失分于 case-18/20 的 tracking/high），该数字随旧指标一并废弃，仅留档。替代指标为 (a)(b) 两条（见上表）。

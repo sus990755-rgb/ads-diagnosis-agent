@@ -23,7 +23,19 @@ return typeof o.summary === 'string' && Array.isArray(o.findings)
       && ['high','medium','low'].includes(f.confidence));
 """
 
-NOT_DEGRADED_ASSERT = "JSON.parse(output).summary.indexOf('降级') === -1"
+# The degraded fallback report always starts with this exact marker
+# (src/agent.py _degraded_result). Matching the bare word 降级 would
+# false-positive on the mandated cap-rule summary phrase "整体降级" (D-06).
+NOT_DEGRADED_ASSERT = "JSON.parse(output).summary.indexOf('诊断运行失败') === -1"
+
+# Every low-confidence finding must state its downgrade reason with one of
+# the four keywords (decision log D-05, fix 3): machine-enforced auditability
+# instead of relying on model self-discipline.
+LOW_REASON_ASSERT = (
+    "JSON.parse(output).findings.every(f => f.confidence !== 'low'"
+    " || /缺口|小基数|冷启动|追踪/.test("
+    "(f.evidence || '') + (f.risk_note || '') + (f.data_gap || '')))"
+)
 
 
 def _category_asserts(category: str, focus: str) -> list[str]:
@@ -63,11 +75,15 @@ def _category_asserts(category: str, focus: str) -> list[str]:
         ]
     if category == "normal":
         return [
-            # false positive = high-confidence anomaly/tracking on a clean day;
-            # high-confidence opportunity findings (neg keyword / scale up) are
-            # legitimate and do not count as false positives
+            # false positive = ANY anomaly-type finding on a clean day
+            # (decision log D-03: noise observations belong in type=none or
+            # the summary, never in type=anomaly)
+            "JSON.parse(output).findings.every(f => f.type !== 'anomaly')",
+            # high confidence is legitimate only for opportunity findings
+            # (negative_keyword / scale_up) and the all-clear type (none);
+            # none confidence is otherwise unrestricted
             "JSON.parse(output).findings.every(f => f.confidence !== 'high'"
-            " || f.type === 'negative_keyword' || f.type === 'scale_up')",
+            " || ['negative_keyword','scale_up','none'].includes(f.type))",
         ]
     raise ValueError(f"unknown category: {category}")
 
@@ -79,6 +95,7 @@ def main() -> Path:
         asserts = [
             {"type": "javascript", "value": SCHEMA_ASSERT},
             {"type": "javascript", "value": NOT_DEGRADED_ASSERT},
+            {"type": "javascript", "value": LOW_REASON_ASSERT},
         ] + [
             {"type": "javascript", "value": v}
             for v in _category_asserts(c["category"], c["data_ref"].get("focus", ""))

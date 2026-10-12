@@ -13,7 +13,11 @@
       },
       {
         "type": "javascript",
-        "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+        "value": "JSON.parse(output).summary.indexOf('诊断运行失败') === -1"
+      },
+      {
+        "type": "javascript",
+        "value": "JSON.parse(output).findings.every(f => f.confidence !== 'low' || /缺口|小基数|冷启动|追踪/.test((f.evidence || '') + (f.risk_note || '') + (f.data_gap || '')))"
       },
       {
         "type": "javascript",
@@ -39,7 +43,11 @@
       },
       {
         "type": "javascript",
-        "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+        "value": "JSON.parse(output).summary.indexOf('诊断运行失败') === -1"
+      },
+      {
+        "type": "javascript",
+        "value": "JSON.parse(output).findings.every(f => f.confidence !== 'low' || /缺口|小基数|冷启动|追踪/.test((f.evidence || '') + (f.risk_note || '') + (f.data_gap || '')))"
       },
       {
         "type": "javascript",
@@ -65,7 +73,11 @@
       },
       {
         "type": "javascript",
-        "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+        "value": "JSON.parse(output).summary.indexOf('诊断运行失败') === -1"
+      },
+      {
+        "type": "javascript",
+        "value": "JSON.parse(output).findings.every(f => f.confidence !== 'low' || /缺口|小基数|冷启动|追踪/.test((f.evidence || '') + (f.risk_note || '') + (f.data_gap || '')))"
       },
       {
         "type": "javascript",
@@ -91,7 +103,11 @@
       },
       {
         "type": "javascript",
-        "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+        "value": "JSON.parse(output).summary.indexOf('诊断运行失败') === -1"
+      },
+      {
+        "type": "javascript",
+        "value": "JSON.parse(output).findings.every(f => f.confidence !== 'low' || /缺口|小基数|冷启动|追踪/.test((f.evidence || '') + (f.risk_note || '') + (f.data_gap || '')))"
       },
       {
         "type": "javascript",
@@ -117,7 +133,11 @@
       },
       {
         "type": "javascript",
-        "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+        "value": "JSON.parse(output).summary.indexOf('诊断运行失败') === -1"
+      },
+      {
+        "type": "javascript",
+        "value": "JSON.parse(output).findings.every(f => f.confidence !== 'low' || /缺口|小基数|冷启动|追踪/.test((f.evidence || '') + (f.risk_note || '') + (f.data_gap || '')))"
       },
       {
         "type": "javascript",
@@ -143,7 +163,11 @@
       },
       {
         "type": "javascript",
-        "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+        "value": "JSON.parse(output).summary.indexOf('诊断运行失败') === -1"
+      },
+      {
+        "type": "javascript",
+        "value": "JSON.parse(output).findings.every(f => f.confidence !== 'low' || /缺口|小基数|冷启动|追踪/.test((f.evidence || '') + (f.risk_note || '') + (f.data_gap || '')))"
       },
       {
         "type": "javascript",
@@ -169,7 +193,11 @@
       },
       {
         "type": "javascript",
-        "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+        "value": "JSON.parse(output).summary.indexOf('诊断运行失败') === -1"
+      },
+      {
+        "type": "javascript",
+        "value": "JSON.parse(output).findings.every(f => f.confidence !== 'low' || /缺口|小基数|冷启动|追踪/.test((f.evidence || '') + (f.risk_note || '') + (f.data_gap || '')))"
       },
       {
         "type": "javascript",
@@ -195,7 +223,11 @@
       },
       {
         "type": "javascript",
-        "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+        "value": "JSON.parse(output).summary.indexOf('诊断运行失败') === -1"
+      },
+      {
+        "type": "javascript",
+        "value": "JSON.parse(output).findings.every(f => f.confidence !== 'low' || /缺口|小基数|冷启动|追踪/.test((f.evidence || '') + (f.risk_note || '') + (f.data_gap || '')))"
       },
       {
         "type": "javascript",
@@ -221,7 +253,11 @@
       },
       {
         "type": "javascript",
-        "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+        "value": "JSON.parse(output).summary.indexOf('诊断运行失败') === -1"
+      },
+      {
+        "type": "javascript",
+        "value": "JSON.parse(output).findings.every(f => f.confidence !== 'low' || /缺口|小基数|冷启动|追踪/.test((f.evidence || '') + (f.risk_note || '') + (f.data_gap || '')))"
       },
       {
         "type": "javascript",
@@ -247,7 +283,11 @@
       },
       {
         "type": "javascript",
-        "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+        "value": "JSON.parse(output).summary.indexOf('诊断运行失败') === -1"
+      },
+      {
+        "type": "javascript",
+        "value": "JSON.parse(output).findings.every(f => f.confidence !== 'low' || /缺口|小基数|冷启动|追踪/.test((f.evidence || '') + (f.risk_note || '') + (f.data_gap || '')))"
       },
       {
         "type": "javascript",
@@ -273,7 +313,11 @@
       },
       {
         "type": "javascript",
-        "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+        "value": "JSON.parse(output).summary.indexOf('诊断运行失败') === -1"
+      },
+      {
+        "type": "javascript",
+        "value": "JSON.parse(output).findings.every(f => f.confidence !== 'low' || /缺口|小基数|冷启动|追踪/.test((f.evidence || '') + (f.risk_note || '') + (f.data_gap || '')))"
       },
       {
         "type": "javascript",
@@ -299,7 +343,11 @@
       },
       {
         "type": "javascript",
-        "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+        "value": "JSON.parse(output).summary.indexOf('诊断运行失败') === -1"
+      },
+      {
+        "type": "javascript",
+        "value": "JSON.parse(output).findings.every(f => f.confidence !== 'low' || /缺口|小基数|冷启动|追踪/.test((f.evidence || '') + (f.risk_note || '') + (f.data_gap || '')))"
       },
       {
         "type": "javascript",
@@ -325,7 +373,11 @@
       },
       {
         "type": "javascript",
-        "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+        "value": "JSON.parse(output).summary.indexOf('诊断运行失败') === -1"
+      },
+      {
+        "type": "javascript",
+        "value": "JSON.parse(output).findings.every(f => f.confidence !== 'low' || /缺口|小基数|冷启动|追踪/.test((f.evidence || '') + (f.risk_note || '') + (f.data_gap || '')))"
       },
       {
         "type": "javascript",
@@ -351,7 +403,11 @@
       },
       {
         "type": "javascript",
-        "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+        "value": "JSON.parse(output).summary.indexOf('诊断运行失败') === -1"
+      },
+      {
+        "type": "javascript",
+        "value": "JSON.parse(output).findings.every(f => f.confidence !== 'low' || /缺口|小基数|冷启动|追踪/.test((f.evidence || '') + (f.risk_note || '') + (f.data_gap || '')))"
       },
       {
         "type": "javascript",
@@ -377,7 +433,11 @@
       },
       {
         "type": "javascript",
-        "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+        "value": "JSON.parse(output).summary.indexOf('诊断运行失败') === -1"
+      },
+      {
+        "type": "javascript",
+        "value": "JSON.parse(output).findings.every(f => f.confidence !== 'low' || /缺口|小基数|冷启动|追踪/.test((f.evidence || '') + (f.risk_note || '') + (f.data_gap || '')))"
       },
       {
         "type": "javascript",
@@ -403,7 +463,11 @@
       },
       {
         "type": "javascript",
-        "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+        "value": "JSON.parse(output).summary.indexOf('诊断运行失败') === -1"
+      },
+      {
+        "type": "javascript",
+        "value": "JSON.parse(output).findings.every(f => f.confidence !== 'low' || /缺口|小基数|冷启动|追踪/.test((f.evidence || '') + (f.risk_note || '') + (f.data_gap || '')))"
       },
       {
         "type": "javascript",
@@ -429,7 +493,11 @@
       },
       {
         "type": "javascript",
-        "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+        "value": "JSON.parse(output).summary.indexOf('诊断运行失败') === -1"
+      },
+      {
+        "type": "javascript",
+        "value": "JSON.parse(output).findings.every(f => f.confidence !== 'low' || /缺口|小基数|冷启动|追踪/.test((f.evidence || '') + (f.risk_note || '') + (f.data_gap || '')))"
       },
       {
         "type": "javascript",
@@ -455,7 +523,11 @@
       },
       {
         "type": "javascript",
-        "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+        "value": "JSON.parse(output).summary.indexOf('诊断运行失败') === -1"
+      },
+      {
+        "type": "javascript",
+        "value": "JSON.parse(output).findings.every(f => f.confidence !== 'low' || /缺口|小基数|冷启动|追踪/.test((f.evidence || '') + (f.risk_note || '') + (f.data_gap || '')))"
       },
       {
         "type": "javascript",
@@ -481,7 +553,11 @@
       },
       {
         "type": "javascript",
-        "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+        "value": "JSON.parse(output).summary.indexOf('诊断运行失败') === -1"
+      },
+      {
+        "type": "javascript",
+        "value": "JSON.parse(output).findings.every(f => f.confidence !== 'low' || /缺口|小基数|冷启动|追踪/.test((f.evidence || '') + (f.risk_note || '') + (f.data_gap || '')))"
       },
       {
         "type": "javascript",
@@ -507,7 +583,11 @@
       },
       {
         "type": "javascript",
-        "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+        "value": "JSON.parse(output).summary.indexOf('诊断运行失败') === -1"
+      },
+      {
+        "type": "javascript",
+        "value": "JSON.parse(output).findings.every(f => f.confidence !== 'low' || /缺口|小基数|冷启动|追踪/.test((f.evidence || '') + (f.risk_note || '') + (f.data_gap || '')))"
       },
       {
         "type": "javascript",
@@ -533,7 +613,11 @@
       },
       {
         "type": "javascript",
-        "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+        "value": "JSON.parse(output).summary.indexOf('诊断运行失败') === -1"
+      },
+      {
+        "type": "javascript",
+        "value": "JSON.parse(output).findings.every(f => f.confidence !== 'low' || /缺口|小基数|冷启动|追踪/.test((f.evidence || '') + (f.risk_note || '') + (f.data_gap || '')))"
       },
       {
         "type": "javascript",
@@ -559,7 +643,11 @@
       },
       {
         "type": "javascript",
-        "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+        "value": "JSON.parse(output).summary.indexOf('诊断运行失败') === -1"
+      },
+      {
+        "type": "javascript",
+        "value": "JSON.parse(output).findings.every(f => f.confidence !== 'low' || /缺口|小基数|冷启动|追踪/.test((f.evidence || '') + (f.risk_note || '') + (f.data_gap || '')))"
       },
       {
         "type": "javascript",
@@ -585,11 +673,19 @@
       },
       {
         "type": "javascript",
-        "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+        "value": "JSON.parse(output).summary.indexOf('诊断运行失败') === -1"
       },
       {
         "type": "javascript",
-        "value": "JSON.parse(output).findings.every(f => f.confidence !== 'high' || f.type === 'negative_keyword' || f.type === 'scale_up')"
+        "value": "JSON.parse(output).findings.every(f => f.confidence !== 'low' || /缺口|小基数|冷启动|追踪/.test((f.evidence || '') + (f.risk_note || '') + (f.data_gap || '')))"
+      },
+      {
+        "type": "javascript",
+        "value": "JSON.parse(output).findings.every(f => f.type !== 'anomaly')"
+      },
+      {
+        "type": "javascript",
+        "value": "JSON.parse(output).findings.every(f => f.confidence !== 'high' || ['negative_keyword','scale_up','none'].includes(f.type))"
       }
     ]
   },
@@ -607,11 +703,19 @@
       },
       {
         "type": "javascript",
-        "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+        "value": "JSON.parse(output).summary.indexOf('诊断运行失败') === -1"
       },
       {
         "type": "javascript",
-        "value": "JSON.parse(output).findings.every(f => f.confidence !== 'high' || f.type === 'negative_keyword' || f.type === 'scale_up')"
+        "value": "JSON.parse(output).findings.every(f => f.confidence !== 'low' || /缺口|小基数|冷启动|追踪/.test((f.evidence || '') + (f.risk_note || '') + (f.data_gap || '')))"
+      },
+      {
+        "type": "javascript",
+        "value": "JSON.parse(output).findings.every(f => f.type !== 'anomaly')"
+      },
+      {
+        "type": "javascript",
+        "value": "JSON.parse(output).findings.every(f => f.confidence !== 'high' || ['negative_keyword','scale_up','none'].includes(f.type))"
       }
     ]
   },
@@ -629,11 +733,19 @@
       },
       {
         "type": "javascript",
-        "value": "JSON.parse(output).summary.indexOf('降级') === -1"
+        "value": "JSON.parse(output).summary.indexOf('诊断运行失败') === -1"
       },
       {
         "type": "javascript",
-        "value": "JSON.parse(output).findings.every(f => f.confidence !== 'high' || f.type === 'negative_keyword' || f.type === 'scale_up')"
+        "value": "JSON.parse(output).findings.every(f => f.confidence !== 'low' || /缺口|小基数|冷启动|追踪/.test((f.evidence || '') + (f.risk_note || '') + (f.data_gap || '')))"
+      },
+      {
+        "type": "javascript",
+        "value": "JSON.parse(output).findings.every(f => f.type !== 'anomaly')"
+      },
+      {
+        "type": "javascript",
+        "value": "JSON.parse(output).findings.every(f => f.confidence !== 'high' || ['negative_keyword','scale_up','none'].includes(f.type))"
       }
     ]
   }
