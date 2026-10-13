@@ -24,6 +24,26 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
 OPENAI_BASE_URL = os.getenv("OPENAI_BASE_URL", "https://api.moonshot.cn/v1")
 MODEL_NAME = os.getenv("MODEL_NAME", "moonshot-v1-8k")
 
+# Model routing override: when LLM_MODEL is set, the LLM_* triple wins and
+# OPENAI_* stays dormant. Used to switch the active model (e.g. the Round F
+# kimi-k2.6 final run) without touching the working deepseek config — comment
+# out LLM_MODEL in .env to fall back.
+LLM_API_KEY = os.getenv("LLM_API_KEY", "")
+LLM_BASE_URL = os.getenv("LLM_BASE_URL", "")
+LLM_MODEL = os.getenv("LLM_MODEL", "")
+
+if LLM_MODEL:
+    ACTIVE_API_KEY = LLM_API_KEY
+    ACTIVE_BASE_URL = LLM_BASE_URL
+    ACTIVE_MODEL = LLM_MODEL
+else:
+    ACTIVE_API_KEY = OPENAI_API_KEY
+    ACTIVE_BASE_URL = OPENAI_BASE_URL
+    ACTIVE_MODEL = MODEL_NAME
+
+# Sampling temperature; kimi-k2.6 rejects anything but 1 (clamped in agent.py).
+LLM_TEMPERATURE = float(os.getenv("LLM_TEMPERATURE", "0.1"))
+
 # Token pricing (CNY per 1M tokens) for run cost accounting.
 # glm-4.5-flash is a free tier -> 0.0; override via .env when switching models.
 PRICE_INPUT_CNY_PER_MTOK = float(os.getenv("PRICE_INPUT_CNY_PER_MTOK", "0"))

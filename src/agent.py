@@ -114,17 +114,23 @@ def _traced_tools(run_id: str) -> list:
 
 def _build_agent(run_id: str) -> Agent:
     client = AsyncOpenAI(
-        api_key=config.OPENAI_API_KEY, base_url=config.OPENAI_BASE_URL
+        api_key=config.ACTIVE_API_KEY, base_url=config.ACTIVE_BASE_URL
     )
-    model = OpenAIChatCompletionsModel(model=config.MODEL_NAME, openai_client=client)
+    model = OpenAIChatCompletionsModel(model=config.ACTIVE_MODEL, openai_client=client)
     instructions = config.PROMPT_PATH.read_text(encoding="utf-8")
+    temperature = config.LLM_TEMPERATURE
+    if "kimi" in config.ACTIVE_MODEL.lower() and temperature != 1:
+        # kimi-k2.6 hard-rejects any temperature other than 1 (HTTP 400).
+        print(f"[config] {config.ACTIVE_MODEL} only allows temperature=1; "
+              f"overriding {temperature} -> 1.0", file=sys.stderr)
+        temperature = 1.0
     return Agent(
         name="ads-diagnosis-agent",
         instructions=instructions,
         model=model,
         # Low temperature keeps output stable across eval replays: the free
         # tier's default sampling made severity/type labels flip run to run.
-        model_settings=ModelSettings(temperature=0.1),
+        model_settings=ModelSettings(temperature=temperature),
         tools=_traced_tools(run_id),
     )
 
@@ -182,7 +188,7 @@ def _degraded_result(exc: Exception) -> DiagnosisResult:
 
 async def run_diagnosis(date: str) -> DiagnosisResult:
     """Run one diagnosis for the 7-day window ending at ``date``."""
-    run_id = trace.start_run(date, config.MODEL_NAME)
+    run_id = trace.start_run(date, config.ACTIVE_MODEL)
     t0 = time.perf_counter()
     inp = out = 0
     model_io: list | None = None
