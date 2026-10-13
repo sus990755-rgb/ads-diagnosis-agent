@@ -77,3 +77,15 @@ Round 7（agent v1.1 + deepseek-v4-flash，24/25）重算新口径后暴露三�
 - **定性**：框架误判，与 D-03 同类——旧断言的匹配词与 D-05 新增的强制措辞冲突。
 - **修复**：兜底标记精确化为 `_degraded_result` 的固定开头"诊断运行失败"（`build_tests.py` `NOT_DEGRADED_ASSERT`），离线重评 Round 7b 输出得 25/25。
 - **教训**：凡在提示词中引入强制措辞，必须同步检索断言库中的文本匹配规则，评估措辞碰撞。
+
+## D-07（2026-10-13）Round F 环境适配：Moonshot 限额、provider 重试与 temperature 钳制
+
+- **现象**：Round F（kimi-k2.6 定稿轮）前三次全量尝试全部无效——(1) promptfoo 调用系统 Python 缺 `agents` 依赖，25 case 全 error；(2)(3) 并发 5 触发 Moonshot 429 风暴，25 case 全降级。
+- **根因**：Moonshot 账号硬限额 `max organization concurrency: 1`、`organization max RPM: 3`（错误响应原文），并发 5 下 worker 互相踩踏，重试亦被限流吞没。
+- **修复（均为评测环境层，agent/提示词零改动）**：
+  1. `PROMPTFOO_PYTHON` 指向项目 .venv 解释器；
+  2. `evals/provider.py` 增加降级重试（429 等基础设施降级最多重试 4 次、退避 5/10/15s）——降级报告不是 agent 真实结果，重跑等价于该 case 延后起跑，不违反"结果原样入报告"原则；
+  3. 并发降为 1（CLI `-j 1`，不改已冻结的 promptfoo.yaml），25 case 全部真实完成、零降级。
+- **temperature 差异（如实记录）**：kimi-k2.6 服务端硬限制只接受 temperature=1（HTTP 400），`src/agent.py` 检测 kimi 模型名自动钳制为 1 并打印提示。Round F 实际 temperature=1，与 Round 7b 的 0.1 不同，属模型方约束，非人为调参。
+- **配置路由**：`src/config.py` 新增 `LLM_API_KEY/LLM_BASE_URL/LLM_MODEL` 三键，设置 `LLM_MODEL` 时优先于 `OPENAI_*` 生效，注释掉即切回 deepseek——切模型不再改动原工作配置。
+- **教训**：换模型前先做单 case 冒烟（本次冒烟即暴露 temperature 限制）；评测并发度必须与账号限额匹配，限额信息以服务端错误原文为准。

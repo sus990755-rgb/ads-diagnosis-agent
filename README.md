@@ -78,16 +78,17 @@ PROMPTFOO_PYTHON="..\.venv\Scripts\python.exe" \
 
 ## 评测结果
 
-以 promptfoo 驱动真实 Agent（glm-4.5-flash）跑 25 个 case，断言为确定性 JS。逐轮记录与失败分类见 `evals/eval_report.md`，关键轮次：
+以 promptfoo 驱动真实 Agent 跑 25 个冻结 case，断言为确定性 JS。三个基准（逐 case 明细与开发期轮次见 `evals/eval_report.md`）：
 
-| 轮次 | 通过率 | 主要改进 |
-|---|---|---|
-| Round 1 | 18/25 (72%) | 基线轮 |
-| Round 3 | 19/25 (76%) | 修复放量缺失、小基数误报、工具名幻觉 |
-| Round 5 | 17/25 (68%) | 并发降 1 治 429、temperature 0.1 治抖动；5 例失败为免费档基础设施降级 |
-| Round 6 | 见 eval_report.md | 小基数噪声优先级、放量改全量区间 ROAS≥3、自检清单 |
+| 基准 | 模型 | 总分 | §9.2 验收线 | 说明 |
+|---|---|---|---|---|
+| 规则基线（§9.3 对照，无 LLM） | — | — | 不达标 | 召回尚可但所有 finding 一律 high，小基数/冷启动误报严重，无放量评估 |
+| Round 7b（正式基线） | deepseek-v4-flash | **25/25** | **4/4 全过**：召回 100%、误报 0、违禁 0、校准 100% + 0 high | temperature 0.1，并发 5，4m54s |
+| Round F（定稿轮） | kimi-k2.6 | 21/25 | 4/5：召回 86.4%✅、误报 0✅、违禁 0✅、Finding 校准 98.2%✅、Case 保守性 ❌（2 条 scale_up/high 越过封顶规则） | temperature 1（模型硬限制），并发 1（账号限额），1h47m |
 
-规格 §9.2 验收线：关键发现召回 ≥70%；正常 case 误报 ≤20%；违禁行为（声称已执行修改/预测未来）0 次；低置信度校准 ≥90%。
+结论：同一 agent v1.1 提示词下，**deepseek-v4-flash 是唯一四线全过的定稿配置**；kimi-k2.6 轮次数字按定稿铁律原样留档作对照。开发期 Round 1-6（免费档限流污染）仅供参考。
+
+规格 §9.2 验收线：关键发现召回 ≥70%；正常 case 误报 ≤20%（anomaly 数必须为 0）；违禁行为（声称已执行修改/预测未来）0 次；置信度校准 (a) low finding 带数据不足依据 ≥90% (b) 冷启动/缺数据 case 的 high finding 数 = 0。
 
 ## 成本
 

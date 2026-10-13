@@ -198,3 +198,81 @@
 **失败分析（同一行为，归类「判断」）**：h03/h04 中 agent 在 C002 归零**首日**（streak=1，低于追踪规则 ≥2 天门槛、get_tracking_status 不会判 suspected_broken）就给出 type=tracking 的 finding——越过工具判定自行提前定性。两处置信度均为 low（未造成高置信误报），属于"低置信抢跑"。
 
 **结论**：留出集暴露了 v1.0 未覆盖的一个真实边界弱点（追踪定性抢跑），以及两个刁钻 case（h02/h05）的正确通过。按规则未修复、未调提示词，此弱点记录为已知限制：单日复零首日 agent 倾向提前报 tracking/low，实战中等同于"提前一天的低置信预警"，风险可控但定性偏激进。
+
+## Round F（2026-10-13，定稿轮；kimi-k2.6）
+
+**评测对象**：agent v1.1（提示词与工具自 Round 7b 起零改动）+ **kimi-k2.6**。评测集 `cases.v1.0.frozen.json`（25 case）+ `cases.v1.1.holdout.json`（5 case）。原始结果 `evals/roundF.json` / `evals/roundF_holdout.json`。按定稿铁律：**结果原样入档，未据此回调任何提示词**。
+
+**与 7b 的环境差异（如实记录）**：temperature=1（kimi-k2.6 服务端硬限制，7b 为 0.1）；并发=1（Moonshot 账号限额 concurrency 1 / RPM 3，7b 为 5）；provider 新增 429 降级重试。详见 D-07。
+
+**过程**：三次环境性失败（系统 Python 缺依赖全 error；并发 5 两轮 429 风暴全降级）→ 并发 1 + 重试后 25 case 全部真实完成，零降级、零限流残留。
+
+### §9.2 验收线（v1.0 冻结集）：4/5 通过
+
+| 验收线 | 数值 | 判定 | 7b 对照 |
+|---|---|---|---|
+| 关键发现召回率 ≥70% | 19/22 = 86.4% | ✅ | 100% |
+| 正常 case 误报率（anomaly 数必须为 0） | 0/3 = 0% | ✅ | 0% |
+| 违禁行为 = 0（一票否决） | 0 次 | ✅ | 0 |
+| (a) Finding 级校准 ≥90% | 55/56 = 98.2% | ✅ | 100% |
+| (b) Case 级保守性（冷启动/缺数据 high = 0） | **2 条 high** | ❌ | 0 条 |
+
+**总分 21/25。** (b) 线失败实质：kimi-k2.6 在 case-16（冷启动，06-29）与 case-20（数据缺口，06-25）对 C001 给出 **scale_up/high**，越过 D-05 置信度封顶规则（这两 case 的 promptfoo 断言均通过，(b) 为离线计算口径）。
+
+### 失败 case 明细（4 个）
+
+| case | 类别 | 失败断言 | 实质 |
+|---|---|---|---|
+| case-11 | scale_up | 输出未包含 C001 | 漏召回：聚焦 6 条否词，未覆盖 C001 放量候选 |
+| case-12 | scale_up | 输出未包含 C001 | 同上 |
+| case-14 | scale_up | 无 scale_up finding | 漏召回：ROAS 达标实体未给放量建议 |
+| case-05 | cost_spike | low finding 缺压低依据 | 1 条 none/low 无四关键词（机检拦截）；关键异常本身已召回 |
+
+### 每 case 明细（耗时 / LLM 往返 / findings 构成）
+
+| case | 类别 | 耗时s | 往返 | findings |
+|---|---|---|---|---|
+| case-01 | cost_spike | 130 | 4 | anomaly/low×2, negative_keyword/medium×5 |
+| case-02 | cost_spike | 158 | 4 | anomaly/medium×1, negative_keyword/medium×5 |
+| case-03 | cost_spike | 126 | 4 | anomaly/medium×1, none/low×1, negative_keyword/medium×4 |
+| case-04 | cost_spike | 544 | 4 | anomaly/medium×2, negative_keyword/medium×3 |
+| case-05 | cost_spike | 108 | 4 | none/low×4, negative_keyword/medium×4 |
+| case-06 | negative_keyword | 163 | 4 | tracking/low×1, anomaly/low×1, negative_keyword/low×3, scale_up/low×1 |
+| case-07 | negative_keyword | 307 | 5 | tracking/high×1, anomaly/medium×1, anomaly/low×1, negative_keyword/medium×3, none/low×2 |
+| case-08 | negative_keyword | 193 | 4 | tracking/low×1, negative_keyword/low×3, scale_up/low×1, none/low×2 |
+| case-09 | negative_keyword | 412 | 4 | anomaly/low×1, negative_keyword/low×1, scale_up/low×1, none/low×3 |
+| case-10 | negative_keyword | 295 | 4 | negative_keyword/high×1, scale_up/high×1, none/low×1 |
+| case-11 | scale_up | 151 | 4 | negative_keyword/medium×6 |
+| case-12 | scale_up | 198 | 4 | anomaly/low×1, negative_keyword/medium×6 |
+| case-13 | scale_up | 159 | 4 | negative_keyword/medium×6, none/low×1 |
+| case-14 | scale_up | 347 | 4 | negative_keyword/high×1, negative_keyword/medium×4, none/low×1 |
+| case-15 | cold_start | 191 | 4 | tracking/low×1, anomaly/low×2, negative_keyword/low×1, scale_up/low×1 |
+| case-16 | cold_start | 189 | 4 | negative_keyword/medium×1, **scale_up/high×1**, none/low×1 |
+| case-17 | cold_start | 295 | 4 | negative_keyword/medium×1, scale_up/medium×1, none/low×1 |
+| case-18 | data_gap | 179 | 4 | tracking/low×1, anomaly/low×1, negative_keyword/low×1, scale_up/low×1 |
+| case-19 | data_gap | 163 | 4 | tracking/low×1, anomaly/low×1, negative_keyword/low×3, scale_up/low×1 |
+| case-20 | data_gap | 307 | 5 | tracking/medium×1, negative_keyword/low×2, **scale_up/high×1** |
+| case-21 | tracking | 691 | 4 | tracking/high×1, anomaly/medium×2, negative_keyword/medium×2, negative_keyword/low×1 |
+| case-22 | tracking | 809 | 4 | tracking/low×1, negative_keyword/low×1, negative_keyword/medium×1 |
+| case-23 | normal | 175 | 4 | none/low×2, negative_keyword/medium×2 |
+| case-24 | normal | 138 | 4 | negative_keyword/medium×6 |
+| case-25 | normal | 198 | 4 | negative_keyword/medium×6 |
+
+**效率**：平均 265s/case、**4.1 次 LLM 往返**、每 case 约 1.9 万 input + 0.8 万 output token；全轮 1h47m（并发 1 受账号限额制约）。对比 7b（deepseek）：53s/case、4.4 往返、4m54s（并发 5）。kimi-k2.6 思考链使 output token 约为 deepseek 的 3 倍，单 case 延迟约 5 倍。
+
+### v1.1 留出集：2/5
+
+| case | 设计意图 | 结果 | 7b 对照 |
+|---|---|---|---|
+| case-h01 normal | 常规正常对照 | ✅ | ✅ |
+| case-h02 normal_tricky | 刁钻正常（-85.7% 环比、绝对减少仅 6） | ❌ 1 条 none/low 缺压低依据（机检） | ✅ |
+| case-h03 combo_anomaly | 组合异常定性 | ❌ C002 归零首日报 tracking/low（同 7b 的已知弱点） | ❌ 同 |
+| case-h04 tracking_boundary | 追踪首日不抢跑 | ❌ tracking/**medium**（比 7b 的 low 更激进） | ❌ tracking/low |
+| case-h05 negkw_boundary | 否词边界 | ✅ | ✅ |
+
+### Round F 结论
+
+1. **4/5 验收线通过，(b) Case 级保守性未过**：kimi-k2.6 在冷启动/数据缺口场景对高 ROAS 实体（C001）敢给 scale_up/high，越过 D-05 封顶规则；deepseek-v4-flash 在同提示词下零越界。
+2. **模型行为画像**：deepseek 偏保守（medium/low 为主），kimi-k2.6 更敢给 high/medium——召回 86.4% vs 100%、保守性越界 2 条、校准 98.2% vs 100%。同一份提示词下两模型均可运行，但严格按 §9.2 全口径，**deepseek-v4-flash 仍是唯一四线全过的定稿配置**。
+3. 已知弱点（追踪定性抢跑，h03/h04）在两模型上复现一致，证实该弱点属提示词/规则层而非模型个体差异，维持"已知限制"结论。
+4. 按铁律未回调提示词；本报告与 README 评测表如实记录两组数字，7b 保留为对照行。
