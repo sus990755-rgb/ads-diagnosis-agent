@@ -276,3 +276,36 @@
 2. **模型行为画像**：deepseek 偏保守（medium/low 为主），kimi-k2.6 更敢给 high/medium——召回 86.4% vs 100%、保守性越界 2 条、校准 98.2% vs 100%。同一份提示词下两模型均可运行，但严格按 §9.2 全口径，**deepseek-v4-flash 仍是唯一四线全过的定稿配置**。
 3. 已知弱点（追踪定性抢跑，h03/h04）在两模型上复现一致，证实该弱点属提示词/规则层而非模型个体差异，维持"已知限制"结论。
 4. 按铁律未回调提示词；本报告与 README 评测表如实记录两组数字，7b 保留为对照行。
+
+## 对照实验 Round F2（2026-10-13，deepseek-v4-flash @ temperature=1）
+
+**目的**：隔离 Round F 的混淆变量。kimi-k2.6 只接受 temperature=1，而 7b 用 0.1——k2.6 的 (b) 线越界究竟是模型本身的规则遵循问题，还是高温所致？
+
+**设置**：agent v1.1 提示词与代码零改动，唯一变量 temperature 0.1→1（shell 环境变量 `LLM_TEMPERATURE=1` 注入，.env 与代码均未改动）；deepseek-v4-flash，并发 5，v1.0 冻结集 25 case。原始结果 `evals/roundF2.json`。
+
+### 结果：25/25，四条线全过
+
+| 验收线 | 数值 | 判定 |
+|---|---|---|
+| 关键发现召回率 ≥70% | 22/22 = 100% | ✅ |
+| 正常 case 误报率（anomaly = 0） | 0/3 = 0% | ✅ |
+| 违禁行为 = 0 | 0 次 | ✅ |
+| (a) Finding 级校准 ≥90% | 91/91 = 100% | ✅ |
+| (b) Case 级保守性（high = 0） | 0 条（**全场 25 case high 总数为 0**） | ✅ |
+
+全轮 4m31s（与 7b 的 4m54s 相当）。temperature 升至 1 后 deepseek 反而更保守——全场未产出任何 high finding，D-05 封顶规则零越界。
+
+### 结论
+
+**temperature=1 不破坏 deepseek 的规则遵循**，Round F 中 kimi-k2.6 的 (b) 越界与召回下滑不能归因于其 temperature 硬限制，差异在模型本身的规则遵循能力。混淆变量排除，选型依据成立。
+
+## 模型选型决策（定稿）
+
+1. **原计划**：按 MODEL_ROUTING.md 的路由表，最终定稿轮用旗舰模型 kimi-k2.6 跑全量，数字作为 README 定稿行。
+2. **受控对比推翻原计划**：Round F（k2.6）21/25、(b) 线 2 条 scale_up/high 越过 D-05 封顶规则、召回 86.4%；Round F2（deepseek @ temp=1）25/25 四线全过，证明 k2.6 的失败源于模型本身而非高温。
+3. **选择依据**（deepseek-v4-flash 全面胜出）：
+   - 规则遵循：四线全过（含 temp=1 对照）vs k2.6 保守性越界 2 条
+   - 速度：53s/case、并发 5 vs 265s/case、并发 1（账号限额）
+   - 成本与稳定性：付费档无限流 vs concurrency 1 / RPM 3 硬限额；output token 量 k2.6 约为 3 倍（思考链）
+4. **最终裁定**：**生产定稿配置 = agent v1.1 + deepseek-v4-flash @ temperature=0.1（Round 7b）**。kimi-k2.6 不作生产配置，Round F 数字原样留档作对照；禁止为让 k2.6 通过而回调任何提示词。
+5. **混淆变量如实声明**：k2.6 无法与 7b 在同一 temperature 下对比（服务端只接受 1），两轮对比的温度不对称（0.1 vs 1）；F2（deepseek @ temp=1 仍全过）是对该不对称性的补强证据，但严格说三方的运行条件（并发、限额）也不完全一致，结论以规则遵循差异为主、效率差异为辅。

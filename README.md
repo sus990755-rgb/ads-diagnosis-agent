@@ -78,15 +78,16 @@ PROMPTFOO_PYTHON="..\.venv\Scripts\python.exe" \
 
 ## 评测结果
 
-以 promptfoo 驱动真实 Agent 跑 25 个冻结 case，断言为确定性 JS。三个基准（逐 case 明细与开发期轮次见 `evals/eval_report.md`）：
+以 promptfoo 驱动真实 Agent 跑 25 个冻结 case，断言为确定性 JS。四个基准（逐 case 明细与开发期轮次见 `evals/eval_report.md`）：
 
-| 基准 | 模型 | 总分 | §9.2 验收线 | 说明 |
-|---|---|---|---|---|
-| 规则基线（§9.3 对照，无 LLM） | — | — | 不达标 | 召回尚可但所有 finding 一律 high，小基数/冷启动误报严重，无放量评估 |
-| Round 7b（正式基线） | deepseek-v4-flash | **25/25** | **4/4 全过**：召回 100%、误报 0、违禁 0、校准 100% + 0 high | temperature 0.1，并发 5，4m54s |
-| Round F（定稿轮） | kimi-k2.6 | 21/25 | 4/5：召回 86.4%✅、误报 0✅、违禁 0✅、Finding 校准 98.2%✅、Case 保守性 ❌（2 条 scale_up/high 越过封顶规则） | temperature 1（模型硬限制），并发 1（账号限额），1h47m |
+| 基准 | 模型 | temperature | 总分 | §9.2 验收线 | 说明 |
+|---|---|---|---|---|---|
+| 规则基线（§9.3 对照，无 LLM） | — | — | — | 不达标 | 召回尚可但所有 finding 一律 high，小基数/冷启动误报严重，无放量评估 |
+| Round 7b【生产定稿】 | deepseek-v4-flash | 0.1 | **25/25** | **4/4 全过**：召回 100%、误报 0、违禁 0、校准 100% + 0 high | 并发 5，4m54s |
+| Round F2【对照】 | deepseek-v4-flash | 1 | 25/25 | 4/4 全过（全场 0 条 high，比 7b 更保守） | 隔离 temperature 变量，4m31s |
+| Round F【对比实验】 | kimi-k2.6 | 1（模型硬限制） | 21/25 | 4/5：召回 86.4%、Finding 校准 98.2%、Case 保守性 ❌（2 条 scale_up/high 越过封顶规则） | 并发 1（账号限额），1h47m |
 
-结论：同一 agent v1.1 提示词下，**deepseek-v4-flash 是唯一四线全过的定稿配置**；kimi-k2.6 轮次数字按定稿铁律原样留档作对照。开发期 Round 1-6（免费档限流污染）仅供参考。
+结论：F2 证明 temperature=1 不破坏 deepseek 的规则遵循，Round F 中 kimi-k2.6 的越界源于模型本身。**生产定稿配置 = agent v1.1 + deepseek-v4-flash @ temperature 0.1（Round 7b）**；k2.6 轮次数字按定稿铁律原样留档。开发期 Round 1-6（免费档限流污染）仅供参考。
 
 规格 §9.2 验收线：关键发现召回 ≥70%；正常 case 误报 ≤20%（anomaly 数必须为 0）；违禁行为（声称已执行修改/预测未来）0 次；置信度校准 (a) low finding 带数据不足依据 ≥90% (b) 冷启动/缺数据 case 的 high finding 数 = 0。
 
